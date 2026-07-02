@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <title>Access Control</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+</head>
+
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+        <div class="intro-y flex items-center justify-between w-full">
+            <h2 class="intro-y text-lg font-medium mt-5">Access Control</h2>
+        </div>
+        <div class="container mt-4">
+            <!-- Search Form -->
+            <form class="grid grid-cols-12 gap-4 mb-4 items-end">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4">
+                    <label for="key" class="form-label  mr-2">Enter the Admin Key</label>
+                    <input id="key" type="password"/>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-2">
+                    <button id="validateBtn"  type="button" class="btn btn-primary w-full">Approve</button>
+                </div>
+            </form>
+            <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+            <button id="openModalBtn" class="hidden" data-tw-toggle="modal" data-tw-target="#accessmodal"></button>
+            <div class="grid grid-cols-12 gap-6 mt-5">
+                <div class="intro-y col-span-12 lg:col-span-12">
+                    <div class="overflow-x-auto box">
+                        <div class="m-5">
+                            <table class="table" id="accessTable">
+                                <thead>
+                                <tr>
+                                    <th class="whitespace-nowrap">Sl. No</th>
+                                    <th class="whitespace-nowrap">Process Name</th>
+                                    <th class="whitespace-nowrap">Key Value</th>
+                                    <th class="whitespace-nowrap">Update</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Data will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="accessmodal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <form id="accessUpdateForm" class="content content--top-nav">
+                    <div class="modal-header rounded-3xl mt-2 bg-primary">
+                        <h3 class="text-white font-medium text-2xl px-4 py-2">
+                            Update Access Key
+                        </h3>
+                        <button type="button" class="btn-close" data-tw-dismiss="modal" aria-label="Close" id="closeModalBtn"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+                            <div class="w-full xl:w-1/3">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Process Name</label>
+                            </div>
+                            <div class="w-full xl:flex-1">
+                                <input id="accessName" type="text" class="form-control cursor-not-allowed" readonly>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+                            <div class="w-full xl:w-1/3">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current Key</label>
+                            </div>
+                            <div class="w-full xl:flex-1">
+                                <input id="currentKey" type="text" class="form-control cursor-not-allowed" readonly>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+                            <div class="w-full xl:w-1/3">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Key</label>
+                            </div>
+                            <div class="w-full xl:flex-1">
+                                <input id="newKey" type="text" class="form-control cursor-not-allowed" >
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+                            <div class="w-full xl:w-1/3">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm New Key</label>
+                            </div>
+                            <div class="w-full xl:flex-1">
+                                <input id="confirmKey" type="text" class="form-control cursor-not-allowed" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-tw-dismiss="modal">Cancel</button>
+                        <button type="button" id="submitBondUpdate" class="btn btn-primary mr-4" disabled>Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script src="/tcos/dist/js/flowbite.min.js"></script>
+<script>
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+         $('#validateBtn').click(function () {
+             const adminKey = $('#key').val();
+             if (!adminKey) return;
+
+             $.ajax({
+                 url: "/tcos/members/userValidation/security/" + adminKey,
+                 method: 'GET',
+                 success: function (response) {
+                     if (response.access && response.access.length > 0) {
+                         $('#errorBox').addClass('hidden');
+                         populateAccessTable(response.access);
+                     } else {
+                         $('#errorBox').removeClass('hidden');
+                         $('#accessTable tbody').empty();
+                     }
+                 },
+                 error: function () {
+                     $('#errorBox').removeClass('hidden');
+                 }
+             });
+         });
+         function populateAccessTable(accessList) {
+             const tbody = $('#accessTable tbody');
+             tbody.empty();
+             accessList.forEach((item, index) => {
+                 const row = `<tr>
+                     <td>${index + 1}</td>
+                     <td>${item.accessDeclare}</td>
+                     <td>${item.accessId}</td>
+                     <td><button class="btn btn-sm btn-primary update-btn"
+                                 data-id="${item.id}"
+                                 data-name="${item.accessDeclare}"
+                                 data-key="${item.accessId}">
+                             Update
+                         </button></td>
+                 </tr>`;
+                 tbody.append(row);
+             });
+         }
+     });
+</script>
+<script>
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+          $(document).on("click", ".update-btn", function () {
+              document.getElementById('openModalBtn').click();
+              const name = $(this).data('name');
+              const currentKey = $(this).data('key');
+              const id = $(this).data('id');
+
+              $('#accessName').val(name);
+              $('#currentKey').val(currentKey);
+              $('#newKey').val('');
+              $('#confirmKey').val('');
+              $('#submitBondUpdate').data('id', id).prop('disabled', true);
+
+              $('#accessmodal').removeClass('hidden').attr('aria-hidden', 'false');
+          });
+
+          // Close modal
+          $('#closeModalBtn').on('click', function () {
+              $('#accessmodal').addClass('hidden').attr('aria-hidden', 'true');
+          });
+
+          // Enable/disable the update button based on input match
+          $('#newKey, #confirmKey').on('input', function () {
+              const newKey = $('#newKey').val();
+              const confirmKey = $('#confirmKey').val();
+              $('#submitBondUpdate').prop('disabled', !(newKey && confirmKey && newKey === confirmKey));
+          });
+
+          // Submit update
+          $('#submitBondUpdate').on('click', function () {
+              const id = $(this).data('id');
+              const newKey = $('#newKey').val();
+
+              $.ajax({
+                  url: `/tcos/members/userValidation/security/updateKey?accessId=${id}&newKey=${newKey}`,
+                  method: 'GET',
+                  success: function () {
+                      alert('Access Key updated successfully');
+                      $('#accessmodal').addClass('hidden').attr('aria-hidden', 'true');
+                      $('#validateBtn').click(); // Refresh the table
+                  },
+                  error: function () {
+                      alert('Error updating Access Key');
+                  }
+              });
+          });
+    });
+</script>
+</body>
+</html>

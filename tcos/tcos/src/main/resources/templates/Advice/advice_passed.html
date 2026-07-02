@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Advice Passing</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="overflow-x-auto py-5">
+<!-- BEGIN: Mobile Menu -->
+
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y flex justify-between mt-6">
+            <div class="flex-1">
+                <h1 class=" font-medium mr-auto text-2xl">
+                    Monitor Advice
+                </h1>
+            </div>
+        </div>
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <!-- BEGIN: Responsive Table -->
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Bond Number</th>
+                                <th class="whitespace-nowrap">Bond UID</th>
+                                <th class="whitespace-nowrap">Ticket Number</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Bank Name</th>
+                                <th class="whitespace-nowrap">Bond Type</th>
+                                <!--                                <th class="whitespace-nowrap">Account Number</th>-->
+                                <th class="whitespace-nowrap">Amount</th>
+                                <th class="whitespace-nowrap">Cheque Number</th>
+                                <th class="whitespace-nowrap">Payment Type</th>
+                                <!--                                <th class="whitespace-nowrap">Payment Bank</th>-->
+                                <th class="whitespace-nowrap">Updated Date</th>
+                                <th class="whitespace-nowrap">Bond Status</th>
+                                <th class="whitespace-nowrap">Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="mv : ${mvoucher}">
+                                <td th:text="${mv.bondId}">Bond Number</td>
+                                <td th:text="${mv.gid}">Bond UID</td>
+                                <td th:text="${mv.userId}">Ticket Number</td>
+                                <td th:text="${mv.Name}">Name</td>
+                                <td th:text="${mv.bname}">Bank Name</td>
+                                <td th:text="${mv.bondType}">Bond Name</td>
+                                <!--                                <td th:text="${mv.accountNum}">Account Number</td>-->
+                                <td th:text="${mv.loanAmount}">Amount</td>
+                                <td th:text="${mv.chequeNo}">Amount</td>
+                                <td th:text="${mv.paymenttype}">Payment Type</td>
+                                <!--                                <td th:text="${mv.paymentBank}">Payment Bank</td>-->
+                                <td th:text="${#dates.format(mv.updatedAt, 'dd-MM-yyyy')}">Prepared Date</td>
+                                <td th:text="${mv.paymentStatus}">Status</td>
+                                <td class="flex-1">
+                                    <a class="btn btn-primary shadow-md" th:href="@{/members/advice/passAdvice/details/{Id}(Id=${mv.AdviceId})}"
+                                       data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view">
+                                        Update
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END: Responsive Table -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content -->
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<!-- Include jQuery and DataTables JS -->
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+</body>
+
+</html>

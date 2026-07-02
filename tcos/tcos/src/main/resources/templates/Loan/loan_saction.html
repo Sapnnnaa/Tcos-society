@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+  <meta charset="utf-8" />
+  <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pending Loan</title>
+  <!-- BEGIN: CSS Assets-->
+  <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+  <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+  <!-- Include Select2 CSS -->
+  <link href="/tcos/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<!--  <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+  <!-- JS -->
+  <style>
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    #nextBtn {
+      display: none;
+    }
+
+    #previousBtn,
+    #nextBtn2,
+    #previousBtn2,
+    #previousBtn3,
+    #previousBtn4,
+    #previousBtn5 {
+      display: block;
+    }
+
+    .dataTables_length select {
+      width: 60px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    .badge-other {
+      color: white;
+      background-color: red;
+    }
+
+    .badge-active {
+      color: white;
+      background-color: green;
+    }
+
+    /* Style for the form inputs */
+    .form-control {
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      border: 1px solid #ccc;
+    }
+
+    .font-medium {
+      font-weight: 500;
+    }
+
+    /* Styling for error messages */
+    #passwordError {
+      color: red;
+      display: none;
+    }
+
+    .tab-header {
+      display: flex;
+      background: #f5f5f5;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .tab-header button {
+      flex: 1;
+      padding: 10px;
+      background: #eaeaea;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab-header button.active {
+      background: #ffcc00;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+  <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+
+<body class="py-5">
+  <div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- BEGIN: Content -->
+    <div class="content">
+      <div class="flex items-center mt-4 mb-4">
+        <h2 class="intro-y text-lg font-medium mr-auto">
+          LOAN APPROVAL PROCESS
+        </h2>
+      </div>
+      <!-- BEGIN: Wizard Layout -->
+      <div class="intro-y box py-10 sm:py-20 mt-2">
+        <div class="flex justify-center">
+          <button id="step-1-btn" class="intro-y w-10 h-10 rounded-full btn btn-primary mx-2"
+            onclick="goToStep(1)">1</button>
+          <button id="step-2-btn"
+            class="intro-y w-10 h-10 rounded-full btn bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500 mx-2"
+            onclick="goToStep(2)">2</button>
+        </div>
+        <div id="step-1" class="px-5 mt-5">
+          <div class="font-medium text-center text-lg">
+            Member & Loan Details
+          </div>
+          <div class="text-slate-500 text-center mt-2">
+            Validate each details.
+          </div>
+        </div>
+        <div id="step-1-form" class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+          <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+            <h3 class="font-medium text-lg mb-4 text-blue-700">
+              Member Details
+            </h3>
+            <div class="grid grid-cols-12 gap-4 gap-y-5">
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="Name" class="form-label">Member Name</label>
+                <input id="Name" type="text" name="Name" class="form-control" th:value="${loan.Name}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="userIda" class="form-label">Ticket Number</label>
+                <input id="userIda" type="text" name="userId" class="form-control" th:value="${loan.userId}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="phoneNo" class="form-label">Phone Number</label>
+                <input id="phoneNo" type="text" name="phonenum" class="form-control" th:value="${loan.phonenum}"
+                  readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="companyName" class="form-label">Company Name</label>
+                <input id="companyName" type="text" name="companyName" class="form-control"
+                  th:value="${loan.companyName}" readonly>
+              </div>
+            </div>
+          </div>
+          <!-- Bank Details Section -->
+          <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+            <h3 class="font-medium text-lg mb-4 text-blue-700">
+              Bank Details
+            </h3>
+            <div class="grid grid-cols-12 gap-4 gap-y-5">
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="BankName" class="form-label">Bank Name</label>
+                <input id="BankName" type="text" name="bname" class="form-control" th:value="${loan.bname}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="AccNum" class="form-label">Account Number</label>
+                <input id="AccNum" type="text" name="accountNum" class="form-control" th:value="${loan.accountNum}"
+                  readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="Ifscode" class="form-label">IFSC Code</label>
+                <input id="Ifscode" type="text" name="ifscode" class="form-control" th:value="${loan.ifscode}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="Branch" class="form-label">Branch</label>
+                <input id="Branch" type="text" name="branch" class="form-control" th:value="${loan.branch}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="payableAt" class="form-label">Pvayable At</label>
+                <input id="payableAt" type="text" name="branch" class="form-control" th:value="${loan.payableAt}"
+                  readonly>
+              </div>
+            </div>
+          </div>
+          <!-- loan Details Section -->
+          <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+            <h3 class="font-medium text-lg mb-4 text-blue-700">
+              Loan Details
+            </h3>
+            <div class="grid grid-cols-12 gap-4 gap-y-5">
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="loantype" class="form-label">Loan Type</label>
+                <input id="loantype" type="text" class="form-control" th:value="${loan.loanType}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="roi" class="form-label">Rate Of Interest</label>
+                <input id="roi" type="text" class="form-control" name="interestRate" th:value="${loan.interestRate}"
+                       placeholder="Enter Loan Type" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="appliedLoan" class="form-label">Loan Amount( Applied For )</label>
+                <input id="appliedLoan" type="text" th:value="${loan.appliedLoan}" class="form-control" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="loanAmount" class="form-label">Net Payable</label>
+                <input id="loanAmount" type="text" name="loanAmount" th:value="${loan.loanAmount}" class="form-control"
+                  readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="applicationType" class="form-label">Loan Condition</label>
+                <input id="applicationType" type="text" class="form-control" th:value="${loan.applicationType}"
+                       placeholder="Loan's Condition" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="loanReason" class="form-label">loan Reason</label>
+                <input id="loanReason" type="text" class="form-control" name="loanReason" th:value="${loan.loanReason}"
+                  placeholder="Enter Loan Reason" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+            <a th:href="@{/members/loan/loan_status}" type="button" class="btn btn-secondary w-24">Cancel</a>
+            <button class="btn btn-primary w-24 ml-2" onclick="nextStep()">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div id="step-2" class="px-5 mt-10" style="display: none">
+          <div class="font-medium text-center text-lg">
+            Loan & Guarantor Details
+          </div>
+          <div class="text-slate-500 text-center mt-2">
+            Validate each details.
+          </div>
+        </div>
+        <form id="updateForm" th:action="@{/members/loan/loan_status/details/updated}" method="POST"
+          class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+          <div id="step-2-form" class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400"
+            style="display: none">
+            <input type="hidden" id="Id" name="Id" class="form-control" th:value="${loan.id}">
+            <input type="hidden" id="userId" name="userId" class="form-control" th:value="${loan.userId}">
+            <div class="grid grid-cols-12 mt-5">
+              <div class="col-span-12">
+                <div class="flex items-center mb-2">
+                  <h3 class="text-base font-medium">Surety Data</h3>
+                  <a class="btn btn-primary shadow-md ml-auto" data-tw-toggle="modal" data-tw-target="#guarantorModal"
+                    href="javascript:;">Add Surety</a>
+                </div>
+                <table id="employeeTable" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>User ID</th>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="guarantor : ${gua}">
+                      <td th:text="${guarantor.g_userId}"></td>
+                      <td th:text="${guarantor.g_name}"></td>
+                      <td th:text="${guarantor.phone_num}"></td>
+                      <td>
+                        <button class="btn btn-danger btn-medium deleteUser deleteRow" th:attr="data-user-ids=${guarantor.g_userId}">Delete</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4" class="text-right">
+                        <button type="button" onclick="sendSmsToSurety()" class="btn btn-warning w-24 ml-2">Send SMS</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">
+                        <div id="otpStatus" class="text-sm hidden mt-1"></div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+
+                <script>
+                  async function sendSmsToSurety() {
+
+                    const uid = document.getElementById("userId").value.trim();
+                    const otpStatus = document.getElementById('otpStatus');
+
+                    try {
+                      const response = await fetch(`/tcos/members/loan/loan_status/sendSmsToGarantor?userId=${uid}`);
+                      const result = await response.json();
+
+                      if (result.msg) {
+                        otpStatus.className = "text-green-600 text-sm";
+                        otpStatus.textContent = "Confirmation sent to the registered surety.";
+                        // otpSection.classList.remove("hidden");
+                        otpStatus.classList.remove("hidden");
+                      } else {
+                        otpStatus.className = "text-red-600 text-sm";
+                        otpStatus.textContent = "Failed to send OTP.";
+                        // otpSection.classList.add("hidden");
+                        otpStatus.classList.remove("hidden");
+                      }
+
+                    } catch (err) {
+
+                      otpStatus.className = "text-red-600 text-sm";
+                      otpStatus.textContent = "Error sending OTP." + err;
+                      // otpSection.classList.add("hidden");
+                      otpStatus.classList.remove("hidden");
+
+                    }
+
+                  }
+                </script>
+
+              </div>
+            </div>
+            <div class="grid grid-cols-12 gap-4 gap-y-5 mt-2">
+              <div class="  grid grid-cols-12 col-span-12 gap-4 gap-y-5">
+                <div class="intro-y col-span-6">
+                  <label for="loanBalance" class="form-label">Loan Balance/Contra</label>
+                  <div class="input-group">
+                    <div class="input-group-text">Rs.</div>
+                    <input id="loanBalance" type="text" class="form-control border-danger" placeholder="First Loan"
+                      name="loanBalance" th:value="${loan.loanBalance}" readonly>
+                  </div>
+                </div>
+                <div class="intro-y col-span-6">
+                  <label for="applyDate_C" class="form-label">Last Loan Approve Date</label>
+                  <input id="applyDate_C" type="Date" class="form-control border-danger"
+                    th:value="${loan.loanApproveDate}" readonly>
+                </div>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="loanAmount1" class="form-label">Net Payable</label>
+                <input id="loanAmount1" type="text" name="loanAmount" th:value="${loan.loanAmount}" class="form-control" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="cd_balance" class="form-label">CD Total</label>
+                <div class="input-group">
+                  <div class="input-group-text">Rs.</div>
+                  <input id="cd_balance" type="text" class="form-control border-warning" th:value="${loan.cdDeduction}" readonly>
+                </div>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="share_balance" class="form-label">Share Total</label>
+                <div class="input-group">
+                  <div class="input-group-text">Rs.</div>
+                  <input id="share_balance" type="text" class="form-control border-warning"
+                    th:value="${loan.shareDeduction}" readonly>
+                </div>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="deposit_balance" class="form-label">CD & Share</label>
+                <div class="input-group">
+                  <div class="input-group-text">Rs.</div>
+                  <input id="deposit_balance" type="text" class="form-control border-success"
+                    th:value="${loan.Deductions}" readonly>
+                </div>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="checkedBy" class="form-label">Prepared By</label>
+                <input id="checkedBy" type="text" class="form-control border-danger" name="checkedBy"
+                  placeholder="Checker Name" th:value="${fullName}" readonly>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="current_status" class="form-label">Select Loan Status<span class="ml-1 text-red-500 text-sm">*</span></label>
+                <select id="current_status" name="currentStatus" class="form-select" onchange="updateCurrentStatus()">
+                  <option value="PENDING">STATUS</option>
+                  <option value="PENDING">PENDING</option>
+                  <option value="CHECKED">PREPARED</option>
+                  <option value="REJECTED">REJECTED</option>
+                </select>
+              </div>
+              <div class="intro-y col-span-12 sm:col-span-6">
+                <label for="loanStatus" class="form-label">Loan Status</label>
+                <input id="loanStatus" type="text" name="loanStatus" class="form-control border-danger"
+                  th:value="${loan.loanStatus}" readonly>
+              </div>
+            </div>
+            <script>
+              function updateCurrentStatus() {
+                const membershipSelect = document.getElementById("current_status");
+                const currentStatusInput = document.getElementById("loanStatus");
+
+                // Update the current status based on the selected option
+                currentStatusInput.value = membershipSelect.value;
+              }
+            </script>
+            <div
+              class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5"
+              role="alert">
+              <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+              <span class="text-slate-800 dark:text-slate-500">Check the details carefully ( "UPDATE" will update the
+                Loan Status and save the present details )</span>
+              <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close"> <i
+                  data-lucide="x" class="w-4 h-4"></i> </button>
+            </div>
+            <div class="intro-y col-span-12 mt-5">
+              <label class="flex items-center">
+                <input type="checkbox" id="guarantorCheckbox" class="form-check-input mr-2"
+                  onchange="toggleUpdateButton()" />
+                <span>Have you entered the guarantor for particular loan?<span class="ml-1 text-red-500 text-sm">*</span></span>
+              </label>
+            </div>
+            <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+              <div class="form-label xl:w-64 xl:!mr-10">
+                <div class="text-left">
+                  <div class="flex items-center">
+                    <div class="font-medium">Security Key</div>
+                    <span class="ml-1 text-red-500 text-sm">*</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full mt-3 xl:mt-0 flex-1">
+                <input id="key" type="password"/>
+              </div>
+              <button type="button" id="validateBtn" class="btn btn-warning mr-4 ml-2 w-24">Approve</button>
+              <button type="button" class="btn btn-secondary w-24" onclick="prevStep()">Previous</button>
+              <button type="button" id="updateButton" class="btn btn-primary w-24 ml-2" onclick="nextStep()" disabled>UPDATE</button>
+            </div>
+          </div>
+        </form>
+        <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+        <div id="guarantorModal" class="modal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body p-5 text-left">
+                <div class="text-2xl mt-5 mb-2">Surety's User ID</div>
+                <input id="empId" type="text" name="empId" class="form-control"
+                  placeholder="Enter the guarantor's Id" />
+                <div id="result-container" class="mt-4" style="display: none">
+                  <h4>User Details</h4>
+                  <table id="user-details-table" class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone No</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="text-right mt-3">
+                  <button type="reset" data-tw-dismiss="modal" class="btn btn-outline-secondary">Cancel
+                  </button>
+                  <button id="searchButton" type="button" class="btn btn-success">Search
+                  </button>
+                  <button id="addButton" type="button" class="btn btn-primary">Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Error message alert -->
+        <div id="error-message"
+          class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5"
+          role="alert" style="display: none">
+          <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+          <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+          <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/tcos/dist/js/app.js"></script>
+  <!-- Include jQuery and DataTables JS -->
+  <script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+  <!-- Include Select2 JS -->
+  <script src="/tcos/dist/js/select2.min.js"></script>
+  <script>
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+      let isSecurityValid = false;
+
+      function toggleUpdateButton() {
+        const checkbox = document.getElementById('guarantorCheckbox');
+        const updateButton = document.getElementById('updateButton');
+        updateButton.disabled = !(checkbox.checked && isSecurityValid);
+      }
+
+      // Checkbox event
+      $("#guarantorCheckbox").on("change", function () {
+        toggleUpdateButton();
+      });
+
+      // Validate security key
+      $("#validateBtn").on("click", function () {
+        const key = document.getElementById("key").value;
+        const errorBox = document.getElementById("errorBox");
+
+        errorBox.classList.add("hidden");
+        isSecurityValid = false;
+        toggleUpdateButton();
+
+        if (!key) {
+          errorBox.innerText = "Security Key is required.";
+          errorBox.classList.remove("hidden");
+          return;
+        }
+
+        $.ajax({
+          url: "/tcos/members/loan/loan_status/security/" + key,
+          type: 'GET',
+          success: function (response) {
+            if (response === true || response.toString().toLowerCase() === "true") {
+              isSecurityValid = true;
+              errorBox.classList.add("hidden");
+            } else {
+              errorBox.innerText = "Unauthorized Access";
+              errorBox.classList.remove("hidden");
+              isSecurityValid = false;
+            }
+            toggleUpdateButton();
+          },
+          error: function () {
+            errorBox.innerText = "Server error. Please try again.";
+            errorBox.classList.remove("hidden");
+            isSecurityValid = false;
+            toggleUpdateButton();
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    let currentStep = 1;
+
+    function goToStep(step) {
+      if (step === 1) {
+        currentStep = 1;
+      } else if (step === 2 && validateStep1()) {
+        currentStep = 2;
+      } else {
+        document.getElementById("error-message").style.display = "block";
+        return;
+      }
+      updateStep();
+    }
+
+    function nextStep() {
+      if (currentStep === 1 && validateStep1()) {
+        currentStep++;
+        updateStep();
+      } else if (currentStep === 2 && validateStep2()) {
+        document.getElementById("updateForm").submit();
+      } else {
+        document.getElementById("error-message").style.display = "block";
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStep();
+      }
+    }
+
+    function validateStep1() {
+      const Name = document.getElementById("Name").value;
+      const UserId = document.getElementById("userId").value;
+      const PhoneNum = document.getElementById("phoneNo").value; // Corrected variable name
+      const CompanyId = document.getElementById("companyName").value;
+      const BankName = document.getElementById("BankName").value;
+      const AccNum = document.getElementById("AccNum").value;
+      const Ifscode = document.getElementById("Ifscode").value;
+      const Branch = document.getElementById("Branch").value;
+      const loantype = document.getElementById("loantype").value;
+      const loanAmount = document.getElementById("loanAmount").value;
+      const applydate = document.getElementById("appliedLoan").value;
+      const roi = document.getElementById("roi").value;
+      return (Name && UserId && PhoneNum && CompanyId && BankName && AccNum && Ifscode && Branch && loantype && loanAmount && applydate && roi); // Ensure all fields are checked
+    }
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+      $("#searchButton").on("click", function () {
+        const UserId = document.getElementById("userId").value;
+        const ticketNo = document.getElementById("empId").value;
+
+        $.ajax({
+          url: "/tcos/members/loan/loan_status/details/" + UserId + "/fetchUser/" + ticketNo,
+          type: "GET",
+          success: function (response) {
+            if (response) {
+              const user = response || {};
+              const tableBody = $("#user-details-table tbody");
+
+              // Add a new row with user details
+              const rowHtml = `
+                                <tr>
+                                    <td>${user.userId || "N/A"}</td>
+                                    <td>${user.name || "N/A"}</td>
+                                    <td>${user.phoneNum || "N/A"}</td>
+                                    <td>
+                                      <button class="btn btn-danger btn-sm deleteRow">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+              tableBody.append(rowHtml);
+
+              // Show the table container
+              if (tableBody.children().length > 0) {
+                $("#result-container").show();
+              }
+
+              // Clear the input field
+              $("#empId").val("");
+            } else {
+              alert("No user details found for the given ticket number.");
+            }
+          },
+          error: function () {
+            alert("Error fetching ticket details. Please try again.");
+          },
+        });
+      });
+      $(document).on("click", ".deleteRow", function () {
+        $(this).closest("tr").remove();
+
+        // Hide the table container if there are no more rows
+        if ($("#user-details-table tbody").children().length === 0) {
+          $("#result-container").hide();
+        }
+      });
+    });
+
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+      // Add User Functionality
+      $("#addButton").on("click", function () {
+        const Id = document.getElementById("Id").value;
+        const userId = document.getElementById("userId").value;
+        const selectedRows = $("#user-details-table tbody tr"); // Get last added user row
+
+        selectedRows.each(function () {
+          const userRow = $(this);
+          const userIds = userRow.find("td:eq(0)").text().trim(); // Get User ID
+          const userName = userRow.find("td:eq(1)").text().trim(); // Get Name
+          const userPhone = userRow.find("td:eq(2)").text().trim(); // Get Phone Number
+
+          const newRowHtml = `
+                              <tr>
+                                  <td>${userIds}</td>
+                                  <td>${userName}</td>
+                                  <td>${userPhone}</td>
+                                  <td>
+                                      <button class="btn btn-danger btn-medium deleteUser deleteRow" data-user-ids="${userIds}">Delete</button>
+                                  </td>
+                              </tr>`;
+
+          // Append the new row to the employeeTable
+          $("#employeeTable tbody").append(newRowHtml);
+
+          // AJAX Call to Add User
+          $.ajax({
+            url: `/tcos/members/loan/loan_status/details/${Id}/${userId}/addUser/${userIds}`,
+            type: "GET",
+            success: function (response) {
+              $("#result-container").hide();
+              $("#user-details-table tbody").empty();
+            },
+            error: function () {
+              alert("Error adding guarantor. Please try again.");
+            }
+          });
+        });
+
+        alert("Guarantor added successfully.");
+        $("#user-details-table tbody").empty();
+        $("#result-container").hide();
+      });
+
+      // Confirm Delete & AJAX Call
+      $(document).on("click", ".deleteUser", function () {
+        const Id = document.getElementById("Id").value;
+        const userId = document.getElementById("userId").value;
+        const userIds = $(this).data("user-ids");
+
+        $.ajax({
+          url: `/tcos/members/loan/loan_status/details/${Id}/${userId}/deleteUser/${userIds}`,
+          type: "GET",
+          success: function (response) {
+            alert("User deleted successfully!");
+          },
+          error: function () {
+            alert("Error deleting the user. Please try again.");
+          }
+        });
+      });
+    });
+
+    function validateStep2() {
+      const CheckedBy = document.getElementById("checkedBy").value;
+      const CurrentStatus = document.getElementById("loanStatus").value;
+      return (CheckedBy && CurrentStatus);
+    }
+
+    function updateStep() {
+      // Hide all steps
+      document.getElementById("step-1").style.display = "none";
+      document.getElementById("step-1-form").style.display = "none";
+      document.getElementById("step-2").style.display = "none";
+      document.getElementById("step-2-form").style.display = "none";
+      document.getElementById("error-message").style.display = "none"; // Hide error message when navigating
+
+      // Update button states
+      document
+        .getElementById("step-1-btn")
+        .classList.toggle("btn-primary", currentStep === 1);
+      document
+        .getElementById("step-1-btn")
+        .classList.toggle("bg-slate-100", currentStep !== 1);
+      document.getElementById("step-2-btn").disabled = currentStep < 2;
+      document
+        .getElementById("step-2-btn")
+        .classList.toggle("btn-primary", currentStep === 2);
+      document
+        .getElementById("step-2-btn")
+        .classList.toggle("bg-slate-100", currentStep !== 2);
+
+      // Show current step
+      if (currentStep === 1) {
+        document.getElementById("step-1").style.display = "block";
+        document.getElementById("step-1-form").style.display = "block";
+      } else if (currentStep === 2) {
+        document.getElementById("step-2").style.display = "block";
+        document.getElementById("step-2-form").style.display = "block";
+      }
+    }
+  </script>
+  <!-- END: JS Assets-->
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/static/dist/images/logo.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Access Control</title>-->
+<!--    <link rel="stylesheet" href="/static/dist/css/app.css" />-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--</head>-->
+
+<!--<body class="py-5">-->
+<!--<div th:include="~{./fragments/mob}"></div>-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    <div th:replace="~{./fragments/nav}"></div>-->
+<!--    <div class="content">-->
+<!--        <div th:replace="~{./fragments/top}"></div>-->
+
+<!--        <div class="intro-y flex items-center justify-between w-full">-->
+<!--            <h2 class="intro-y text-lg font-medium mt-5">Access Control</h2>-->
+<!--        </div>-->
+
+<!--        <div class="container mt-4">-->
+<!--            &lt;!&ndash; Search Form &ndash;&gt;-->
+<!--            <form class="grid grid-cols-12 gap-4 mb-4 items-end">-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4">-->
+<!--                    <label for="adminKey" class="form-label">Enter Admin Key</label>-->
+<!--                    <input type="number" name="adminKey" id="adminKey" class="form-control">-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-2">-->
+<!--                    <input type="button" value="Validate" class="btn btn-primary w-full">-->
+<!--                </div>-->
+<!--            </form>-->
+
+<!--            &lt;!&ndash; Result Fields &ndash;&gt;-->
+<!--            <div class="grid grid-cols-12 gap-4">-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="name" class="w-1/4 text-gray-700 font-medium">Name</label>-->
+<!--                    <input type="text" id="name" name="name" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="phno" class="w-1/4 text-gray-700 font-medium">Phone</label>-->
+<!--                    <input type="text" id="phno" name="phno" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="dob" class="w-1/4 text-gray-700 font-medium">Date of birth</label>-->
+<!--                    <input type="text" id="dob" name="dob" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="dor" class="w-1/4 text-gray-700 font-medium">Date of retirement</label>-->
+<!--                    <input type="text" id="dor" name="dor" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="gender" class="w-1/4 text-gray-700 font-medium">Gender</label>-->
+<!--                    <input type="text" id="gender" name="gender" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="fathersName" class="w-1/4 text-gray-700 font-medium">Father's/Husband's Name</label>-->
+<!--                    <input type="text" id="fathersName" name="fathersName" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="aadharNum" class="w-1/4 text-gray-700 font-medium">Aadhar Number</label>-->
+<!--                    <input type="text" id="aadharNum" name="aadharNum" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="panNum" class="w-1/4 text-gray-700 font-medium">PAN Number</label>-->
+<!--                    <input type="text" id="panNum" name="panNum" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="permanentAddr" class="w-1/4 text-gray-700 font-medium">Permanent Address</label>-->
+<!--                    <input type="text" id="permanentAddr" name="permanentAddr" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="permanentCity" class="w-1/4 text-gray-700 font-medium">Permanent City</label>-->
+<!--                    <input type="text" id="permanentCity" name="permanentCity" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="permanentState" class="w-1/4 text-gray-700 font-medium">Permanent State</label>-->
+<!--                    <input type="text" id="permanentState" name="permanentState" class="form-control w-2/3"-->
+<!--                           disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="permanentPinCode" class="w-1/4 text-gray-700 font-medium">Permanent PinCode</label>-->
+<!--                    <input type="text" id="permanentPinCode" name="permanentPinCode" class="form-control w-2/3"-->
+<!--                           disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="currentAddr" class="w-1/4 text-gray-700 font-medium">Current Address</label>-->
+<!--                    <input type="text" id="currentAddr" name="currentAddr" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="currentCity" class="w-1/4 text-gray-700 font-medium">Current City</label>-->
+<!--                    <input type="text" id="currentCity" name="currentCity" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="currentState" class="w-1/4 text-gray-700 font-medium">Current State</label>-->
+<!--                    <input type="text" id="currentState" name="currentState" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="currentPinCode" class="w-1/4 text-gray-700 font-medium">Current PinCode</label>-->
+<!--                    <input type="text" id="currentPinCode" name="currentPinCode" class="form-control w-2/3"-->
+<!--                           disabled>-->
+<!--                </div>-->
+
+<!--                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">-->
+<!--                    <label for="approvedAt" class="w-1/4 text-gray-700 font-medium">Approved on</label>-->
+<!--                    <input type="text" id="approvedAt" name="approvedAt" class="form-control w-2/3" disabled>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Loans Table &ndash;&gt;-->
+<!--            <div class="intro-y flex items-center justify-between w-full mt-8">-->
+<!--                <h2 class="intro-y text-lg font-medium">Loan Details</h2>-->
+<!--            </div>-->
+<!--            <div class="overflow-x-auto mt-4">-->
+<!--                <table id="loansTable" class="table table-bordered">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th>Loan ID</th>-->
+<!--                        <th>Type</th>-->
+<!--                        <th>Amount</th>-->
+<!--                        <th>Balance after Loan</th>-->
+<!--                        <th>Approve Date</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    &lt;!&ndash; Data will be inserted here by JavaScript &ndash;&gt;-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; EMIs Table &ndash;&gt;-->
+<!--            <div class="intro-y flex items-center justify-between w-full mt-8">-->
+<!--                <h2 class="intro-y text-lg font-medium">EMI Payment History</h2>-->
+<!--            </div>-->
+<!--            <div class="overflow-x-auto mt-4">-->
+<!--                <table id="emisTable" class="table table-bordered">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th>Payment ID</th>-->
+<!--                        <th>Loan ID</th>-->
+<!--                        <th>Payment Date</th>-->
+<!--                        <th>Instalment Amount</th>-->
+<!--                        <th>Principal Remaining</th>-->
+<!--                        <th>Interest Rate</th>-->
+<!--                        <th>Total Paid</th>-->
+<!--                        <th>Payment Type</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    &lt;!&ndash; Data will be inserted here by JavaScript &ndash;&gt;-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div th:replace="~{./fragments/footer}"></div>-->
+
+<!--&lt;!&ndash; Scripts &ndash;&gt;-->
+<!--<script src="/static/dist/js/app.js"></script>-->
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>-->
+
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // Handle search button click-->
+<!--        $('input[type="button"][value="Search"]').click(function () {-->
+<!--            const userId = $('#userId').val().trim();-->
+
+<!--            if (!userId) {-->
+<!--                alert('Please enter a Ticket Number');-->
+<!--                return;-->
+<!--            }-->
+
+<!--            fetchUserData(userId);-->
+<!--        });-->
+
+<!--        // Function to fetch user data-->
+<!--        function fetchUserData(userId) {-->
+<!--            $.ajax({-->
+<!--                url: `/static/members/reports/${userId}`,-->
+<!--                method: 'GET',-->
+<!--                dataType: 'json',-->
+<!--                success: function (response) {-->
+<!--                    if (response.user) {-->
+<!--                        populateUserData(response.user);-->
+
+<!--                        // Populate loans if they exist-->
+<!--                        if (response.loans && response.loans.length > 0) {-->
+<!--                            populateLoansTable(response.loans);-->
+<!--                        } else {-->
+<!--                            $('#loansTable tbody').html('<tr><td colspan="5" class="text-center">No loan data found</td></tr>');-->
+<!--                        }-->
+
+<!--                        // Populate EMIs if they exist-->
+<!--                        if (response.emis && response.emis.length > 0) {-->
+<!--                            populateEmisTable(response.emis);-->
+<!--                        } else {-->
+<!--                            $('#emisTable tbody').html('<tr><td colspan="8" class="text-center">No EMI data found</td></tr>');-->
+<!--                        }-->
+<!--                    } else {-->
+<!--                        alert('No user data found');-->
+<!--                    }-->
+<!--                },-->
+<!--                error: function (xhr, status, error) {-->
+<!--                    console.error('Error fetching user data:', error);-->
+<!--                    alert('Error fetching user data. Please try again.');-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Function to populate loans table-->
+<!--        function populateLoansTable(loans) {-->
+<!--            const tbody = $('#loansTable tbody');-->
+<!--            tbody.empty();-->
+
+<!--            loans.forEach(loan => {-->
+<!--                tbody.append(`-->
+<!--        <tr>-->
+<!--            <td>${loan.loanId || 'N/A'}</td>-->
+<!--            <td>${loan.loantype || 'N/A'}</td>-->
+<!--            <td>₹${loan.loanAmount?.toLocaleString('en-IN') || '0'}</td>-->
+<!--            <td>₹${loan.loanBalance?.toLocaleString('en-IN') || '0'}</td>-->
+<!--            <td>${loan.loanDate || 'N/A'}</td>-->
+<!--        </tr>-->
+<!--    `);-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Function to populate EMIs table-->
+<!--        function populateEmisTable(emis) {-->
+<!--            const tbody = $('#emisTable tbody');-->
+<!--            tbody.empty();-->
+
+<!--            // Sort EMIs by payment date (newest first)-->
+<!--            emis.sort((a, b) => new Date(b.paymentDate) - new Date(a.paymentDate));-->
+
+<!--            emis.forEach(emi => {-->
+<!--                tbody.append(`-->
+<!--        <tr>-->
+<!--            <td>${emi.paymentId || 'N/A'}</td>-->
+<!--            <td>${emi.loanId || 'N/A'}</td>-->
+<!--            <td>${emi.paymentDate || 'N/A'}</td>-->
+<!--            <td>₹${emi.emiAmount?.toLocaleString('en-IN') || '0'}</td>-->
+<!--            <td>₹${(emi.principalRemaing-emi.emiAmount)?.toLocaleString('en-IN') || '0'}</td>-->
+<!--            <td>${emi.intrestRate || '0'}%</td>-->
+<!--            <td>₹${emi.totalPaid?.toLocaleString('en-IN') || '0'}</td>-->
+<!--            <td>${emi.emiPaymentType || 'N/A'}</td>-->
+<!--        </tr>-->
+<!--    `);-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Function to populate form fields with user data-->
+<!--        function populateUserData(user) {-->
+<!--            // Basic Information-->
+<!--            $('#name').val(user.name || '');-->
+<!--            $('#phno').val(user.phoneNum || '');-->
+<!--            $('#dob').val(user.dob || '');-->
+<!--            $('#dor').val(user.dateOfRetirement || '');-->
+<!--            $('#gender').val(user.gender || '');-->
+<!--            $('#fathersName').val(user.fathersName || '');-->
+<!--            $('#aadharNum').val(user.aadharNumber || '');-->
+<!--            $('#panNum').val(user.panCard || '');-->
+<!--            $('#approvedAt').val(user.approvedAt || '');-->
+
+<!--            // Address Information-->
+<!--            $('#permanentAddr').val(user.permanentAddr || '');-->
+<!--            $('#permanentCity').val(user.permanentCity || '');-->
+<!--            $('#permanentState').val(user.permanentState || '');-->
+<!--            $('#permanentPinCode').val(user.permanentPinCode || '');-->
+
+<!--            $('#currentAddr').val(user.currentAddr || '');-->
+<!--            $('#currentCity').val(user.currentCity || '');-->
+<!--            $('#currentState').val(user.currentState || '');-->
+<!--            $('#currentPinCode').val(user.currentPinCode || '');-->
+<!--        }-->
+
+<!--        // Optional: Allow search on Enter key press-->
+<!--        $('#userId').keypress(function (e) {-->
+<!--            if (e.which === 13) { // Enter key-->
+<!--                $('input[type="button"][value="Search"]').click();-->
+<!--                e.preventDefault();-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+
+<!--</html>-->

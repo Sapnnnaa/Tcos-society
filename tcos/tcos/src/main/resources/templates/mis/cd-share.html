@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CD&Share</title>
+
+    <!-- BEGIN: CSS Assets -->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/datatables2.3.4.min.css">
+    <link rel="stylesheet" href="/tcos/dist/css/buttons.datatables.3.2.5.css">
+<style type="text/css">
+     .table-container {
+  /* Gives the container a fixed height and enables vertical scrolling */
+  max-height: 400px;
+  overflow-y: auto;
+  /* Required for horizontal scrolling if needed */
+  overflow-x: auto; 
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Helps borders stay with sticky cells */
+}
+
+thead th {
+  position: sticky;
+  top: 0; /* Sticks the header to the top of the scrolling container */
+  background-color: #f1f1f1; /* Add a background color so content doesn't show through */
+  z-index: 1; /* Ensures the header appears above the table body content */
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+     
+   </style>
+</head>
+
+<body class="overflow-x-auto py-5">
+
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex justify-between mt-6 items-start">
+            <div class="flex-1">
+                <h1 class="font-medium mr-auto text-2xl">CD & SHARE REPORT</h1>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <div class="mb-5 flex">
+                    <div>
+                        <label for="minDate">From:</label>
+                        <input type="date" id="minDate" class="border p-2 rounded">
+                        <label for="maxDate" class="ml-2">To:</label>
+                        <input type="date" id="maxDate" class="border p-2 rounded">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                      <div class="table-container">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Member Name</th>
+                                <th class="whitespace-nowrap">Ticket no.</th>
+                                <th class="whitespace-nowrap">Company Name</th>
+                                <th class="whitespace-nowrap">CD Deduction</th>
+                                <th class="whitespace-nowrap">CD Deduction Total</th>
+                                <th class="whitespace-nowrap">Share Deduction</th>
+                                <th class="whitespace-nowrap">Share Deduction Total</th>
+                                <th class="whitespace-nowrap">Total Deduction</th>
+                                <th class="whitespace-nowrap">CD Interest</th>
+                                <th class="whitespace-nowrap">CD Interest Total</th>
+                                <th class="whitespace-nowrap">Payment Date</th>
+<!--                                <th class="whitespace-nowrap">Balance/Contra</th>-->
+<!--                                <th class="whitespace-nowrap">Transaction Date</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cd : ${cdShare}">
+                                <td th:text="${cd.memberName}"></td>
+                                <td th:text="${cd.ticketNo}"></td>
+                                <td th:text="${cd.companyName}"></td>
+                                <td th:text="${cd.cdDeduction}"></td>
+                                <td th:text="${cd.cdDeductionTotal}"></td>
+                                <td th:text="${cd.shareDeduction}"></td>
+                                <td th:text="${cd.shareDeductionTotal}"></td>
+                                <td th:text="${cd.totalDeduction}"></td>
+                                <td th:text="${cd.cdInterest}"></td>
+                                <td th:text="${cd.cdInterestTotal}"></td>
+                                <td th:text="${cd.paymentDate}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- BEGIN: JS Assets -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.1.js"></script>
+<script src="/tcos/dist/js/datatables.2.3.4.js"></script>
+<script src="/tcos/dist/js/datatables.button.3.2.5.js"></script>
+<script src="/tcos/dist/js/buttons.datatables.3.2.5.js"></script>
+<script src="/tcos/dist/js/jszip.js"></script>
+<script src="/tcos/dist/js/html5.buttons.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var table = new DataTable('#table', {
+            ordering: false,
+            paging: true,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100],
+            layout: {
+                topStart: {
+                    buttons:[
+                        'pageLength',
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Export to Excel'
+                        }
+                    ]
+                }
+            },
+
+            columnDefs: [
+                {
+                    targets: 10, // Correct date column index
+                    render: function (data) {
+                        if (!data) return '';
+                        var date = new Date(data);
+                        return date.toLocaleDateString('en-GB'); // dd/MM/yyyy
+                    }
+                }
+            ]
+        });
+
+        // SEARCH — apply to ALL columns
+        $('#table_filter input').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+
+        // DATE RANGE FILTER
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+
+            var min = $('#minDate').val();
+            var max = $('#maxDate').val();
+            var minDate = min ? new Date(min) : null;
+            var maxDate = max ? new Date(max) : null;
+
+            // Correct column index for Payment Date
+            var rowDateStr = data[10];
+            var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+
+            if (!rowDate) return false;
+            if (minDate && rowDate < minDate) return false;
+            if (maxDate && rowDate > maxDate) return false;
+
+            return true;
+        });
+
+        $('#minDate, #maxDate').on('change', function () {
+            table.draw();
+        });
+    });
+</script>
+
+</body>
+</html></html>

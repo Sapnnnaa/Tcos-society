@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Advice</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>
+    <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+<body class="py-5">
+<!-- BEGIN: Mobile Menu -->
+<div th:insert="~{./fragments/mob}"></div>
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y box p-5 mt-5">
+            <form id="updateForm" th:action="@{/members/advice/createAdvice/details/update}" method="post" class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+                <div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">Advice Update</div>
+                <div class="grid grid-cols-12 gap-4 mt-5 gap-y-5">
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="bondId" class="form-label">Bond ID</label>
+                        <input id="bondId" type="text" name="bondId" class="form-control" th:value="${mv.bondId}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="userId" class="form-label">Ticket Number</label>
+                        <input id="userId" type="text" class="form-control" name="userId" th:field="${mv.userId}" readonly/>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input id="name" type="text" name="Name" class="form-control" th:value="${mv.Name}" readonly>
+                    </div>
+                    <div class="intro-y col-span-6">
+                        <label for="phone_no" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <div class="input-group-text">+91</div>
+                            <input id="phone_no" type="text" name="phonenum" class="form-control" th:value="${mv.phonenum}" readonly>
+                        </div>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="bondType" class="form-label">Bond Type</label>
+                        <input id="bondType" type="text" name="bondType" class="form-control" th:value="${mv.bondType}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="loanAmount" class="form-label">Loan Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="loanAmount" type="text" name="loanAmount" class="form-control" th:value="${mv.loanAmount}" readonly>
+                        </div>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="bank" class="form-label">Bank</label>
+                        <input id="bank" type="text" name="bname" class="form-control" th:value="${mv.bname}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="branch" class="form-label">Branch</label>
+                        <input id="branch" type="text" name="branch" class="form-control" th:value="${mv.branch}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="ifscode" class="form-label">IFSC Code</label>
+                        <input id="ifscode" type="text" name="ifscode" class="form-control" th:value="${mv.ifscode}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="accountNum" class="form-label">Account Number</label>
+                        <input id="accountNum" type="text" name="accountNum" class="form-control" th:value="${mv.accountNum}" readonly>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="payableAt" class="form-label">Payable At</label>
+                        <input id="payableAt" type="text" name="payableAt" class="form-control" th:value="${mv.payableAt}" readonly/>
+                    </div>
+                    <div class="intro-y col-span-12 sm:col-span-6">
+                        <label for="checkedBy" class="form-label">Prepared By</label>
+                        <input id="checkedBy" type="text" name="checkedBy" class="form-control" th:value="${fullName}" readonly/>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <div class="form-inline items-start flex-col xl:flex-row mt-5 pt-5 first:mt-0 first:pt-0">
+                        <div class="form-label xl:w-64 xl:!mr-10">
+                            <div class="text-left">
+                                <div class="flex items-center">
+                                    <div class="font-medium">Payment Mode</div>
+                                    <span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <div class="leading-relaxed text-slate-500 text-xs mt-3"> Based on the type of bank.</br> Please select the option accordingly.</div>
+                            </div>
+                        </div>
+                        <div class="w-full mt-3 xl:mt-0 flex-1">
+                            <div class="sm:grid grid-cols-4 gap-2">
+                                <select id="membershipStatus" name="paymenttype" class="form-select" th:value="${mv.paymenttype}">
+                                    <option value="">-- Bond Type --</option>
+                                    <option value="ADVICE">ADVICE</option>
+                                    <option value="NEFT">NEFT</option>
+                                </select>
+                                <select id="bankSelect" name="bankName" class="form-select">
+                                    <option value="">-- Select Bank --</option>
+                                    <option th:each="bank : ${banks}"
+                                            th:value="${bank.accountNumber + '|' + bank.bankName}"  th:text="${bank.bankName}">
+                                    </option>
+                                </select>
+                                <input type="hidden" id="bankNameInput" name="paymentBank">
+                                <input id="accountNumber" type="text" name="accountNumbers" class="form-control" placeholder="Account Number" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let bankSelect = document.getElementById("bankSelect");
+                            let accountNumberInput = document.getElementById("accountNumber");
+                            let bankNameInput = document.getElementById("bankNameInput");
+
+                            // Listen for changes in the select dropdown
+                            bankSelect.addEventListener("change", function () {
+                                let selectedValue = bankSelect.value.split("|"); // Split value into account number and bank name
+                                accountNumberInput.value = selectedValue[0]; // Set account number
+                                bankNameInput.value = selectedValue[1]; // Store bank name in hidden input
+                            });
+                        });
+                    </script>
+                    <input type="hidden" id="Id" name="Id" class="form-control" th:value="${mv.id}">
+                    <div class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert">
+                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                        <span class="text-slate-800 dark:text-slate-500">Make sure you have all the documents required for this process before approving the application.</span>
+                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+                    </div>
+                    <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                        <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                    <div class="form-label xl:w-64 xl:!mr-10">
+                        <div class="text-left">
+                            <div class="flex items-center">
+                                <div class="font-medium">Security Key</div>
+                                <span class="ml-1 text-red-500 text-sm">*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-3 xl:mt-0 flex-1">
+                        <input id="key" type="password"/>
+                    </div>
+                    <button type="button" id="validateBtn" class="btn py-3 btn-warning w-full md:w-52">Approve</button>
+                    <a th:href ="@{/members/advice/createAdvice}" type="button" class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">Cancel</a>
+                    <button id="registerBtn" type="button" class="btn py-3 btn-primary w-full md:w-52" onclick="nextStep()" disabled>Save</button>
+                </div>
+                <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+            </form>
+            <div th:if="${successMessage}" class="alert alert-success mt-3">
+                <span th:text="${successMessage}">User saved successfully!</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<script>
+    function nextStep() {
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = true;
+    if(validateStep1()){ document.getElementById("updateForm").submit(); }
+    else{ document.getElementById("error-message").style.display = "block";
+     btn.disabled = false;}
+    }
+    function validateStep1() {
+        const CheckedBy = document.getElementById("checkedBy").value;
+        const bankNameInput = document.getElementById("bankNameInput").value;
+        const membershipStatus = document.getElementById("membershipStatus").value;
+        const accountNumber = document.getElementById("accountNumber").value;
+        return (CheckedBy && bankNameInput && membershipStatus && accountNumber);
+    }
+</script>
+<script>
+    jQuery(document).ready(function($){
+        $("#validateBtn").on("click", function() {
+            const key = document.getElementById("key").value;
+            const errorBox = document.getElementById("errorBox");
+            const registerBtn = document.getElementById("registerBtn");
+
+            errorBox.classList.add("hidden");
+            registerBtn.disabled = true;
+
+            if (!key) {
+                errorBox.innerText = "Security Key is required.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            $.ajax({
+                url: "/tcos/members/advice/createAdvice/security/" + key,
+                type: 'GET',
+                success: function (response) {
+                    if (response === true) {
+                        registerBtn.disabled = false;
+                        errorBox.classList.add("hidden");
+                    } else {
+                        errorBox.innerText = "Unauthorized Access";
+                        errorBox.classList.remove("hidden");
+                        registerBtn.disabled = true;
+                    }
+                },
+                error: function () {
+                    errorBox.innerText = "Server error. Please try again.";
+                    errorBox.classList.remove("hidden");
+                    registerBtn.disabled = true;
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

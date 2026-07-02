@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"> </meta>
+    <title>Funds Transfer Statement</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Landscape orientation */
+            margin: 1cm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            font-size: 11px; /* slightly smaller font */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th,
+        td {
+            padding: 6px; /* reduced padding */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            word-wrap: break-word;
+            font-size: 11px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Right-align numeric columns */
+        td:nth-child(7),
+        th:nth-child(7),   /* Account No. */
+        td:nth-child(10),
+        th:nth-child(10),  /* Cheque Number */
+        td:nth-child(12),
+        th:nth-child(12) { /* Amount */
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* Optional: shrink some wide columns */
+        td:nth-child(2),
+        th:nth-child(2) {
+            width: 7%;
+        }
+
+        td:nth-child(3),
+        th:nth-child(3) {
+            width: 12%;
+        }
+
+        td:nth-child(5),
+        th:nth-child(5),
+        td:nth-child(6),
+        th:nth-child(6) {
+            width: 10%;
+        }
+
+        td:nth-child(7),
+        th:nth-child(7) {
+            width: 12%;
+        }
+
+        td:nth-child(11),
+        th:nth-child(11) {
+            width: 10%;
+        }
+
+        td:nth-child(12),
+        th:nth-child(12) {
+            width: 10%;
+        }
+    </style>
+</head>
+
+<body>
+<h1>SANCTIONED CHEQUES</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Sl. No.</th>
+        <th>Voucher ID</th>
+        <th>Members Name</th>
+        <th>T.NO.</th>
+        <th>Bank Name</th>
+        <th>Branch Name</th>
+        <th>Account No.</th>
+        <th>IFSC Code</th>
+        <th>Payable At</th>
+        <th>Cheque Number</th>
+        <th>Payment Bank</th>
+        <th>Amount</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mv, iterStat : ${memberVoucherDTO}">
+        <td th:text="${iterStat.count}">SL</td>
+        <td th:text="${mv.vId}">Voucher ID</td>
+        <td th:text="${mv.name}">Name</td>
+        <td th:text="${mv.userId}">Ticket Number</td>
+        <td th:text="${mv.bankName}">Bank Name</td>
+        <td th:text="${mv.branchName}">Branch Name</td>
+        <td th:text="${mv.accountNum}">Account Number</td>
+        <td th:text="${mv.ifscCode}">IFSC Code</td>
+        <td th:text="${mv.payableAt}">Payable At</td>
+        <td th:text="${mv.chequeNo}">Cheque No</td>
+        <td th:text="${mv.paymentBank}">Payment Bank</td>
+        <td th:text="${mv.amount}">Amount</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="10"></td>
+        <td style="text-align: right"><b>TOTAL</b></td>
+        <td th:text="${totalAmount}" style="font-weight: bold; text-align: right;">0</td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Prepared By</td>
+        <td></td>
+        <td></td>
+        <td>Checked By</td>
+        <td></td>
+        <td></td>
+        <td>Passed By</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td th:text="${prepared}"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

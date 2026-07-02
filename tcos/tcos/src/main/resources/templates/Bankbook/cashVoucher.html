@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cashier</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="overflow-x-auto py-5">
+<!-- BEGIN: Mobile Menu -->
+
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y flex justify-between mt-6 items-start">
+            <div class="flex-1">
+                <h1 class="font-medium mr-auto text-2xl">
+                    VOUCHER Sanction
+                </h1>
+            </div>
+            <div class="flex space-x-8 mr-12"> <!-- Added horizontal gap -->
+                <a id="save_button_1" th:href = @{/members/cashier/voc} class="btn btn-primary shadow-md w-40">
+                    Active Voucher
+                </a>
+                <a id="save_button_2" class="btn btn-primary ml-3 shadow-md w-40">
+                    Cancelled Voucher
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <div class="mb-5">
+                        <label for="minDate">From:</label>
+                        <input type="date" id="minDate" class="border p-2 rounded">
+
+                        <label for="maxDate" class="ml-2">To:</label>
+                        <input type="date" id="maxDate" class="border p-2 rounded">
+                    </div>
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">VOC Number</th>
+                                <th class="whitespace-nowrap">VOC UID</th>
+                                <th class="whitespace-nowrap">Category</th>
+                                <th class="whitespace-nowrap">Ticket Number</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">VOC ID</th>
+                                <th class="whitespace-nowrap">Amount</th>
+                                <th class="whitespace-nowrap">Payment Type</th>
+                                <th class="whitespace-nowrap">Payment Bank</th>
+                                <th class="whitespace-nowrap">Prepared Date</th>
+                                <th class="whitespace-nowrap">VOC Status</th>
+                                <th class="whitespace-nowrap">Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="mv : ${voc}">
+                                <td th:text="${mv.uuid}">Bond Number</td>
+                                <td th:text="${mv.gid}">Bond UID</td>
+                                <td th:text="${mv.loanType}">Category</td>
+                                <td th:text="${mv.userId}">Ticket Number</td>
+                                <td th:text="${mv.name}">Name</td>
+                                <td th:text="${mv.uid}">BOND ID</td>
+                                <td th:text="${mv.amount}">Amount</td>
+                                <td th:text="${mv.paymenttype}">Payment Type</td>
+                                <td th:text="${mv.paymentBank}">Payment Bank</td>
+                                <td th:text="${mv.updatedDate}">Prepared Date</td>
+                                <td th:text="${mv.cashStatus}">Bond Status</td>
+                                <td class="flex-1">
+                                    <!-- Show active Update button only when cashStatus == 0 -->
+                                    <button class="btn btn-primary shadow-md"
+                                            th:if="${mv.cashStatus.name() == 'PENDING'}"
+                                            type="button"
+                                            data-tw-toggle="modal"
+                                            data-tw-target="#header-footer-modal-preview-view"
+                                            th:data-id="${mv.id}">
+                                        Update
+                                    </button>
+                                    <!-- Show disabled Update button when cashStatus is not 0 -->
+                                    <button class="btn btn-secondary shadow-md"
+                                            th:unless="${mv.cashStatus.name() == 'PENDING'}"
+                                            disabled
+                                            title="Update not allowed for this record">
+                                        Update
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Content -->
+
+    <!-- BEGIN: Super Large Modal Content -->
+    <div id="header-footer-modal-preview-view" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h3 class="text-white font-medium text-2xl px-4 py-2">
+                        Update Voucher
+                    </h3>
+                    <button type="button" class="btn-close" data-tw-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-content-placeholder">
+                    <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+                        <!-- Label Section -->
+                        <div class="w-full xl:w-1/3">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Voucher Sanction
+                                <span class="ml-1 text-red-500 text-sm">*</span>
+                            </label>
+                            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                Make sure you have.<br>
+                                the supporting document.
+                            </p>
+                        </div>
+                        <input type="hidden" id="aId" name="AdviceId" class="form-control">
+                        <!-- Select Dropdown -->
+                        <div class="w-full xl:flex-1">
+                            <select id="cashApprove" name="cashApprove" class="form-select w-full">
+                                <option value="">-----------  Select   -----------</option>
+                                <option value="1">APPROVED</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="submitBondUpdate" class="btn btn-primary mr-4">Submit</button>
+                    <button class="btn btn-warning" data-tw-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>    <!-- END: Content -->
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<!-- Include jQuery and DataTables JS -->
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $('#save_button_2').on('click', function () {
+        $.ajax({
+            url: '/tcos/members/cashier/voc/cancelled',
+            type: 'GET',
+            success: function (data) {
+                const tbody = $('#table tbody');
+                tbody.empty(); // Clear existing rows
+
+                data.forEach(function (mv) {
+                    const formattedDate = new Date(mv.updatedDate).toLocaleDateString('en-GB'); // dd-MM-yyyy format
+
+                    const row = `
+                        <tr>
+                            <td>${mv.uuid}</td>
+                            <td>${mv.gid}</td>
+                            <td>${mv.loanType}</td>
+                            <td>${mv.userId}</td>
+                            <td>${mv.name}</td>
+                            <td>${mv.uid}</td>
+                            <td>${mv.amount}</td>
+                            <td>${mv.paymenttype}</td>
+                            <td>${mv.paymentBank}</td>
+                            <td>${formattedDate}</td>
+                            <td>${mv.cashStatus}</td>
+                            <td class="flex-1">
+                                <button class="btn btn-primary shadow-md" disabled>Update</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.append(row);
+                });
+            },
+            error: function () {
+                alert('Failed to fetch cancelled bond data.');
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add event listener for buttons with the update functionality
+        const updateButtons = document.querySelectorAll('button[data-tw-toggle="modal"]');
+
+        updateButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Get the bond ID from the data-id attribute
+                const bondId = this.getAttribute('data-id');
+
+                // Set the value of the hidden input in the modal
+                document.getElementById('aId').value = bondId;
+
+                // Optionally, you can fetch additional bond data to display in the modal if needed
+                console.log('Bond ID: ', bondId); // For debugging
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('header-footer-modal-preview-view');
+        const submitButton = document.getElementById('submitBondUpdate');
+        const cashApprove = document.getElementById('cashApprove');
+        const hiddenIdField = document.getElementById('aId');
+
+        // Capture data-id when modal is shown
+        modal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const recordId = button.getAttribute('data-id');
+            console.log("Opening modal for record ID:", recordId);
+            hiddenIdField.value = recordId;
+        });
+
+        // On submit button click
+         submitButton.addEventListener('click', function () {
+            const approvalValue = cashApprove.value;
+            const recordId = hiddenIdField.value;
+
+            if (!approvalValue) {
+                alert("Please select an approval status before submitting.");
+                return;
+            }
+
+            if (!recordId) {
+                alert("Record ID is missing.");
+                return;
+            }
+
+            // AJAX GET request using jQuery
+            $.ajax({
+                url: `/tcos/members/cashier/voc/${recordId}`, // <-- Your Spring Boot endpoint
+                type: "GET",
+                success: function (response) {
+                    alert(response); // e.g. "Bond updated successfully"
+                    location.reload();
+                    // Close modal
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    modalInstance.hide();
+                },
+                error: function () {
+                    alert("Error updating Voucher. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            columnDefs: [
+                {
+                    targets: 9,
+                    render: function (data, type, row) {
+                        if (!data) return '';
+                        var date = new Date(data); // raw ISO yyyy-MM-dd
+                        return date.toLocaleDateString('en-GB'); // dd/MM/yyyy
+                    }
+                }
+            ]
+        });
+
+        // Filtering by date range
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = $('#minDate').val();
+                var max = $('#maxDate').val();
+                var minDate = min ? new Date(min) : null;
+                var maxDate = max ? new Date(max) : null;
+
+                // Get raw ISO value from row (still yyyy-MM-dd)
+                var rowData = table.row(dataIndex).data();
+                var rowDateStr = rowData[9];
+                var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+
+                if (!rowDate) return false;
+                if (minDate && rowDate < minDate) return false;
+                if (maxDate && rowDate > maxDate) return false;
+
+                return true;
+            }
+        );
+
+        $('#minDate, #maxDate').on('change', function () {
+            table.draw();
+        });
+    });
+</script>
+</body>
+
+</html>

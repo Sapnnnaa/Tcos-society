@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TELCO - Due Recoveries</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>
+    <!-- END: CSS Assets-->
+    <style>
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+
+        .badge-overdue {
+            color: white;
+            background-color: #dc2626;
+        }
+
+        .badge-due-soon {
+            color: white;
+            background-color: #f59e0b;
+        }
+
+        .badge-pending {
+            color: white;
+            background-color: #6b7280;
+        }
+
+        .recovery-table {
+            font-size: 14px;
+        }
+
+        .recovery-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #374151;
+            padding: 12px 8px;
+        }
+
+        .recovery-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .amount-cell {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .overdue-row {
+            background-color: #fef2f2;
+        }
+
+        .due-soon-row {
+            background-color: #fffbeb;
+        }
+    </style>
+</head>
+
+<body class="py-5 md:py-0">
+<div class="flex md:mt-0">
+
+    <div th:replace="~{./fragments/nav}"></div>
+
+    <!-- BEGIN: Content -->
+    <div class="content content--top-nav">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex items-center mt-8">
+            <h2 class="text-lg font-medium mr-auto">Due Recoveries</h2>
+            <div class="ml-auto flex">
+                <button class="btn btn-primary shadow-md mr-2"
+                        th:onclick="'window.open(\'' + @{/members/recoveryDue/download} + '\', \'_blank\')'">
+                    Export Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+            <div class="intro-y">
+                <div class="box p-5">
+                    <div class="text-base text-slate-500">Total Records</div>
+                    <div class="text-2xl font-medium text-slate-600" th:text="${#lists.size(dueRecovery)}">0</div>
+                </div>
+            </div>
+            <div class="intro-y">
+                <div class="box p-5">
+                    <div class="text-base text-slate-500">Total Positive Amount</div>
+                    <div class="text-2xl font-medium text-green-600">
+                        ₹<span th:text="${#aggregates.sum(dueRecovery.?[amount > 0].![amount])}">0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-y">
+                <div class="box p-5">
+                    <div class="text-base text-slate-500">Total Negative Amount</div>
+                    <div class="text-2xl font-medium text-red-600">
+                        ₹<span th:text="${#aggregates.sum(dueRecovery.?[amount < 0].![amount])}">0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-y">
+                <div class="box p-5">
+                    <div class="text-base text-slate-500">Unique Ticket Numbers</div>
+                    <div class="text-2xl font-medium text-orange-500"
+                         th:text="${#sets.size(#sets.toSet(dueRecovery.![userId]))}">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="intro-y box mt-8">
+            <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60">
+                <h2 class="font-medium text-base mr-auto">Due Recoveries List</h2>
+            </div>
+            <div class="p-5">
+                <div class="overflow-x-auto">
+                    <table id="recoveryTable" class="table recovery-table w-full">
+                        <thead>
+                        <tr>
+                            <!-- <th>ID</th> -->
+                            <th>Ticket Number</th>
+                            <th>Wage Type</th>
+                            <th>Amount (₹)</th>
+                            <th>For Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="recovery : ${dueRecovery}">
+                            <!-- <td th:text="${recovery.id}">1</td> -->
+                            <td th:text="${recovery.userId}">USER-001</td>
+                            <td th:text="${recovery.wageType}">WAGE</td>
+                            <td th:text="${recovery.amount}"
+                                th:class="${recovery.amount < 0} ? 'text-red-600' : 'text-green-600'">0.00</td>
+                            <td th:text="${recovery.forDate}">2024-01-01</td>
+
+                        </tr>
+
+                        <!-- Empty state when no data -->
+                        <tr th:if="${#lists.isEmpty(dueRecovery)}">
+                            <td colspan="6" class="text-center text-slate-500 py-8">
+                                <div class="text-lg font-medium">No due recovery records found</div>
+                                <div class="text-sm mt-2">All recoveries are up to date!</div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="text-slate-500 mt-4">
+                    Showing <span th:text="${#lists.size(dueRecovery) > 0 ? '1' : '0'}">0</span> to
+                    <span th:text="${#lists.size(dueRecovery)}">0</span> of
+                    <span th:text="${#lists.size(dueRecovery)}">0</span> entries
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- END: Content -->
+
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- JS -->
+<script src="/tcos/dist/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Process button click handler
+        $(document).on('click', '.btn-primary:contains("Process")', function () {
+            const recordId = $(this).data('id');
+            Swal.fire({
+                title: 'Process Recovery',
+                text: 'Are you sure you want to process this due recovery?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Process',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Processed!', 'Due recovery has been processed successfully.', 'success');
+                }
+            });
+        });
+
+        // View button click handler
+        $(document).on('click', '.btn-secondary:contains("View")', function () {
+            const recordId = $(this).data('id');
+            const row = $(this).closest('tr');
+            const userId = row.find('td:eq(1)').text();
+            const wageType = row.find('td:eq(2)').text();
+            const amount = row.find('td:eq(3)').text();
+            const forDate = row.find('td:eq(4)').text();
+
+            Swal.fire({
+                title: 'Recovery Details',
+                html: `<div class="text-left">
+                <p><strong>Record ID:</strong> ${recordId}</p>
+                <p><strong>User ID:</strong> ${userId}</p>
+                <p><strong>Wage Type:</strong> ${wageType}</p>
+                <p><strong>Amount:</strong> ₹${amount}</p>
+                <p><strong>For Date:</strong> ${forDate}</p>
+            </div>`,
+                icon: 'info',
+                confirmButtonText: 'Close',
+                width: '400px'
+            });
+        });
+
+
+    });
+</script>
+</body>
+
+</html>

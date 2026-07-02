@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Loan Update</title>
+    <meta name="_csrf"
+          th:content="${_csrf.token}" />
+
+    <meta name="_csrf_header"
+          th:content="${_csrf.headerName}" />
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include Select2 CSS -->
+    <!-- JS -->
+    <style>
+
+    </style>
+    <!-- END: CSS Assets-->
+</head>
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex items-center justify-between w-full">
+            <h2 class="intro-y text-lg font-medium mt-5 mb-10">Loan Update</h2>
+        </div>
+        <div th:if="${message}" class="alert alert-danger" role="alert">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span th:text="${message}"></span>
+        </div>
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div class="grid grid-cols-12 gap-6">
+
+            <div class="col-span-12 mb-6">
+
+                <label class="block mb-2">
+                    Ticket ID
+                </label>
+
+                <div class="flex items-end gap-3">
+
+                    <input type="text"
+                           id="ticketId"
+                           class="form-control w-80"
+                           placeholder="Enter Ticket ID">
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            onclick="searchLoan()">
+
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="my-5">
+
+        <div id="loanDetails" class="hidden">
+
+            <div class="grid grid-cols-2 gap-6 mb-5">
+
+                <div>
+
+                    <label>
+                        Personal Loan Balance
+                    </label>
+
+                    <input type="number"
+                           id="personalBalance"
+                           class="form-control">
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Personal Loan Approval Date
+                    </label>
+
+                    <input type="date"
+                           id="personalApproveDate"
+                           class="form-control">
+
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 mb-5">
+
+                <div>
+
+                    <label>
+                        Commodity Loan Balance
+                    </label>
+
+                    <input type="number"
+                           id="commodityBalance"
+                           class="form-control">
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Commodity Loan Approval Date
+                    </label>
+
+                    <input type="date"
+                           id="commodityApproveDate"
+                           class="form-control">
+
+                </div>
+
+            </div>
+
+            <button class="btn btn-success"
+                    onclick="updateLoan()">
+
+                Update
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- Scripts -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+
+
+<!-- Add this JavaScript section at the end of your existing scripts -->
+<script>
+
+function searchLoan(){
+
+    let ticketId =
+        document.getElementById("ticketId").value;
+
+    if(ticketId==""){
+
+        alert("Please enter Ticket ID");
+
+        return;
+    }
+
+    fetch("/tcos/members/loan/getLoan/" + ticketId)
+
+    .then(response => {
+
+        if(!response.ok){
+
+            throw new Error("User not found");
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        document.getElementById("loanDetails")
+                .classList.remove("hidden");
+
+        document.getElementById("personalBalance")
+                .value = data.personalBalance || 0;
+
+        document.getElementById("commodityBalance")
+                .value = data.commodityBalance || 0;
+
+        document.getElementById("personalApproveDate")
+        .value =
+        data.personalLoanApproveDate
+        ? data.personalLoanApproveDate.substring(0,10)
+        : "";
+
+        document.getElementById("commodityApproveDate")
+        .value =
+        data.commodityLoanApproveDate
+        ? data.commodityLoanApproveDate.substring(0,10)
+        : "";
+
+    })
+
+    .catch(error => {
+
+        document.getElementById("loanDetails")
+                .classList.add("hidden");
+
+        document.getElementById("personalBalance")
+                .value = "";
+
+        document.getElementById("commodityBalance")
+                .value = "";
+
+        alert("User not found");
+
+        console.log(error);
+
+    });
+
+}
+
+
+function updateLoan(){
+
+    let ticketId =
+        document.getElementById("ticketId").value;
+
+    let personalBalance =
+        document.getElementById("personalBalance").value;
+
+    let commodityBalance =
+        document.getElementById("commodityBalance").value;
+
+    let personalApproveDate =
+    document.getElementById("personalApproveDate").value;
+
+    let commodityApproveDate =
+    document.getElementById("commodityApproveDate").value;
+
+
+    const token =
+        document.querySelector(
+            "meta[name='_csrf']")
+            .getAttribute("content");
+
+    const header =
+        document.querySelector(
+            "meta[name='_csrf_header']")
+            .getAttribute("content");
+
+
+    fetch("/tcos/members/loan/updateLoan",{
+
+        method:"POST",
+
+        headers:{
+
+            "Content-Type":"application/json",
+
+            [header]: token
+        },
+
+        body:JSON.stringify({
+
+            userId:ticketId,
+
+            personalBalance:personalBalance,
+
+            commodityBalance:commodityBalance,
+
+            personalLoanApproveDate:personalApproveDate,
+
+            commodityLoanApproveDate:commodityApproveDate
+
+        })
+
+    })
+
+    .then(response=>response.text())
+
+    .then(message=>{
+
+        alert(message);
+
+    })
+
+    .catch(error=>{
+
+        alert("Update failed");
+
+        console.log(error);
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+
+</html>

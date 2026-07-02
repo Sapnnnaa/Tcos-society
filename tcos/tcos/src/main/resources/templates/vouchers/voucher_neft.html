@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    </meta>
+    <title>Funds Transfer Statement</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Change page orientation to landscape */
+            margin: 1cm; /* Adjust margins if needed */
+        }
+
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          font-size: 12px;
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+        }
+
+        th,
+        td {
+          padding: 10px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+          word-wrap: break-word;
+        }
+
+        th {
+          background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+<h1>Vouchers - "NEFT"</h1>
+
+The Asst. General Manager<br></br>
+<span th:text="${BankName}" style="text-align: right;"></span><br></br>
+Jamshedpur
+
+<p>Dear Sir,</p>
+
+<p>Please credit the respective Accounts of the following members with the amount noted against each and debit our
+    Current A/C No. <span th:text="${ACCOUNTNO}"></span> with your bank. The amount as shown below.</p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Sl. No.</th>
+        <th>Voucher ID</th>
+        <th>Members Name</th>
+        <th>T.NO.</th>
+        <th>Bank Name</th>
+        <th>Branch Name</th>
+        <th>Account No.</th>
+        <th>IFSC Code</th>
+        <th>Payable At</th>
+        <th style="text-align: right;">Amount</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mv, iterStat : ${memberVoucherDTO}">
+        <td th:text="${iterStat.count}">SL</td> <!-- Serial Number -->
+        <td th:text="${mv.vId}">Voucher ID</td>
+        <td th:text="${mv.name}">Name</td> <!-- Member's Name -->
+        <td th:text="${mv.userId}">Ticket Number</td> <!-- Ticket Number -->
+        <td th:text="${mv.bankName}">Bank Name</td> <!-- Bank Name -->
+        <td th:text="${mv.branchName}">Branch Name</td> <!-- Branch Name -->
+        <td th:text="${mv.accountNum}">Account Number</td> <!-- Account Number -->
+        <td th:text="${mv.ifscCode}">IFSC Code</td> <!-- IFSC Code -->
+        <td th:text="${mv.payableAt}">Payable At</td>
+        <td th:text="${mv.amount}" style="text-align: right;">Amount</td> <!-- Total Amount -->
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="9"></td>
+        <td style="text-align: right"><b>TOTAL</b></td>
+        <td th:text="${totalAmount}" style="text-align: right; font-weight: bold;">0</td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+    <tr><td></td>
+        <td>Prepared By</td>
+        <td></td>
+        <td>Checked By</td>
+        <td></td>
+        <td>Passed By</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

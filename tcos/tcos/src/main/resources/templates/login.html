@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<!-- BEGIN: Head -->
+
+<head>
+	<meta charset="utf-8">
+	<link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login - Society</title>
+	<link rel="stylesheet" href="/tcos/dist/css/app.css" />
+</head>
+
+<body class="login">
+	<div class="container">
+		<div class="block xl:grid grid-cols-2 gap-4">
+			<!-- BEGIN: Login Info -->
+			<div class="hidden xl:flex flex-col min-h-screen">
+				<a href="" class="-intro-x flex items-center pt-3">
+					<img alt="Midone - HTML Admin Template" class="w-12" src="/tcos/dist/images/logo2.svg">
+					<span class="text-white text-lg ml-3"> TCOS </span>
+				</a>
+				<div class="my-auto">
+					<div class="image-container">
+						<img alt="Midone - HTML Admin Template" height="760px" width="460px" class="intro-x mr-2 mt-2 img-90" src="/tcos/dist/images/mainscreen.png">
+					</div>
+					<div class="-intro-x text-white font-medium text-4xl leading-tight mt-2">
+						TELCO  CO-OPERATIVE
+						<br>
+						SOCIETY LTD.
+					</div>
+					<div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Be a part of it.
+					</div>
+				</div>
+			</div>
+			<div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
+				<div class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
+					<h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
+						SOCIETY EMPLOYEE LOGIN
+					</h2>
+					<div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
+						Co-operative Society</div>
+
+					<form th:action="@{/login}" method="post">
+						<div class="intro-x mt-8">
+							<input type="text" class="intro-x login__input form-control py-3 px-4 block" name="username"
+								placeholder="Member ID">
+							<div class="input-group">
+								<input type="Password" id="password"
+									class="intro-x login__input form-control py-3 px-4 mt-4 block" name="password"
+									placeholder="Password" th:field="*{password}" required>
+								<div class="input-group-text mt-4" style="cursor: pointer;"
+									onclick="togglePasswordVisibility()"><i id="toggleIcon"
+										data-lucide="shield-off"></i></div>
+							</div>
+						</div>
+
+						<div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
+							<div class="flex items-center mr-auto">
+								<input id="remember-me" type="checkbox" class="form-check-input border mr-2">
+								<label class="cursor-pointer select-none" for="remember-me">Remember me</label>
+							</div>
+							<div class="intro-x flex text-slate-600 dark:text-slate-500 text-xs sm:text-sm mt-4">
+								<a href="javascript:;"
+								   class="text-blue-600 hover:underline"
+								   data-tw-toggle="modal"
+								   data-tw-target="#forgot-password-modal">
+									Forgot Password?
+								</a>
+							</div>
+						</div>
+
+						<div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+							<button type="submit" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">Login</button>
+							<a href="https://tcos.sigmaworld.in/telco_co/userlogin" target="_blank" class="btn btn-success ml-4 py-3 px-4 w-full xl:w-64 xl:mr-3 align-top">Member's Application</a>
+						</div>
+					</form>
+					<div class="intro-x mt-6 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"> By
+						signin up, you agree to our <a class="text-primary dark:text-slate-200" href="">Terms and
+							Conditions</a> & <a class="text-primary dark:text-slate-200" href="">Privacy Policy</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="forgot-password-modal" class="modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<h2 class="font-medium text-white text-base mr-auto">Forgot Password</h2>
+				</div>
+
+				<div class="modal-body">
+					<form id="forgotpassword" th:action="@{/forgotpassword}" method="post">
+						<label class="form-label mb-2" for="employeeId">Enter your Employee ID</label>
+						<input id="employeeId" name="employeeId" type="text" required class="form-control" placeholder="Employee ID" />
+
+						<!-- Info message -->
+						<div class="alert alert-outline-warning show flex items-center bg-warning/20 mt-5" role="alert">
+							<i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i>
+							<span class="text-slate-800">A reset link will be sent to your registered email address.</span>
+						</div>
+
+						<!-- Error message -->
+						<div id="error-message" class="alert alert-outline-danger show flex items-center bg-danger/20 mt-5 hidden" role="alert">
+							<i data-lucide="alert-circle" class="w-6 h-6 mr-3"></i>
+							<span class="text-slate-800">Please enter a valid Employee ID.</span>
+							<button type="button" class="btn-close" onclick="hideErrorMessage()">
+								<i data-lucide="x" class="w-4 h-4"></i>
+							</button>
+						</div>
+
+						<div class="text-right mt-4">
+							<button type="button" class="btn btn-outline-secondary mr-2" data-tw-dismiss="modal">
+								Cancel
+							</button>
+							<button type="submit" onclick="return validateForgotPassword()" class="btn btn-primary">
+								Send Link
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function validateForgotPassword() {
+            const employeeId = document.getElementById("employeeId").value.trim();
+            if (employeeId === "") {
+                document.getElementById("error-message").classList.remove("hidden");
+                return false;
+            }
+            return true;
+        }
+
+        function hideErrorMessage() {
+            document.getElementById("error-message").classList.add("hidden");
+        }
+	</script>
+	<script>
+		function openForgotPassword() {
+            document.getElementById("forgotPasswordModal").classList.remove("hidden");
+        }
+        function closeForgotPassword() {
+            document.getElementById("forgotPasswordModal").classList.add("hidden");
+        }
+	</script>
+	<script>
+		function togglePasswordVisibility() {
+			const passwordInput = document.getElementById("password");
+			const toggleIcon = document.getElementById("toggleIcon");
+
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+				toggleIcon.setAttribute("data-lucide", "shield");
+			} else {
+				passwordInput.type = "password";
+				toggleIcon.setAttribute("data-lucide", "shield-off");
+			}
+
+			if (typeof lucide !== 'undefined' && lucide.createIcons) {
+				lucide.createIcons();
+			}
+		}
+	</script>
+	<script src="/tcos/dist/js/app.js"></script>
+</body>
+
+</html>

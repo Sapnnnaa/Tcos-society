@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Same head section as previous page -->
+    <title>Financial Details</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+</head>
+
+<body class="py-5">
+    <div th:insert="~{./fragments/mob}"></div>
+    <div class="flex mt-[4.7rem] md:mt-0">
+        <div th:replace="~{./fragments/nav}"></div>
+        <div class="content">
+            <div th:replace="~{./fragments/top}"></div>
+
+            <!-- Loans Section -->
+            <div class="intro-y flex items-center justify-between w-full mt-5">
+                <h2 class="intro-y text-lg font-medium">Loan History</h2>
+            </div>
+            <div class="container mt-4">
+                <!-- Loans Table -->
+                <table id="loansTable" class="table table-bordered mt-4">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th>Loan Type</th>
+                            <th>Amount</th>
+                            <th>Balance</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- EMI Section -->
+            <div class="intro-y flex items-center justify-between w-full mt-5">
+                <h2 class="intro-y text-lg font-medium">EMI Payments</h2>
+            </div>
+            <div class="container mt-4">
+                <!-- EMI Table -->
+                <table id="emisTable" class="table table-bordered mt-4">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th>Payment Date</th>
+                            <th>Amount</th>
+                            <th>Principal Remaining</th>
+                            <th>Receipt No.</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+        
+            if (!userId) {
+                alert('Invalid user ID');
+                window.history.back();
+                return;
+            }
+        
+            fetch(`/tcos/members/reports/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    populateTables(data);
+                    initializeDataTables();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to load data');
+                });
+        
+            function populateTables(data) {
+                // Populate loans table
+                const loansBody = document.querySelector('#loansTable tbody');
+                loansBody.innerHTML = data.loans.map(loan => `
+                    <tr>
+                        <td>${loan.loantype}</td>
+                        <td>₹${loan.loanAmount.toLocaleString('en-IN')}</td>
+                        <td>₹${loan.loanBalance.toLocaleString('en-IN')}</td>
+                        <td>${new Date(loan.loanDate).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+        
+                // Populate EMI table
+                const emisBody = document.querySelector('#emisTable tbody');
+                emisBody.innerHTML = data.emis.map(emi => `
+                    <tr>
+                        <td>${new Date(emi.paymentDate).toLocaleDateString()}</td>
+                        <td>₹${emi.emiAmount.toLocaleString('en-IN')}</td>
+                        <td>₹${emi.principalRemaing.toLocaleString('en-IN')}</td>
+                        <td>${emi.reciptNum || 'N/A'}</td>
+                    </tr>
+                `).join('');
+            }
+        
+            function initializeDataTables() {
+                $('#loansTable').DataTable({
+                    paging: true,
+                    pageLength: 10,
+                    order: [[3, 'desc']]
+                });
+        
+                $('#emisTable').DataTable({
+                    paging: true,
+                    pageLength: 10,
+                    order: [[0, 'desc']]
+                });
+            }
+        });
+        </script>
+
+</body>
+
+</html>

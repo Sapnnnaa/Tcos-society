@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8"></meta>
+  <title>Funds Transfer Statement</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      font-size: 12px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Statement for Transfer of Funds to Members Loan Account Through NEFT/RTGS</h1>
+
+<p>To<br></br>
+  The Asst. General Manager<br></br>
+  <br></br>
+  Jamshedpur</p>
+
+<p>Dear Sir,</p>
+
+<p>Please credit the respective S.B.Accounts of the following members with the amount noted against each and deduct the charges for NEFT/RTGS from our
+  Current A/C No :- <span class="">[[${accountNumbers}]]</span></p>
+
+<table>
+  <thead>
+  <tr>
+    <th>Sl. No.</th>
+    <th>Members Name</th>
+    <th>T.NO.</th>
+    <th>Bank Name</th>
+    <th>Branch Name</th>
+    <th>Account No.</th>
+    <th>Payable At</th>
+    <th>IFSC Code</th>
+    <th style="text-align: right;">Amount to be Credited</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="mv, iterStat : ${LoanVoucherDTO}">
+    <td th:text="${iterStat.index + 1}">SL</td>
+    <td th:text="${mv.Name}">Name</td>
+    <td th:text="${mv.userId}">Ticket Number</td>
+    <td th:text="${mv.bname}">Bank Name</td>
+    <td th:text="${mv.branch}">Branch Name</td>
+    <td th:text="${mv.accountNum}">Account Number</td>
+    <td th:text="${mv.payableAt}">Branch Name</td>
+    <td th:text="${mv.ifscode}">IFSC Code</td>
+    <td th:text="${mv.loanAmount}" style="text-align: right;">Amount</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>*
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>TOTAL</td>
+    <td th:text="${totalAmount}" style="text-align: right;">0</td>
+  </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+  <tr>
+    <td>Prepared By</td>
+    <td>Checked By</td>
+    <td>Passed By</td>
+  </tr>
+  <tr>
+    <td th:text="${Name}" style="text-align: right;"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
+

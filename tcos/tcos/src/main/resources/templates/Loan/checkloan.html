@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loan Approval</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css"/>
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+    <!-- END: CSS Assets-->
+</head>
+<body class="py-5">
+<!-- BEGIN: Mobile Menu -->
+<div th:insert="~{./fragments/mob}"></div>
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <h2 class="intro-y text-lg font-medium mt-10">LOAN PROCESS</h2>
+        <div class="grid grid-cols-12 gap-6 mt-5 p-5 bg-white shadow-lg rounded-2xl">
+            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+                <table class="table table-report -mt-2" id="table">
+                    <thead>
+                    <tr>
+                        <th class="whitespace-nowrap">Ticket Number</th>
+                        <th class="whitespace-nowrap">Member Name</th>
+                        <th class="whitespace-nowrap">Company Name</th>
+                        <th class="whitespace-nowrap">Loan Type</th>
+                        <th class="whitespace-nowrap">Loan Amount</th>
+                        <th class="whitespace-nowrap">Status</th>
+                        <th class="whitespace-nowrap">Apply Date</th>
+                        <th class="whitespace-nowrap">Updated At</th>
+                        <th class="whitespace-nowrap">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="loan : ${loans}">
+                        <td th:text="${loan.userId}"></td>
+                        <td th:text="${loan.Name}"></td>
+                        <td th:text="${loan.companyName}"></td>
+                        <td th:text="${loan.loanType.name()}"></td>
+                        <td th:text="${loan.loanAmount}"></td>
+                        <td th:text="${loan.loanStatus}"></td>
+                        <td th:text="${#dates.format(loan.createdAt, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${#dates.format(loan.updatedAt, 'dd-MM-yyyy')}"></td>
+                        <td>
+                            <a th:href="@{/members/loan/checkedLoan/details/{Id}(Id=${loan.id})}" class="btn btn-primary flex items-center"><i data-lucide="check-square" class="w-4 h-4 mr-1"></i>Update</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+</body>
+</html>

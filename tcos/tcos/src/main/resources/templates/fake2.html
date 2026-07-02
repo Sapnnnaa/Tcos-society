@@ -1,0 +1,455 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--&lt;!&ndash; BEGIN: Head &ndash;&gt;-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/static/dist/images/logo.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <meta name="description"-->
+<!--          content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">-->
+<!--    <meta name="keywords"-->
+<!--          content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">-->
+<!--    <meta name="author" content="LEFT4CODE">-->
+<!--    <title>Regular Table - Midone - Tailwind HTML Admin Template</title>-->
+<!--    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/static/dist/css/app.css" />-->
+<!--    <link rel="stylesheet"-->
+<!--          href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">-->
+<!--    <style>-->
+<!--    </style>-->
+<!--    &lt;!&ndash; END: CSS Assets&ndash;&gt;-->
+<!--</head>-->
+<!--&lt;!&ndash; END: Head &ndash;&gt;-->
+
+<!--<body class="overflow-x-auto py-5">-->
+<!--&lt;!&ndash; BEGIN: Mobile Menu &ndash;&gt;-->
+
+<!--&lt;!&ndash; END: Mobile Menu &ndash;&gt;-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    &lt;!&ndash; BEGIN: Side Menu &ndash;&gt;-->
+<!--    <div th:replace="fragments/nav"></div>-->
+<!--    &lt;!&ndash; END: Side Menu &ndash;&gt;-->
+<!--    &lt;!&ndash; BEGIN: Content &ndash;&gt;-->
+<!--    <div class="content">-->
+<!--        &lt;!&ndash; BEGIN: Top Bar &ndash;&gt;-->
+<!--        <div th:replace="fragments/top"></div>-->
+<!--        &lt;!&ndash; END: Top Bar &ndash;&gt;-->
+<!--        <div class="intro-y flex items-center mt-8">-->
+<!--            <h2 class=" font-medium mr-auto">-->
+<!--                Regular Table-->
+<!--            </h2>-->
+<!--        </div>-->
+<!--        <div class="grid grid-cols-12 gap-6 mt-5">-->
+<!--            <div class="intro-y col-span-12 lg:col-span-12">-->
+<!--                &lt;!&ndash; BEGIN: Responsive Table &ndash;&gt;-->
+<!--                <div class="overflow-x-auto box">-->
+<!--                    <div class="m-5">-->
+<!--                        <table class="table" id="table">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th class="whitespace-nowrap">#</th>-->
+<!--                                <th class="whitespace-nowrap">Name</th>-->
+<!--                                <th class="whitespace-nowrap">Username</th>-->
+<!--                                <th class="whitespace-nowrap">Email</th>-->
+<!--                                <th class="whitespace-nowrap">Address</th>-->
+<!--                                <th class="whitespace-nowrap">Address</th>-->
+<!--                                <th class="whitespace-nowrap">Address</th>-->
+<!--                                <th class="whitespace-nowrap">Action</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="member : ${members}">-->
+<!--                                <td th:text="${member.memberId}"></td>-->
+<!--                                <td th:text="${member.fullname}"></td>-->
+<!--                                <td th:text="${member.email}"></td>-->
+<!--                                <td th:text="${member.email}"></td>-->
+<!--                                <td th:text="${member.email}"></td>-->
+<!--                                <td th:text="${member.email}"></td>-->
+<!--                                <td th:text="${member.email}"></td>-->
+<!--                                <td>-->
+<!--                                    <button class="btn btn-sm btn-primary open-modal"-->
+<!--                                            data-tw-toggle="modal"-->
+<!--                                            data-tw-target="#superlarge-modal-size-preview"-->
+<!--                                            th:attr="data-mid=${member.memberId}">Edit</button>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; END: Responsive Table &ndash;&gt;-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; END: Content &ndash;&gt;-->
+
+<!--    &lt;!&ndash; BEGIN: Super Large Modal Content &ndash;&gt;-->
+<!--    <div id="superlarge-modal-size-preview"-->
+<!--         class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50"-->
+<!--         tabindex="-1"-->
+<!--         aria-hidden="true">-->
+<!--        <div-->
+<!--                class="modal-dialog modal-xl bg-white rounded-lg shadow-lg overflow-hidden">-->
+<!--            &lt;!&ndash; Modal Header-->
+<!--        <div class="modal-header flex justify-between items-center px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white">-->
+<!--            <h3 id="modal-title" class="text-2xl font-bold">-->
+<!--                Selected Member Details: <span id="modal-mid" class="text-yellow-300">MID-001</span>-->
+<!--            </h3>-->
+<!--        </div>  &ndash;&gt;-->
+
+<!--            &lt;!&ndash; Modal Body &ndash;&gt;-->
+<!--            <div class="modal-body px-8 py-6">-->
+<!--                &lt;!&ndash; Personal Details Section &ndash;&gt;-->
+<!--                <h4-->
+<!--                        class="text-xl font-semibold mb-2 text-gray-700 border-b pb-2">Personal-->
+<!--                    Details</h4>-->
+<!--                <div class="grid grid-cols-2 gap-2 mb-2">-->
+<!--                    <div class="p-2">-->
+<!--                        <div class="grid grid-cols-3">-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 ">Member ID:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base" id="memberId"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Employee ID:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="empid"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-base">Full Name:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="fullname"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Gender:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="gender"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base" >Date of Birth:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="dob"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Father's Name:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="father_name"></div>-->
+<!--                            <div></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="p-2">-->
+<!--                        <div class="grid grid-cols-3">-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 ">Aadhar Number:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base" id="aadhar_no"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">PAN Card:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="pan_card"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-base">Email:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="email"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Mobile No:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="mobile"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">WhatsApp:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="whatsapp_no"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Company:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="company_name"></div>-->
+<!--                            <div></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Address Details Section &ndash;&gt;-->
+<!--                <h4 class="text-xl font-semibold mb-2 text-gray-700 border-b pb-2">Address-->
+<!--                    Details</h4>-->
+<!--                <div class="grid grid-cols-2 gap-6 mb-2">-->
+<!--                    <div class="p-2">-->
+<!--                        <div class="grid grid-cols-3">-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 ">Permanent Address:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base" id="p_addr"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Thana:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="p_thana"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-base">Post Office:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="p_post_office"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">State:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="p_state"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Pin Code:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="p_pincode"></div>-->
+<!--                            <div></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="grid grid-cols-3">-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 ">Current Address:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-gray-600 text-base" id="current_addr"></div>-->
+<!--                        <div></div>-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 text-base">Thana:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-base" id="current_thana"></div>-->
+<!--                        <div></div>-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-base" >Post Office:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-base" id="current_post_office"></div>-->
+<!--                        <div></div>-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 text-base">State:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-base" id="current_state"></div>-->
+<!--                        <div></div>-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 text-base">Pin Code:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-base" id="current_pincode"></div>-->
+<!--                        <div></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Bank and Approval Details Section &ndash;&gt;-->
+<!--                <h4 class="text-xl font-semibold mb-2 text-gray-700 border-b pb-2">Bank-->
+<!--                    and Approval Details</h4>-->
+<!--                <div class="grid grid-cols-2 gap-6 mb-2">-->
+<!--                    <div class="p-2">-->
+<!--                        <div class="grid grid-cols-3">-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 ">Bank Name:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base" id="bank_name"></div>-->
+<!--                            <div></div>-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 text-base">Bank A/C No. :</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base" id="account_number"></div>-->
+<!--                            <div></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="grid grid-cols-3">-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 ">Bank Branch:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-gray-600 text-base" id="branch_name"></div>-->
+<!--                        <div></div>-->
+<!--                        <div class="flex items-left">-->
+<!--                            <strong class="text-gray-800 text-base">IFSC Code:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="text-base" id="ifsc_code"></div>-->
+<!--                        <div></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; Bank and Approval Details Section &ndash;&gt;-->
+<!--                <h4-->
+<!--                        class="text-xl font-semibold mb-2 text-gray-700 border-b pb-2">Membership-->
+<!--                    Payment Staus</h4>-->
+<!--                <div class="grid grid-cols-2 gap-6 mb-2">-->
+<!--                    <div class="p-2">-->
+<!--                        <div class="grid grid-cols-3">-->
+<!--                            <div class="flex items-left">-->
+<!--                                <strong class="text-gray-800 ">Payments of :</strong>-->
+
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base" id=""><input type="text"-->
+<!--                                                                              class="form-control text-xl" value="20" disabled /></div>-->
+<!--                            <div></div>-->
+<!--                            &lt;!&ndash; UTR Number (appears only when "Online" is selected) &ndash;&gt;-->
+<!--                            <div class="col-span-3" id="utrField" style="display: none;">-->
+<!--                                <div class="grid grid-cols-3 items-center">-->
+<!--                                    <div class="flex items-center">-->
+<!--                                        <strong class="text-gray-800 text-base">UTR No:</strong>-->
+<!--                                    </div>-->
+<!--                                    <div class="flex items-center">-->
+<!--                                        <input type="text" id="utrInput"-->
+<!--                                               class="border px-3 py-2 rounded-md w-full"-->
+<!--                                               placeholder="Enter UTR number">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="p-4">-->
+<!--                        <div class="grid grid-cols-2 gap-4">-->
+<!--                            &lt;!&ndash; Through Selection (Radio Buttons) &ndash;&gt;-->
+<!--                            <div class="flex items-center">-->
+<!--                                <strong class="text-gray-800">Through:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-gray-600 text-base">-->
+<!--                                &lt;!&ndash; Radio Button for Online &ndash;&gt;-->
+<!--                                <label class="mr-4">-->
+<!--                                    <input type="radio" name="payment_method" value="online" class="mr-2"-->
+<!--                                           id="onlineRadio" onclick="toggleInputField()"> Online-->
+<!--                                </label>-->
+<!--                                &lt;!&ndash; Radio Button for Cash &ndash;&gt;-->
+<!--                                <label>-->
+<!--                                    <input type="radio" name="payment_method" value="cash" class="mr-2"-->
+<!--                                           id="cashRadio" onclick="toggleInputField()"> Cash-->
+<!--                                </label>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; IFSC Code &ndash;&gt;-->
+<!--                            <div class="flex items-center">-->
+<!--                                <strong class="text-gray-800 text-base">Status:</strong>-->
+<!--                            </div>-->
+<!--                            <div class="text-base">-->
+<!--                                <select class="border px-3 py-2 rounded-md w-full" id="membership_status">-->
+<!--                                    <option value="Pending">Pending</option>-->
+<!--                                    <option value="Approved">Approved</option>-->
+<!--                                    <option value="Rejected">Reject</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div></div>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+<!--            &lt;!&ndash; Modal Footer  &ndash;&gt;-->
+<!--            <div class="modal-footer">-->
+<!--                <button class="btn btn-primary w-24 mr-1 mb-2" id="membership_btn" data-mid="2">Save</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; END: Super Large Modal Content &ndash;&gt;-->
+
+<!--&lt;!&ndash; BEGIN: JS Assets&ndash;&gt;-->
+<!--<script-->
+<!--        src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>-->
+<!--<script src="/static/dist/js/app.js"></script>-->
+<!--&lt;!&ndash; Include jQuery and DataTables JS &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>-->
+<!--<script-->
+<!--        src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#table').DataTable();-->
+<!--    });-->
+<!--</script>-->
+<!--&lt;!&ndash; END: JS Assets&ndash;&gt;-->
+<!--&lt;!&ndash; JavaScript for toggling the input field &ndash;&gt;-->
+<!--<script>-->
+<!--    function toggleInputField() {-->
+<!--        var onlineRadio = document.getElementById("onlineRadio");-->
+<!--        var utrField = document.getElementById("utrField");-->
+
+<!--        if (onlineRadio.checked) {-->
+<!--            utrField.style.display = "block"; // Show the UTR input field-->
+<!--        } else {-->
+<!--            utrField.style.display = "none"; // Hide the UTR input field-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // Handle button click to open modal-->
+<!--        $('.open-modal').on('click', function () {-->
+<!--            const mid = $(this).data('mid'); // Get the 'mid' value from data attribute-->
+<!--            console.log(mid);-->
+<!--            $('#modal-mid').text(mid); // Update the modal with the MID-->
+<!--            $.ajax({-->
+<!--                url: "../members/" + mid, // Update the URL to match your API-->
+<!--                type: 'GET',-->
+<!--                success: function (result) {-->
+<!--                    let res=result[0];-->
+<!--                    console.log(res);-->
+<!--                    //Personal Detail-->
+<!--                    $('#memberId').text(mid);-->
+<!--                    $('#aadhar_no').text(res.aadharNumber);-->
+<!--                    $('#fullname').text(res.fullname);-->
+<!--                    $('#gender').text(res.gender);-->
+<!--                    $('#empid').text(res.empId);-->
+<!--                    $('#dob').text(res.dob);-->
+<!--                    $('#father_name').text(res.fatherName);-->
+<!--                    $('#pan_card').text(res.panCard);-->
+<!--                    $('#email').text(res.email);-->
+<!--                    $('#mobile').text(res.mobileNo);-->
+<!--                    $('#whatsap_no').text(res.whatsappNumber);-->
+<!--                    $('#company_name').text(res.companyId);-->
+
+<!--                    //Permanemt Address-->
+<!--                    $('#p_addr').text(res.permanemtAddress);-->
+<!--                    $('#p_thana').text(res.permanemtThana);-->
+<!--                    $('#p_post_office').text(res.permanemtPostOffice);-->
+<!--                    $('#p_state').text(res.permanemtState);-->
+<!--                    $('#p_pincode').text(res.permanemtPincode);-->
+
+<!--                    //Current Address-->
+<!--                    $('#current_addr').text(res.currentAddress);-->
+<!--                    $('#current_thana').text(res.currentThana);-->
+<!--                    $('#current_post_office').text(res.currentPostOffice);-->
+<!--                    $('#current_state').text(res.currentState);-->
+<!--                    $('#current_pincode').text(res.currentPincode);-->
+
+<!--                    //Bank details-->
+<!--                    $('#bank_name').text(res.bankId);-->
+
+
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('Failed to fetch data for MID: ' + mid);-->
+<!--                }-->
+<!--            });-->
+<!--            $('#membership_btn').on('click', function () {-->
+<!--                const mid = $(this).data('mid'); // Get the Member ID-->
+<!--                const status = $('#membership_status').val(); // Get the selected status (Pending/Approved/Rejected)-->
+
+<!--                if (!status) {-->
+<!--                    alert('Please select a status');-->
+<!--                    return;-->
+<!--                }-->
+
+<!--                $.ajax({-->
+<!--                    url: "../members/" + mid, // API endpoint-->
+<!--                    type: 'POST',-->
+<!--                    contentType: 'application/json',-->
+<!--                    data: JSON.stringify({ status: status }), // Send status in request body-->
+<!--                    success: function (result) {-->
+<!--                        alert('Membership status updated successfully!');-->
+<!--                    },-->
+<!--                    error: function (err) {-->
+<!--                        console.error('Error updating membership status:', err);-->
+<!--                        alert('Failed to update membership status.');-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--    });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+
+<!--</html>-->

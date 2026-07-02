@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audit Details Settlement</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      .grid-container {
+    display: grid;
+    /* Defines 13 columns with specific widths */
+    grid-template-columns: 
+        50px   /* Column 1: fixed width */
+        1fr    /* Column 2: 1 fractional unit */
+        1fr    /* Column 3: 1 fractional unit */
+        5%     /* Column 4: 5% of container width */
+        1fr    /* Column 5: 1 fractional unit */
+        5%     /* Column 6: 5% of container width */
+        1fr    /* Column 7: 1 fractional unit */
+        5%     /* Column 8: 5% of container width */
+        1fr    /* Column 9: 1 fractional unit */
+        5%     /* Column 10: 5% of container width */
+        1fr    /* Column 11: 1 fractional unit */
+        5%     /* Column 12: 5% of container width */
+        1fr;   /* Column 13: 1 fractional unit */
+    gap: 10px; /* Adds space between grid items */
+    width: 100%; /* Ensures the grid spans the full width of its parent */
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: #f0f0f0;
+    border: 1px solid #333;
+    padding: 10px;
+    text-align: center;
+}
+      
+    </style>
+       <style>
+			
+					/* Specific class to remove borders from this table's cells */
+  .noBorderTable table,.noBorderTable td, .noBorderTable th {
+    border: none !important;
+  }
+		  /* Specific styling to remove borders from cells within the .noBorder row */
+		
+</style>
+
+</head>
+<body oncontextmenu="return false">
+ <div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex items-center justify-between w-full">
+            <h2 class="intro-y text-lg font-medium mt-5">Settlement details</h2>
+        </div>  
+
+        <div class="container mt-4">
+            <!-- Search Form -->
+            <form class="grid grid-cols-12 gap-4 mb-4 items-end">
+                <div class="col-span-12 sm:col-span-6 md:col-span-3">
+                    <label for="ticketNumber" class="form-label">Enter Ticket Number</label>
+                    <input type="text" name="ticketNumber" id="userId" class="form-control">
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-3">
+                    <label for="ticketNumber" class="form-label">Audit Financial Year</label>
+                        <!-- Voucher label -->
+                <!-- Select dropdown -->
+                <select id="financial_year" class="form-control">                    
+                    <option value="2025-2026">2025-2026 </option>
+                    <option value="2026-2027">2026-2027 </option>
+                   
+                </select>
+                </div>
+               <div class="col-span-12 sm:col-span-6 md:col-span-2">
+                    <label for="ticketNumber" class="form-label"> Name</label>
+                    <input type="text" name="name" id="name" class="form-control" >
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-2">
+                    <input type="button" value="Search" class="btn btn-primary w-full">
+                </div>
+                
+            </form>        
+			<br>
+            <!-- Result Fields -->
+            <table style="width:100%">
+                <tr >
+                <td style="width: 7%;"></td>
+                <td style="width: 5%;"><label for="Shareac" style="background-color: blue;color:white;width: 80px">Share A/c</label></td>
+                <td style="width: 5%;"></td>
+                <td style="width: 20%;"><label for="cdac" style="background-color: blue;color:white;width: 80px">C.D. A/c</label></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                <td style="width: 7%;"></td>
+                </tr>
+                <tr >
+		               <td style="width: 7%;"><strong>Opening Balance</strong></td>
+					    <td style="width: 5%;"><input type="text" id="openingblshare" name="openingblshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><label for="openblmnh" style="color:blue;width: 80px; height: 30px;"></label></td>
+					     <td style="width: 20%;"><input type="text" id="openingblcdac" name="openingblcdac"style="width: 80px; height: 30px;"><label for="openloan" style="background-color: blue;color:white;width: 10px">Loans=></label>>
+					     </td>
+					     <td style="width: 7%;"><label for="prinamtPloan" style="background-color: blue;color:white;width: 80px">Prin.Amt</label></td>
+					     <td style="width: 7%;"><label for="IntdedPloan" style="background-color: blue;color:white;width: 80px">Int.Ded</label></td>
+					     <td style="width: 7%;"><input type="text" id="Ploanclosebl" name="Ploanclosebl"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><label for="ActIntPloan" style="background-color: blue;color:white;width: 80px">Act.Int</label></td>			     
+					      <td style="width: 7%;"><label for="prinamtCloan" style="background-color: blue;color:white;width: 80px">Prin.Amt</label></td>
+					     <td style="width: 7%;"><label for="IntdedCloan" style="background-color: blue;color:white;width: 80px">Int.Ded</label></td>
+					     <td style="width: 7%;"><input type="text" id="cloansebl" name="cloansebl"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><label for="ActIntCloan" style="background-color: blue;color:white;width: 80px">Act.Int</label></td>
+				   </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="aprilmnh" style="color:blue;">April</label></td>
+					    <td style="width: 5%;"><input type="text" id="aprilshare" name="aprilshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="aprilcd" name="aprilcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="aprilcdac" name="aprilcdac"style="width: 80px; height: 30px;">
+					    <label for="lnmonth" style="color:blue;width: 10px">Lnmonth</label> <input type="text" id="txtlnmnth" name="txtlnmnth" style="width: 70px;height: 30px;">
+					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="aprilPloaninstall" name="aprilPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilPloanint" name="aprilPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilPloanamt" name="aprilPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilPloactint" name="aprilPloactint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="aprilCloaninstall" name="aprilCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilCloanint" name="aprilCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilCloanamt" name="aprilCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="aprilCloactint" name="aprilCloactint"style="width: 80px; height: 30px;"></td>
+					    
+					    
+				    </tr>
+				     <tr>
+					    <td style="width: 7%;"><label for="maymnh" style="color:blue;">May</label></td>
+					    <td style="width: 5%;"> <input type="text" id="mayshare" name="mayshare"style="width: 80px; height: 30px;">
+					    </td>
+					    <td style="width: 5%;"><input type="text" id="maycd" name="maycd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="maycdac" name="maycdac"style="width: 80px; height: 30px;"><label for="lnDate" style="color:blue;width: 10px">LnDate</label><input type="text" id="txtLnDate" name="txtLnDate" style="width: 105px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="mayPloaninstall" name="mayPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayPloanint" name="mayPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayPloanamt" name="mayPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayPloactint" name="aprilPloactint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayCloaninstall" name="mayCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayCloanint" name="mayCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayCloanamt" name="mayCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="mayCloactint" name="mayCloactint"style="width: 80px; height: 30px;"></td>
+					    
+					    
+				    </tr>
+				      <tr>
+					    <td style="width: 7%;"><label for="junemnh" style="color:blue;">June</label></td>
+					    <td style="width: 5%;"> <input type="text" id="juneshare" name="juneshare"style="width: 80px; height: 30px;">
+					    </td>
+					    <td style="width: 5%;"><input type="text" id="junecd" name="junecd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="junecdac" name="junecdac"style="width: 80px; height: 30px;"><label for="LnAdv" style="color:blue;width: 10px">LnAdv</label><input type="text" id="txtLnAdv" name="txtLnAdv" style="width: 80px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="junePloaninstall" name="junePloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="junePloanint" name="junePloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="junePloanamt" name="junePloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="junePloactint" name="junelPloactint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="juneCloaninstall" name="juneCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="juneCloanint" name="juneCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="juneCloanamt" name="juneCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="juneCloactint" name="juneCloactint"style="width: 80px; height: 30px;"></td>
+					    
+					    
+				    </tr>
+				     <tr>
+					    <td style="width: 7%;"><label for="julymnh" style="color:blue;">July</label></td>
+					    <td style="width: 5%;"> <input type="text" id="julyshare" name="julyshare"style="width: 80px; height: 30px;">
+					    </td>
+					    <td style="width: 5%;"><input type="text" id="julycd" name="julycd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="julycdac" name="julycdac"style="width: 80px; height: 30px;"><label for="lncontra" style="color:blue;width: 10px">LnContra</label><input type="text" id="txtLnContra" name="txtLnContra" style="width: 75px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="julyPloaninstall" name="julyPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julyPloanint" name="julyPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julyPloanamt" name="julyPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julylPloactint" name="julyPloactint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="julyCloaninstall" name="julyCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julyCloanint" name="julyCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julyCloanamt" name="julyCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="julyCloactint" name="julyCloactint"style="width: 80px; height: 30px;"></td>
+					    					    
+					    
+				    </tr>
+				     <tr>
+					    <td style="width: 7%;"><label for="augmnh" style="color:blue;">August</label></td>
+					    <td style="width: 5%;"><input type="text" id="augstshare" name="augstshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="augcd" name="augcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="augcdac" name="augcdac"style="width: 80px; height: 30px;"><label for="AolnDue" style="color:blue;width: 10px">AolnDue</label><input type="text" id="txtAolnDue" name="txtAolnDue" style="width: 75px;height: 30px; ">
+					    					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="augPloaninstall" name="augPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="augPloanint" name="augPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="augPloanamt" name="augPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="auglPloactint" name="augPloactint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="augCloaninstall" name="augCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="augCloanint" name="augCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="augCloanamt" name="augCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="augCloactint" name="augCloactint"style="width: 80px; height: 30px;"></td>
+					   				    
+					    
+				    </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="sepmnh" style="color:blue;">September</label></td>
+					    <td style="width: 5%;"><input type="text" id="sepshare" name="sepshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="sepcd" name="sepcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="sepcdac" name="sepcdac"style="width: 80px; height: 30px;"><label for="AvlnDue" style="color:blue;width: 10px">AvlnDue</label><input type="text" id="txtAvlnDue" name="txtAvlnDue" style="width: 75px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="sepPloaninstall" name="sepPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="sepPloanint" name="sepPloanint"style="width: 80px; height: 30px;"></td>
+					   <td style="width: 7%;"><input type="text" id="sepPloanamt" name="sepPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="sepPloactint" name="sepPloactint"style="width: 80px; height: 30px;"></td>					    
+					    <td style="width: 7%;"><input type="text" id="sepCloaninstall" name="sepCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="sepCloanint" name="sepCloanint"style="width: 80px; height: 30px;"></td>
+					   <td style="width: 7%;"><input type="text" id="sepCloanamt" name="sepCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="sepCloactint" name="sepCloactint"style="width: 80px; height: 30px;"></td>
+					    
+					    
+				    </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="octmnh" style="color:blue;">October</label></td>
+					    <td style="width: 5%;"><input type="text" id="octshare" name="octshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="octcd" name="octcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="octcdac" name="octcdac"style="width: 80px; height: 30px;"><label for="ComLnDt" style="color:blue;width: 10px">ComLnDt</label><input type="text" id="txtComLnDt" name="txtComLnDt" style="width: 75px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="octPloaninstall" name="octPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octPloanint" name="octPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octPloanamt" name="octPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octPloactint" name="octPloactint"style="width: 80px; height: 30px;"></td>					    
+					     <td style="width: 7%;"><input type="text" id="octCloaninstall" name="octCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octCloanint" name="octCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octCloanamt" name="octCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="octCloactint" name="octCloactint"style="width: 80px; height: 30px;"></td>					    
+					    
+					    
+				    </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="novmnh" style="color:blue;">November</label></td>
+					    <td style="width: 5%;"><input type="text" id="novshare" name="novshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="novcd" name="novcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="novcdac" name="novcdac"style="width: 80px; height: 30px;"><label for="ComLnAdv" style="color:blue;width: 10px">ComLnAdv</label><input type="text" id="txtComLnAdv" name="txtComLnAdv" style="width: 75px;height: 30px; ">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="novPloaninstall" name="novPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="novPloanint" name="novPloanint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="novPloanamt" name="novPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="novPloactint" name="novPloactint"style="width: 80px; height: 30px;"></td>					   
+					    
+					     <td style="width: 7%;"><input type="text" id="novCloaninstall" name="novCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="novCloanint" name="novCloanint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="novCloanamt" name="novCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="novCloactint" name="novCloactint"style="width: 80px; height: 30px;"></td>					   
+					    
+				    </tr>
+				   <tr>
+					    <td style="width: 7%;"><label for="decmnh" style="color:blue;">December</label></td>
+					    <td style="width: 5%;"><input type="text" id="decshare" name="decshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="deccd" name="deccd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="deccdac" name="deccdac"style="width: 80px; height: 30px;"><label for="CashbookPLdepot" style="color:blue;width: 10px">cashAODEP</label><input type="text" id="txtcashpldeposit" name="txtcashpldeposit" style="width: 70px;height: 30px;">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="decPloaninstall" name="decPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="decPloanint" name="decPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="decPloanamt" name="decPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="declPloactint" name="declPloactint"style="width: 80px; height: 30px;"></td>					    
+					    <td style="width: 7%;"><input type="text" id="decCloaninstall" name="decCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="decCloanint" name="decCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="decCloanamt" name="decCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="decCloactint" name="decCloactint"style="width: 80px; height: 30px;"></td>					    
+					    
+					    
+				    </tr>
+				     <tr>
+					    <td style="width: 7%;"><label for="janmnh" style="color:blue;">January</label></td>
+					    <td style="width: 5%;"><input type="text" id="janshare" name="janshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="jancd" name="jancd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="jancdac" name="jancdac"style="width: 80px; height: 30px;"><label for="CashbookPLdepotint" style="color:blue;width: 10px">cashDEPint</label><input type="text" id="txtcashpldepositint" name="txtcashpldepositint" style="width: 70px;height: 30px;">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="janPloaninstall" name="janPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="janPloanint" name="janPloanint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="janPloanamt" name="janPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="janPloactint" name="janPloactint"style="width: 80px; height: 30px;"></td>					   
+					    <td style="width: 7%;"><input type="text" id="janCloaninstall" name="janCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="janCloanint" name="janCloanint"style="width: 80px; height: 30px;"></td>
+					     <td style="width: 7%;"><input type="text" id="janCloanamt" name="janCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="janCloactint" name="janCloactint"style="width: 80px; height: 30px;"></td>					   
+					   
+					    
+				    </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="febmnh" style="color:blue;">February</label></td>
+					    <td style="width: 5%;"><input type="text" id="febshare" name="febshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="febcd" name="febcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="febcdac" name="febcdac"style="width: 80px; height: 30px;"><label for="CashbookCLdep" style="color:blue;width: 10px">cashALDEP</label><input type="text" id="txtcashcldep" name="txtcashcldep" style="width: 70px;height: 30px;">					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="febPloaninstall" name="febPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="febPloanint" name="febPloanint"style="width: 80px; height: 30px;"></td>
+					   <td style="width: 7%;"><input type="text" id="febPloanamt" name="febPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="febPloactint" name="febPloactint"style="width: 80px; height: 30px;"></td>					    
+					    <td style="width: 7%;"><input type="text" id="febCloaninstall" name="febCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="febCloanint" name="febCloanint"style="width: 80px; height: 30px;"></td>
+					   <td style="width: 7%;"><input type="text" id="febCloanamt" name="febCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="febCloactint" name="febCloactint"style="width: 80px; height: 30px;"></td>					    
+					    
+					    
+				    </tr>
+				    <tr>
+					    <td style="width: 7%;"><label for="marchmnh" style="color:blue;">March</label></td>
+					    <td style="width: 5%;"><input type="text" id="marchshare" name="marchshare"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 5%;"><input type="text" id="marchcd" name="marchcd"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 20%;"><input type="text" id="marchcdac" name="marchcdac"style="width: 75px; height: 30px;"><label for="CashCLdepint" style="color:blue;width: 10px">cashAVDEPint</label><input type="text" id="txtcashcldepint" name="txtcashcldepint" style="width: 70px;height: 30px;">
+					    <label for="CDint" style="color:blue;width: 10px">CDInt</label>					   				   
+					    </td>
+					    <td style="width: 7%;"><input type="text" id="marchPloaninstall" name="marchPloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchPloanint" name="marchPloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchPloanamt" name="marchPloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchPloactint" name="marchPloactint"style="width: 80px; height: 30px;"></td>					    
+					    <td style="width: 7%;"><input type="text" id="marchCloaninstall" name="marchCloaninstall"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchCloanint" name="marchCloanint"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchCloanamt" name="marchCloanamt"style="width: 80px; height: 30px;"></td>
+					    <td style="width: 7%;"><input type="text" id="marchCloactint" name="marchCloactint"style="width: 80px; height: 30px;"></td>					    
+					    					    
+				    </tr>
+				    <tr>
+				    <td style="width: 7%;"></td>
+				    <td style="width: 5%;"></td>
+				    <td style="width: 5%;"><input type="text" id="cdtotal" name="cdtotal"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 20%;"><input type="text" id="cdintt" name="cdintt"style="width: 150px; height: 30px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="Total" style="color:blue;width: 10px">Total</label></td>
+				    <td style="width: 7%;"><input type="text" id="PLoaninstalltot" name="PLoaninstalltot"style="width: 80px; height: 30px;"></td></td>
+				    <td style="width: 7%;"><input type="text" id="PLoanintdetot" name="PLoanintdetot"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 7%;"></td>
+				    <td style="width: 7%;"><input type="text" id="PLoanactinttot" name="PLoanactinttot"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 7%;"><input type="text" id="CLoaninstalltot" name="CLoaninstalltot"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 7%;"><input type="text" id="CLoanintdetot" name="CLoanintdetot"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 7%;"></td>
+				    <td style="width: 7%;"><input type="text" id="CLoanactinttot" name="CLoanactinttot"style="width: 80px; height: 30px;"></td>
+				    </tr>
+				    <tr><td style="width: 7%;"><label for="closingbal" style="color:blue;">Closing Bal</label></td>
+				    <td style="width: 5%;"><input type="text" id="closingbalshare" name="closingbalshare"style="width: 80px; height: 30px;"></td>
+				    <td style="width: 5%;"></td>
+				    <td style="width: 20%;"><input type="text" id="cdactotal" name="cdactotal"style="width: 85px; height: 30px;"></td>			  
+				     
+				    </tr>
+				 </table>  
+				  <table style="width:100%">
+				   <tr><td style="width: 10%;"> <a id="download_settlement" class="btn btn-primary shadow-md"
+                           data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view" >
+                           download settlement 
+                       </a></td> 
+				       <td style="width: 5%;"></td>
+				       <td style="width: 10%;">  
+				       <a id="generate_summary" class="btn btn-primary shadow-md"
+                           data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view" >
+                           Generate settlement Summary
+                       </a></td>
+				       <td style="width: 5%;"></td>
+				       <td style="width: 5%;"></td>
+				       <td style="width: 5%;"></td>
+				   </tr>
+				   </table> 
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- Scripts -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+<script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Handle search button click
+        $('input[type="button"][value="Search"]').click(function () {
+            const p_userId = $('#userId').val().trim();
+           var p_audityear = $('#financial_year').val().trim();
+           // alert(p_audityear);
+            if (!p_userId) {
+                alert('Please enter a Ticket Number');
+                return;
+            }
+            clearInput();
+            fetchUserData(p_userId,p_audityear);
+        });
+        function clearInput() {
+        	  // Get the input element by its ID
+        	  const inputname = document.getElementById("name");
+        	  const  inopeningblshare = document.getElementById("openingblshare");
+        	  const inopeningblcdac  = document.getElementById("openingblcdac");
+        	  const inPloanclosebl  = document.getElementById("Ploanclosebl");
+        	  const incloansebl  = document.getElementById("cloansebl");
+        	  const inaprilshare  = document.getElementById("aprilshare");
+        	  const inaprilcd  = document.getElementById("aprilcd");
+        	  const inaprilcdac = document.getElementById("aprilcdac");
+        	  const inaprilPloaninstall = document.getElementById("aprilPloaninstall");
+        	  const inaprilPloanint  = document.getElementById("aprilPloanint");
+        	  const inaprilPloanamt  = document.getElementById("aprilPloanamt");
+        	  const inaprilPloactint  = document.getElementById("aprilPloactint");
+        	  const inaprilCloaninstall = document.getElementById("aprilCloaninstall");
+        	  const inaprilCloanint  = document.getElementById("aprilCloanint");
+        	  const inaprilCloanamt = document.getElementById("aprilCloanamt");
+        	  const inaprilCloactint = document.getElementById("aprilCloactint");
+        	  // Set the value property to an empty string
+        	  inputname.value = ""; 
+        	  inopeningblshare.value = "";
+        	  inopeningblcdac.value = "";
+        	  inPloanclosebl.value = "";
+        	  incloansebl.value = "";
+        	  inaprilshare.value = "";
+        	  inaprilcd.value = "";
+        	  inaprilcdac.value = "";
+        	  inaprilPloaninstall.value = "";
+        	  inaprilPloanint.value = "";
+        	  inaprilPloanamt.value = "";
+        	  inaprilPloactint.value = "";
+        	  inaprilCloaninstall.value = "";
+        	  inaprilCloanint.value = "";
+        	  inaprilCloanamt.value = "";
+        	  inaprilCloactint.value = "";
+        	  const  inmayshare = document.getElementById("mayshare");
+        	  const inmaycd  = document.getElementById("maycd");
+        	  const inmaycdac  = document.getElementById("maycdac");
+        	  const inmayPloaninstall  = document.getElementById("mayPloaninstall");
+        	  const inmayPloanint  = document.getElementById("mayPloanint");
+        	  const inmayPloanamt  = document.getElementById("mayPloanamt");
+        	  const inmayPloactint = document.getElementById("mayPloactint");
+        	  const inmayCloaninstall = document.getElementById("mayCloaninstall");
+        	  const inmayCloanint  = document.getElementById("mayCloanint");
+        	  const inmayCloanamt  = document.getElementById("mayCloanamt");
+        	  const inmayCloactint  = document.getElementById("mayCloactint");
+        	  inmayshare.value = "";
+        	  inmaycd.value = "";
+        	  inmaycdac.value = "";
+        	  inmayPloaninstall.value = "";
+        	  inmayPloanint.value = "";
+        	  inmayPloanamt.value = "";
+        	  inmayPloactint.value = "";
+        	  inmayCloaninstall.value = "";
+        	  inmayCloanint.value = "";
+        	  inmayCloanamt.value = "";
+        	  inmayCloactint.value = "";
+        	  const  injuneshare = document.getElementById("juneshare");
+        	  const injunecd  = document.getElementById("junecd");
+        	  const injunecdac  = document.getElementById("junecdac");
+        	  const injunePloaninstall  = document.getElementById("junePloaninstall");
+        	  const injunePloanint  = document.getElementById("junePloanint");
+        	  const injunePloanamt  = document.getElementById("junePloanamt");
+        	  const injunePloactint = document.getElementById("junePloactint");
+        	  const injuneCloaninstall = document.getElementById("juneCloaninstall");
+        	  const injuneCloanint  = document.getElementById("juneCloanint");
+        	  const injuneCloanamt  = document.getElementById("juneCloanamt");
+        	  const injuneCloactint  = document.getElementById("juneCloactint");
+        	  injuneshare.value = "";
+        	  injunecd.value = "";
+        	  injunecdac.value = "";
+        	  injunePloaninstall.value = "";
+        	  injunePloanint.value = "";
+        	  injunePloanamt.value = "";
+        	  injunePloactint.value = ""; 
+        	  injuneCloaninstall.value = "";
+        	  injuneCloanint.value = "";
+        	  injuneCloanamt.value = "";
+        	  injuneCloactint.value = "";   
+        	  const  injulyshare = document.getElementById("julyshare");
+        	  const injulycd  = document.getElementById("julycd");
+        	  const injulycdac  = document.getElementById("julycdac");
+        	  const injulyPloaninstall  = document.getElementById("julyPloaninstall");
+        	  const injulyPloanint  = document.getElementById("julyPloanint");
+        	  const injulyPloanamt  = document.getElementById("julyPloanamt");
+        	  const injulylPloactint = document.getElementById("julylPloactint");
+        	  const injulyCloaninstall = document.getElementById("julyCloaninstall");
+        	  const injulyCloanint  = document.getElementById("julyCloanint");
+        	  const injulyCloanamt  = document.getElementById("julyCloanamt");
+        	  const injulyCloactint  = document.getElementById("julyCloactint");
+        	  
+        	  injulyshare.value = "";
+        	  injulycd.value = "";
+          	   injulycdac.value = "";
+          	   injulyPloaninstall.value = "";
+          	   injulyPloanint.value = "";
+          	   injulyPloanamt.value = "";
+          	  injulylPloactint.value = "";
+          	  injulyCloaninstall.value = "";
+          	injulyCloanint.value = "";
+          	injulyCloanamt.value = "";
+          	injulyCloactint.value = "";
+          	
+        	  const  inaugstshare = document.getElementById("augstshare");
+        	  const inaugcd  = document.getElementById("augcd");
+        	  const inaugcdac  = document.getElementById("augcdac");
+        	  const inaugPloaninstall  = document.getElementById("augPloaninstall");
+        	  const inaugPloanint  = document.getElementById("augPloanint");
+        	  const inaugPloanamt  = document.getElementById("augPloanamt");
+        	  const inauglPloactint = document.getElementById("auglPloactint");
+        	  const inaugCloaninstall = document.getElementById("augCloaninstall");
+        	  const inaugCloanint  = document.getElementById("augCloanint");
+        	  const inaugCloanamt  = document.getElementById("augCloanamt");
+        	  const inaugCloactint  = document.getElementById("augCloactint");      	
+       	 
+        	  inaugstshare.value = "";
+           	  inaugcd.value = "";
+           	  inaugcdac.value = "";
+           	  inaugPloaninstall.value = "";
+           	  inaugPloanint.value = "";
+           	  inaugPloanamt.value = "";
+           	  inauglPloactint.value = "";
+              inaugCloaninstall.value = "";
+       	      inaugCloanint.value = "";
+       	     inaugCloanamt.value = "";
+       	      inaugCloactint.value = "";
+       	      
+       	const  insepshare = document.getElementById("sepshare");
+       	const insepcd  = document.getElementById("sepcd");
+       	const insepcdac  = document.getElementById("sepcdac");
+       	const insepPloaninstall  = document.getElementById("sepPloaninstall");
+       	const insepPloanint  = document.getElementById("sepPloanint");
+       	const insepPloanamt  = document.getElementById("sepPloanamt");
+       	const insepPloactint = document.getElementById("sepPloactint");
+       	const insepCloaninstall = document.getElementById("sepCloaninstall");
+       	const insepCloanint  = document.getElementById("sepCloanint");
+       	const insepCloanamt  = document.getElementById("sepCloanamt");
+       	const insepCloactint  = document.getElementById("sepCloactint");
+       	insepshare.value = "";
+        insepcd.value = "";
+       insepcdac.value = "";
+       insepPloaninstall.value = "";
+       insepPloanint.value = "";
+       insepPloanamt.value = "";
+       insepPloactint.value = "";
+       insepCloaninstall.value = "";
+       insepCloanint.value = "";
+       insepCloanamt.value = "";
+       insepCloactint.value = "";
+
+       const  inoctshare = document.getElementById("octshare");
+       const inoctcd  = document.getElementById("octcd");
+       const inoctcdac  = document.getElementById("octcdac");
+       const inoctPloaninstall  = document.getElementById("octPloaninstall");
+       const inoctPloanint  = document.getElementById("octPloanint");
+       const inoctPloanamt  = document.getElementById("octPloanamt");
+       const inoctPloactint = document.getElementById("octPloactint");
+       const inoctCloaninstall = document.getElementById("octCloaninstall");
+       const inoctCloanint  = document.getElementById("octCloanint");
+       const inoctCloanamt  = document.getElementById("octCloanamt");
+       const inoctCloactint  = document.getElementById("octCloactint");
+
+       inoctshare.value = "";
+       inoctcd.value = "";
+      inoctcdac.value = "";
+      inoctPloaninstall.value = "";
+      inoctPloanint.value = "";
+      inoctPloanamt.value = "";
+      inoctPloactint.value = "";
+      inoctCloaninstall.value = "";
+      inoctCloanint.value = "";
+      inoctCloanamt.value = "";
+      inoctCloactint.value = "";
+      
+      const  innovshare = document.getElementById("novshare");
+      const innovcd  = document.getElementById("novcd");
+      const innovcdac  = document.getElementById("novcdac");
+      const innovPloaninstall  = document.getElementById("novPloaninstall");
+      const innovPloanint  = document.getElementById("novPloanint");
+      const innovPloanamt  = document.getElementById("novPloanamt");
+      const innovPloactint = document.getElementById("novPloactint");
+      const innovCloaninstall = document.getElementById("novCloaninstall");
+      const innovCloanint  = document.getElementById("novCloanint");
+      const innovCloanamt  = document.getElementById("novCloanamt");
+      const innovCloactint  = document.getElementById("novCloactint");
+      innovshare.value = "";
+      innovcd.value = "";
+     innovcdac.value = "";
+     innovPloaninstall.value = "";
+     innovPloanint.value = "";
+     innovPloanamt.value = "";
+     innovPloactint.value = "";
+     innovCloaninstall.value = "";
+     innovCloanint.value = "";
+     innovCloanamt.value = "";
+     innovCloactint.value = "";
+     
+     const  indecshare = document.getElementById("decshare");
+     const indeccd  = document.getElementById("deccd");
+     const indeccdac  = document.getElementById("deccdac");
+     const indecPloaninstall  = document.getElementById("decPloaninstall");
+     const indecPloanint  = document.getElementById("decPloanint");
+     const indecPloanamt  = document.getElementById("decPloanamt");
+     const indeclPloactint = document.getElementById("declPloactint");
+     const indecCloaninstall = document.getElementById("decCloaninstall");
+     const indecCloanint  = document.getElementById("decCloanint");
+     const indecCloanamt  = document.getElementById("decCloanamt");
+     const indecCloactint  = document.getElementById("decCloactint");
+     indecshare.value = "";
+     indeccd.value = "";
+    indeccdac.value = "";
+    indecPloaninstall.value = "";
+    indecPloanint.value = "";
+    indecPloanamt.value = "";
+    indeclPloactint.value = "";
+    indecCloaninstall.value = "";
+    indecCloanint.value = "";
+    indecCloanamt.value = "";
+    indecCloactint.value = "";
+
+    const  injanshare = document.getElementById("janshare");
+    const injancd = document.getElementById("jancd");
+    const injancdac  = document.getElementById("jancdac");
+    const injanPloaninstall  = document.getElementById("janPloaninstall");
+    const injanPloanint  = document.getElementById("janPloanint");
+    const injanPloanamt  = document.getElementById("janPloanamt");
+    const injanPloactint = document.getElementById("janPloactint");
+    const injanCloaninstall = document.getElementById("janCloaninstall");
+    const injanCloanint  = document.getElementById("janCloanint");
+    const injanCloanamt  = document.getElementById("janCloanamt");
+    const injanCloactint  = document.getElementById("janCloactint");
+    injanshare.value = "";
+    injancd.value = "";
+   injancdac.value = "";
+   injanPloaninstall.value = "";
+   injanPloanint.value = "";
+   injanPloanamt.value = "";
+   injanPloactint.value = "";
+   injanCloaninstall.value = "";
+   injanCloanint.value = "";
+   injanCloanamt.value = "";
+   injanCloactint.value = "";
+
+   const  infebshare = document.getElementById("febshare");
+   const infebcd = document.getElementById("febcd");
+   const infebcdac  = document.getElementById("febcdac");
+   const infebPloaninstall  = document.getElementById("febPloaninstall");
+   const infebPloanint  = document.getElementById("febPloanint");
+   const infebPloanamt  = document.getElementById("febPloanamt");
+   const infebPloactint = document.getElementById("febPloactint");
+   const infebCloaninstall = document.getElementById("febCloaninstall");
+   const infebCloanint  = document.getElementById("febCloanint");
+   const infebCloanamt  = document.getElementById("febCloanamt");
+   const infebCloactint  = document.getElementById("febCloactint");
+   infebshare.value = "";
+   infebcd.value = "";
+  infebcdac.value = "";
+  infebPloaninstall.value = "";
+  infebPloanint.value = "";
+  infebPloanamt.value = "";
+  infebPloactint.value = "";
+  infebCloaninstall.value = "";
+  infebCloanint.value = "";
+  infebCloanamt.value = "";
+  infebCloactint.value = "";
+  const  inmarchshare = document.getElementById("marchshare");
+  const inmarchcd = document.getElementById("marchcd");
+  const inmarchcdac  = document.getElementById("marchcdac");
+  const inmarchPloaninstall  = document.getElementById("marchPloaninstall");
+  const inmarchPloanint  = document.getElementById("marchPloanint");
+  const inmarchPloanamt  = document.getElementById("marchPloanamt");
+  const inmarchPloactint = document.getElementById("marchPloactint");
+  const inmarchCloaninstall = document.getElementById("marchCloaninstall");
+  const inmarchCloanint  = document.getElementById("marchCloanint");
+  const inmarchCloanamt  = document.getElementById("marchCloanamt");
+  const inmarchCloactint  = document.getElementById("marchCloactint");
+  
+  inmarchshare.value = "";
+  inmarchcd.value = "";
+ inmarchcdac.value = "";
+ inmarchPloaninstall.value = "";
+ inmarchPloanint.value = "";
+ inmarchPloanamt.value = "";
+ inmarchPloactint.value = "";
+ inmarchCloaninstall.value = "";
+ inmarchCloanint.value = "";
+ inmarchCloanamt.value = "";
+ inmarchCloactint.value = "";
+ 
+ const  incdtotal = document.getElementById("cdtotal");
+ const incdintt = document.getElementById("cdintt");
+ const inPLoaninstalltot  = document.getElementById("PLoaninstalltot");
+ const inPLoanintdetot  = document.getElementById("PLoanintdetot");
+ const inPLoanactinttot  = document.getElementById("PLoanactinttot");
+ const inCLoaninstalltot  = document.getElementById("CLoaninstalltot");
+ const inCLoanintdetot = document.getElementById("CLoanintdetot");
+ const inCLoanactinttot = document.getElementById("CLoanactinttot");
+ const inclosingbalshare  = document.getElementById("closingbalshare");
+ const incdactotal  = document.getElementById("cdactotal");
+  incdtotal.value = "";
+   incdintt.value = "";
+  inPLoaninstalltot.value = "";
+  inPLoanintdetot.value = "";
+  inPLoanactinttot.value = "";
+  inCLoaninstalltot.value = "";
+  inCLoanintdetot.value = "";
+  inCLoanactinttot.value = "";
+  inclosingbalshare.value = "";
+  incdactotal.value = "";
+  
+ const  intxtlnmnth = document.getElementById("txtlnmnth");
+ const intxtLnDate = document.getElementById("txtLnDate");
+ const intxtLnAdv  = document.getElementById("txtLnAdv");
+ const intxtLnContra  = document.getElementById("txtLnContra");
+ const intxtcashpldeposit  = document.getElementById("txtcashpldeposit");
+ const intxtcashpldepositint  = document.getElementById("txtcashpldepositint");
+ const intxtcashcldep = document.getElementById("txtcashcldep");
+ const intxtcashcldepint = document.getElementById("txtcashcldepint");
+  intxtlnmnth.value = "";
+   intxtLnDate.value = "";
+  intxtLnAdv.value = "";
+  intxtLnContra.value = "";
+  intxtcashpldeposit.value = "";
+  intxtcashpldepositint.value = "";
+  intxtcashcldep.value = "";
+  intxtcashcldepint.value = "";
+
+  
+  }
+        // Function to fetch user data
+        function fetchUserData(p_userId,p_audityear) {
+            $.ajax({
+                url: `/tcos/members/auditdetsettlement/${p_userId}/${p_audityear}`,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                	// alert(response.auditdetsettlement.AuditDetSettlement);
+                	// console.log(response.auditdetsettlement); // "Hello World"
+                	console.log(response.auditdetsettlement1);
+                    if (response.auditdetsettlement && response.auditdetsettlement.length > 0) {
+                    	//alert(response.auditdetsettlement.varname);
+                    	populateUserData(response.auditdetsettlement);                    	  
+                                              
+                    } else {
+                        alert('No user data found');
+                    }
+                    if (response.auditdetsettlement1 && response.auditdetsettlement1.length > 0) {
+                    	populatesummaryTable(response.auditdetsettlement1);
+                    }
+                    
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching user data:', error);
+                    alert('Error fetching user data. Please try again.');
+                }
+            });
+        }
+        // Function to populate summary table   populatesummaryTable(response.AuditDetSettlement1);
+        function populatesummaryTable(auditdetsettlement1) { 
+           // alert("Helo populated total");       	
+        	$('#PLoaninstalltot').val(auditdetsettlement1[0].totPLinstcashamt);
+        	$('#PLoanintdetot').val(auditdetsettlement1[0].totalPLint);
+        	$('#PLoanactinttot').val(auditdetsettlement1[0].totPLactintcah);
+        	$('#CLoaninstalltot').val(auditdetsettlement1[0].totCLinstcashamt);
+        	$('#CLoanintdetot').val(auditdetsettlement1[0].totalCLint);
+        	$('#CLoanactinttot').val(auditdetsettlement1[0].totCLactintcash);
+        	$('#txtlnmnth').val(auditdetsettlement1[0].lnmonth);
+        	$('#txtLnDate').val(auditdetsettlement1[0].varcompany1);
+        	$('#txtLnAdv').val(auditdetsettlement1[0].lnadv);
+        	$('#txtLnContra').val(auditdetsettlement1[0].lncontra);
+        	
+        	
+        }
+        // Function to populate form fields with user data
+        function populateUserData(auditdetsettlement) {
+            // Basic Information
+            $('#name').val(auditdetsettlement[0].varname );
+            $('#openingblshare').val(auditdetsettlement[0].shareopening_bal);
+            $('#aprilshare').val(auditdetsettlement[0].shareaprl);
+            $('#mayshare').val(auditdetsettlement[0].sharemay);
+            $('#juneshare').val(auditdetsettlement[0].sharejune);
+            $('#julyshare').val(auditdetsettlement[0].sharejuly);
+            $('#augstshare').val(auditdetsettlement[0].shareaug);
+            $('#sepshare').val(auditdetsettlement[0].sharesep);
+            $('#octshare').val(auditdetsettlement[0].shareoct);
+            $('#novshare').val(auditdetsettlement[0].sharenov);
+            $('#decshare').val(auditdetsettlement[0].sharedec);
+            $('#janshare').val(auditdetsettlement[0].sharejan );
+            $('#febshare').val(auditdetsettlement[0].sharefeb );
+            $('#marchshare').val(auditdetsettlement[0].sharemarch);
+            $('#closingbalshare').val(auditdetsettlement[0].shareclosing_bal);
+            
+            $('#openingblcdac').val(auditdetsettlement[0].cdopening_bal);
+            $('#aprilcd').val(auditdetsettlement[0].cdductionaprl);
+            $('#maycd').val(auditdetsettlement[0].cdductionmay);
+            $('#junecd').val(auditdetsettlement[0].cdductionjune);
+            $('#julycd').val(auditdetsettlement[0].cdductionjuly);
+            $('#augcd').val(auditdetsettlement[0].cdductionaug);
+            $('#sepcd').val(auditdetsettlement[0].cdductionsep);
+            $('#octcd').val(auditdetsettlement[0].cdductionoct);
+            $('#novcd').val(auditdetsettlement[0].cdductionnov);
+            $('#deccd').val(auditdetsettlement[0].cdductiondec);
+            $('#jancd').val(auditdetsettlement[0].cdductionjan);
+            $('#febcd').val(auditdetsettlement[0].cdductionfeb);
+            $('#marchcd').val(auditdetsettlement[0].cdductionmarch);
+            $('#cdtotal').val(auditdetsettlement[0].cdduction_total);
+            $('#aprilcdac').val(auditdetsettlement[0].cdductionaprltot); 
+            $('#cdintt').val(auditdetsettlement[0].cdduction_totalint);
+            $('#cdactotal').val(auditdetsettlement[0].cdacclosingtotal);
+            
+            $('#Ploanclosebl').val(auditdetsettlement[0].openingloanbal);
+            $('#aprilPloaninstall').val(auditdetsettlement[0].emiPLaprl);
+            $('#mayPloaninstall').val(auditdetsettlement[0].emiPLmay);
+            $('#junePloaninstall').val(auditdetsettlement[0].emiPLjune);
+            $('#julyPloaninstall').val(auditdetsettlement[0].emiPLjuly);
+            $('#augPloaninstall').val(auditdetsettlement[0].emiPLaug);
+            $('#sepPloaninstall').val(auditdetsettlement[0].emiPLsep);
+            $('#octPloaninstall').val(auditdetsettlement[0].emiPLoct);
+            $('#novPloaninstall').val(auditdetsettlement[0].emiPLnov);
+            $('#decPloaninstall').val(auditdetsettlement[0].emiPLdec);
+            $('#janPloaninstall').val(auditdetsettlement[0].emiPLjan);
+            $('#febPloaninstall').val(auditdetsettlement[0].emiPLfeb);
+            $('#marchPloaninstall').val(auditdetsettlement[0].emiPLmarch);
+            
+            
+            $('#aprilPloanint').val(auditdetsettlement[0].emiPLintaprl);
+            $('#mayPloanint').val(auditdetsettlement[0].emiPLintmay);
+            $('#junePloanint').val(auditdetsettlement[0].emiPLintjune);
+            $('#julyPloanint').val(auditdetsettlement[0].emiPLintjuly);
+            $('#augPloanint').val(auditdetsettlement[0].emiPLintaug);
+            $('#sepPloanint').val(auditdetsettlement[0].emiPLintsep);
+            $('#octPloanint').val(auditdetsettlement[0].emiPLintoct);
+            $('#novPloanint').val(auditdetsettlement[0].emiPLintnov);
+            $('#decPloanint').val(auditdetsettlement[0].emiPLintdec);
+            $('#janPloanint').val(auditdetsettlement[0].emiPLintjan);
+            $('#febPloanint').val(auditdetsettlement[0].emiPLintfeb);
+            $('#marchPloanint').val(auditdetsettlement[0].emiPLintmarch);
+            
+            
+            $('#aprilPloanamt').val(auditdetsettlement[0].emiPLaprltot);
+            $('#mayPloanamt').val(auditdetsettlement[0].emiPLmaytot);
+            $('#junePloanamt').val(auditdetsettlement[0].emiPLjunetot);
+            $('#julyPloanamt').val(auditdetsettlement[0].emiPLjulytot);
+            $('#augPloanamt').val(auditdetsettlement[0].emiPLaugtot);
+            $('#sepPloanamt').val(auditdetsettlement[0].emiPLseptot);
+            $('#octPloanamt').val(auditdetsettlement[0].emiPLocttot);
+            $('#novPloanamt').val(auditdetsettlement[0].emiPLnovtot);
+            $('#decPloanamt').val(auditdetsettlement[0].emiPLdectot);
+            $('#janPloanamt').val(auditdetsettlement[0].emiPLjantot);
+            $('#febPloanamt').val(auditdetsettlement[0].emiPLfebtot);
+            $('#marchPloanamt').val(auditdetsettlement[0].emiPLmarchtot);
+            
+            $('#aprilPloactint').val(auditdetsettlement[0].emiPLactintaprl);
+            $('#mayPloactint').val(auditdetsettlement[0].emiPLactintmay);
+            $('#junePloactint').val(auditdetsettlement[0].emiPLactintjune);
+            $('#julylPloactint').val(auditdetsettlement[0].emiPLactintjuly);
+            $('#auglPloactint').val(auditdetsettlement[0].emiPLactintaug);
+            $('#sepPloactint').val(auditdetsettlement[0].emiPLactintsep);
+            $('#octPloactint').val(auditdetsettlement[0].emiPLactintoct);
+            $('#novPloactint').val(auditdetsettlement[0].emiPLactintnov);
+            $('#declPloactint').val(auditdetsettlement[0].emiPLactintdec);
+            $('#janPloactint').val(auditdetsettlement[0].emiPLactintjan);
+            $('#febPloactint').val(auditdetsettlement[0].emiPLactintfeb);
+            $('#marchPloactint').val(auditdetsettlement[0].emiPLactintmarch);
+            
+            $('#cloansebl').val(auditdetsettlement[0].emiCLopenloan);
+            $('#aprilCloaninstall').val(auditdetsettlement[0].emiCLaprl);
+            $('#mayCloaninstall').val(auditdetsettlement[0].emiCLmay);
+            $('#juneCloaninstall').val(auditdetsettlement[0].emiCLjune);
+            $('#julyCloaninstall').val(auditdetsettlement[0].emiCLjuly);
+            $('#augCloaninstall').val(auditdetsettlement[0].emiCLaug);
+            $('#sepCloaninstall').val(auditdetsettlement[0].emiCLsep);
+            $('#octCloaninstall').val(auditdetsettlement[0].emiCLoct);
+            $('#novCloaninstall').val(auditdetsettlement[0].emiCLnov);
+            $('#decCloaninstall').val(auditdetsettlement[0].emiCLdec);
+            $('#janCloaninstall').val(auditdetsettlement[0].emiCLjan);
+            $('#febCloaninstall').val(auditdetsettlement[0].emiCLfeb);
+            $('#marchCloaninstall').val(auditdetsettlement[0].emiCLmarch);
+            
+            $('#aprilCloanint').val(auditdetsettlement[0].emiCLintaprl);
+            $('#mayCloanint').val(auditdetsettlement[0].emiCLintmay);
+            $('#juneCloanint').val(auditdetsettlement[0].emiCLintjune);
+            $('#julyCloanint').val(auditdetsettlement[0].emiCLintjuly);
+            $('#augCloanint').val(auditdetsettlement[0].emiCLintaug);
+            $('#sepCloanint').val(auditdetsettlement[0].emiCLintsep);
+            $('#octCloanint').val(auditdetsettlement[0].emiCLintoct);
+            $('#novCloanint').val(auditdetsettlement[0].emiCLintnov);
+            $('#decCloanint').val(auditdetsettlement[0].emiCLintdec);
+            $('#janCloanint').val(auditdetsettlement[0].emiCLintjan);
+            $('#febCloanint').val(auditdetsettlement[0].emiCLintfeb);
+            $('#marchCloanint').val(auditdetsettlement[0].emiCLintmarch);
+            
+            $('#aprilCloanamt').val(auditdetsettlement[0].emiCLaprltot);
+            $('#mayCloanamt').val(auditdetsettlement[0].emiCLmaytot);
+            $('#juneCloanamt').val(auditdetsettlement[0].emiCLjunetot);
+            $('#julyCloanamt').val(auditdetsettlement[0].emiCLjulytot);
+            $('#augCloanamt').val(auditdetsettlement[0].emiCLaugtot);
+            $('#sepCloanamt').val(auditdetsettlement[0].emiCLseptot);
+            $('#octCloanamt').val(auditdetsettlement[0].emiCLocttot);
+            $('#novCloanamt').val(auditdetsettlement[0].emiCLnovtot);
+            $('#decCloanamt').val(auditdetsettlement[0].emiCLdectot);
+            $('#janCloanamt').val(auditdetsettlement[0].emiCLjantot);
+            $('#febCloanamt').val(auditdetsettlement[0].emiCLfebtot);
+            $('#marchCloanamt').val(auditdetsettlement[0].emiCLmarchtot);
+            
+            $('#aprilCloactint').val(auditdetsettlement[0].emiCLactintaprl);
+            $('#mayCloactint').val(auditdetsettlement[0].emiCLactintmay);
+            $('#juneCloactint').val(auditdetsettlement[0].emiCLactintjune);
+            $('#julyCloactint').val(auditdetsettlement[0].emiCLactintjuly);
+            $('#augCloactint').val(auditdetsettlement[0].emiCLactintaug);
+            $('#sepCloactint').val(auditdetsettlement[0].emiCLactintsep);
+            $('#octCloactint').val(auditdetsettlement[0].emiCLactintoct);
+            $('#novCloactint').val(auditdetsettlement[0].emiCLactintnov);
+            $('#decCloactint').val(auditdetsettlement[0].emiCLactintdec);
+            $('#janCloactint').val(auditdetsettlement[0].emiCLactintjan);
+            $('#febCloactint').val(auditdetsettlement[0].emiCLactintfeb);
+            $('#marchCloactint').val(auditdetsettlement[0].emiCLactintmarch);
+            
+            $('#txtcashpldeposit').val(auditdetsettlement[0].totalPLcashdep);
+            $('#txtcashpldepositint').val(auditdetsettlement[0].totalPLcashdepint);
+            $('#txtcashcldep').val(auditdetsettlement[0].totalCLcashdep);
+            $('#txtcashcldepint').val(auditdetsettlement[0].totalCLcashdepint);       
+                        
+            const $txtaprilcdac = $('#aprilcdac');
+            // Get the current value
+            const currentValue = $txtaprilcdac.val();            
+            console.log(currentValue);
+            console.log(auditdetsettlement);
+            
+            if (Number(currentValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtaprilcdac.val('');
+            }
+
+            $('#maycdac').val(auditdetsettlement[0].cdductionmaytot); 
+            
+            const $txtmaycdac = $('#maycdac');
+            // Get the current value
+            const maycdacValue = $txtmaycdac.val();
+            
+            if (Number(maycdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtmaycdac.val('');
+            }
+            $('#junecdac').val(auditdetsettlement[0].cdductionjunetot);   
+            
+            const $txtjunecdac = $('#junecdac');
+            // Get the current value
+            const junecdacValue = $txtjunecdac.val();
+            if (Number(junecdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtjunecdac.val('');
+            }
+            
+            $('#julycdac').val(auditdetsettlement[0].cdductionjulytot);
+            const $txtjulycdac = $('#julycdac');
+            const julycdacValue = $txtjulycdac.val();
+            
+            if (Number(julycdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtjulycdac.val('');
+            }
+            $('#augcdac').val(auditdetsettlement[0].cdductionaugtot);
+            const $txtaugcdac = $('#augcdac');
+            const augcdacValue = $txtaugcdac.val();
+            if (Number(augcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtaugcdac.val('');
+            }
+            
+            $('#sepcdac').val(auditdetsettlement[0].cdductionseptot);
+            
+            const $txtsepcdac = $('#sepcdac');
+            const sepcdacValue = $txtaugcdac.val();
+            if (Number(sepcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtsepcdac.val('');
+            }
+            
+            $('#octcdac').val(auditdetsettlement[0].cdductionocttot);
+            const $txtoctcdac = $('#octcdac');
+            const octcdacValue = $txtoctcdac.val();
+            
+            if (Number(octcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtoctcdac.val('');
+            }
+            
+            $('#novcdac').val(auditdetsettlement[0].cdductionnovtot);
+            
+            const $txtnovcdac = $('#novcdac');
+            const novcdacValue = $txtnovcdac.val();
+            if (Number(novcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtnovcdac.val('');
+            }
+            $('#deccdac').val(auditdetsettlement[0].cdductiondectot);
+            const $txtdeccdac = $('#deccdac');
+            const deccdacValue = $txtdeccdac.val();
+            
+            if (Number(deccdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtdeccdac.val('');
+            }
+            $('#jancdac').val(auditdetsettlement[0].cdductionjantot);
+            const $txtjancdac = $('#jancdac');
+            const jancdacValue = $txtjancdac.val();
+            
+            if (Number(jancdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtjancdac.val('');
+            }
+            $('#febcdac').val(auditdetsettlement[0].cdductionfebtot);
+            const $txtfebcdac = $('#febcdac');
+            const febcdacValue = $txtfebcdac.val();
+            
+            if (Number(febcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtfebcdac.val('');
+            }
+            $('#marchcdac').val(auditdetsettlement[0].cdductionmarchtot);
+            const $txtmarchcdac = $('#marchcdac');
+            const marchcdacValue = $txtmarchcdac.val();
+            if (Number(marchcdacValue) === 0) {
+                // If it is 0, set the value to an empty string ("")
+                $txtmarchcdac.val('');
+            }
+            
+            const $txtaprilPloanamt = $('#aprilPloanamt');
+            const $txtmayPloanamt = $('#mayPloanamt');
+            const $txtjunePloanamt = $('#junePloanamt');
+            const $txtjulyPloanamt = $('#julyPloanamt');
+            const $txtaugPloanamt = $('#augPloanamt');
+            const $txtsepPloanamt = $('#sepPloanamt');
+            const $txtoctPloanamt = $('#octPloanamt');
+            const $txtnovPloanamt = $('#novPloanamt');
+            const $txtdecPloanamt = $('#decPloanamt');
+            const $txtjanPloanamt = $('#janPloanamt');
+            const $txtfebPloanamt = $('#febPloanamt');
+            const $txtmarchPloanamt = $('#marchPloanamt');  
+            // Address Information  
+            
+            const aprilPloanamtValue = $txtaprilPloanamt.val();
+            const mayPloanamtValue = $txtmayPloanamt.val();
+            const junePloanamtValue = $txtjunePloanamt.val();
+            const julyPloanamtValue = $txtjulyPloanamt.val();
+            const augPloanamtValue = $txtaugPloanamt.val();
+            const sepPloanamtValue = $txtsepPloanamt.val();
+            const octPloanamtValue = $txtoctPloanamt.val();
+            const novPloanamtValue = $txtnovPloanamt.val();
+            const decPloanamtValue = $txtdecPloanamt.val();
+            const janPloanamtValue = $txtjanPloanamt.val();
+            const febPloanamtValue = $txtfebPloanamt.val();
+            const marchPloanamtValue = $txtmarchPloanamt.val();
+            
+            if (Number(aprilPloanamtValue) === 0) {                
+                $txtaprilPloanamt.val('');
+            }
+            if (Number(mayPloanamtValue) === 0) {                
+                $txtmayPloanamt.val('');
+            }
+            
+            if (Number(junePloanamtValue) === 0) {                
+                $txtjunePloanamt.val('');
+            }
+            if (Number(julyPloanamtValue) === 0) {                
+                $txtjulyPloanamt.val('');
+            }
+            if (Number(augPloanamtValue) === 0) {                
+                $txtaugPloanamt.val('');
+            }
+            if (Number(sepPloanamtValue) === 0) {                
+                $txtsepPloanamt.val('');
+            }
+            if (Number(octPloanamtValue) === 0) {                
+                $txtoctPloanamt.val('');
+            }
+            if (Number(novPloanamtValue) === 0) {                
+                $txtnovPloanamt.val('');
+            }
+            if (Number(decPloanamtValue) === 0) {                
+                $txtdecPloanamt.val('');
+            }
+            if (Number(janPloanamtValue) === 0) {                
+                $txtjanPloanamt.val('');
+            }
+            if (Number(febPloanamtValue) === 0) {                
+                $txtfebPloanamt.val('');
+            }
+            if (Number(marchPloanamtValue) === 0) {                
+                $txtmarchPloanamt.val('');
+            }
+        }
+    
+      
+        //con
+        // Optional: Allow search on Enter key press
+        $('#userId').keypress(function (e) {
+            if (e.which === 13) { // Enter key
+                $('input[type="button"][value="Search"]').click();
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+<script>      
+
+        document.getElementById("generate_summary").addEventListener("click", function () {
+        	 const p_userId = $('#userId').val().trim();
+             var p_audityear = $('#financial_year').val().trim();
+             // alert(p_audityear);
+              if (!p_userId) {
+                  alert('Please enter a Ticket Number');
+                  return;
+              }
+        	
+        	triggerGeneratePdf(p_userId,p_audityear); // your actual function to download PDF
+        });
+
+        function triggerGeneratePdf(p_userId,p_audityear) {
+                    
+        	fetch(`/tcos/members/generateauditpdf/${p_userId}/${p_audityear}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob(); // Receive PDF as blob
+                })
+                .then(blob => {
+                    // Create a link and trigger download
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'audit_settlement_summary'+ p_userId +".pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                   
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        }
+
+        // Function to clean up "JS:xxx" from values
+        function cleanData(value) {
+           return value.toString().replace(/JS:\d+/g, '').trim();
+        }
+        
+
+    </script>
+    
+    <script>      
+
+        document.getElementById("download_settlement").addEventListener("click", function () {
+        	 const p_userId = $('#userId').val().trim();
+             var p_audityear = $('#financial_year').val().trim();
+             // alert(p_audityear);
+              if (!p_userId) {
+                  alert('Please enter a Ticket Number');
+                  return;
+              }
+        	
+              triggerSettlementPdf(p_userId,p_audityear); // your actual function to download PDF
+        });
+
+        function triggerSettlementPdf(p_userId,p_audityear) {
+                    
+        	fetch(`/tcos/members/genauditsettlementpdf/${p_userId}/${p_audityear}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob(); // Receive PDF as blob
+                })
+                .then(blob => {
+                    // Create a link and trigger download
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'audit_settlement'+ p_userId +".pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                   
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        }
+
+        // Function to clean up "JS:xxx" from values
+        function cleanData(value) {
+           return value.toString().replace(/JS:\d+/g, '').trim();
+        }
+        
+
+    </script>
+
+</body>
+</html>

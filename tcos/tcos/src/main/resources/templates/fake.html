@@ -1,0 +1,177 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--&lt;!&ndash; BEGIN: Head &ndash;&gt;-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/static/dist/images/logo.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <meta name="description" content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">-->
+<!--    <meta name="keywords" content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">-->
+<!--    <meta name="author" content="LEFT4CODE">-->
+<!--    <title>Member Registration</title>-->
+<!--    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/static/dist/css/app.css" />-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>-->
+<!--    &lt;!&ndash; END: CSS Assets&ndash;&gt;-->
+<!--</head>-->
+
+<!--<body class="py-5">-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    <div th:replace="~{./fragments/nav}"></div>-->
+<!--    <div class="content">-->
+<!--        <div th:replace="~{./fragments/top}"></div>-->
+<!--        <div class="intro-y box p-5 mt-5">-->
+<!--            <form th:action="@{/members/loan/verifiedLoan/update}" method="post" class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">-->
+<!--                <div class="mt-5">-->
+<!--                    &lt;!&ndash; Loan Details Section &ndash;&gt;-->
+<!--                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mr-2 ml-2 mt-5">-->
+<!--&lt;!&ndash;                        <h3 class="font-medium text-lg mb-4 text-blue-700">User Details</h3>&ndash;&gt;-->
+<!--                        <div class="grid grid-cols-12 gap-4 gap-y-5">-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="userId" class="form-label">User ID</label>-->
+<!--                                <input id="userId" type="text" class="form-control" th:value="${loan.userId}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="name" class="form-label">Name</label>-->
+<!--                                <input id="name" type="text" th:value="${loan.name}" class="form-control" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="loanType" class="form-label">empId</label>-->
+<!--                                <input id="loanType" type="text" class="form-control" th:value="${loan.loanType}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="applyDate" class="form-label">bcNumber</label>-->
+<!--                                <input id="applyDate" type="Date" class="form-control" th:value="${loan.createdAt}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="appliedLoan" class="form-label">gender</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="appliedLoan" type="text" class="form-control border-warning" th:value="${loan.appliedLoan}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="loanAmount" class="form-label">dob</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanAmount" type="text" class="form-control border-warning" name="loanAmount" th:value="${loan.loanAmount}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-12 sm:col-span-6">-->
+<!--                                <label for="deposit_balance" class="form-label">panCard</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="deposit_balance" type="text" class="form-control border-success" th:value="${loan.Deductions}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">aadharNumber</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">phoneNum</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">whatsappNumber</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">email</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">fathersName</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">Company ID</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">createdAt</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">serivcePeriod</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="loanBalance" class="form-label">dor</label>-->
+<!--                                <div class="input-group">-->
+<!--                                    <div class="input-group-text">Rs.</div>-->
+<!--                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="bname" class="form-label">Bank</label>-->
+<!--                                <input id="bname" type="text" name="bname" class="form-control " placeholder="First Loan" th:value="${loan.bname}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="accountNum" class="form-label">Account Number</label>-->
+<!--                                <input id="accountNum" type="text" name="accountNum" class="form-control " th:value="${loan.accountNum}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="branch" class="form-label">branch</label>-->
+<!--                                <input id="branch" type="text" name="branch" class="form-control" th:value="${loan.branch}" readonly>-->
+<!--                            </div>-->
+<!--                            <div class="intro-y col-span-6">-->
+<!--                                <label for="ifscode" class="form-label">ifscode</label>-->
+<!--                                <input id="ifscode" type="text" name="ifscode" class="form-control"  th:value="${loan.ifscode}" readonly>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">-->
+<!--                            <a th:href ="@{/members/loan/loan_status}" type="button" class="btn btn-secondary w-24">Cancel</a>-->
+<!--                            <button class="btn btn-primary w-24 ml-2" onclick="nextStep()">-->
+<!--                                Next-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; Guarantors Table &ndash;&gt;-->
+<!--                    &lt;!&ndash; Additional Loan Information &ndash;&gt;-->
+<!--                    <div class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert">-->
+<!--                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>-->
+<!--                        <span class="text-slate-800 dark:text-slate-500">Please enter your "Name" in "Approved By"  and select the "Advice Type" if you are approving the loan or Keep it empty</span>-->
+<!--                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; JavaScript for Updating Current Status &ndash;&gt;-->
+<!--                <input type="hidden" id="Id" name="Id" class="form-control" th:value="${loan.id}">-->
+<!--                <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">-->
+<!--                    <a th:href ="@{/members/loan/verifiedLoan}" type="button" class="btn btn-secondary w-24">Cancel</a>-->
+<!--                    <button type="submit" class="btn py-3 btn-primary w-full md:w-52">Save</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div th:replace="~{./fragments/footer}"></div>-->
+<!--<script src="/static/dist/js/app.js"></script>-->
+<!--</body>-->
+<!--</html>-->

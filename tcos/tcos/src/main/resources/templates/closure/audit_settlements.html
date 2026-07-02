@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+ <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audit Settlement</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+<body class="overflow-x-auto py-5">
+<!-- BEGIN: Mobile Menu -->
+
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y flex justify-between mt-6">
+            <div class="flex-1">
+                <h1 class=" font-medium mr-auto text-2xl">
+                    Audit
+                </h1>
+            </div>
+            <div class="form-inline items-start flex-col xl:flex-row mt-2  first:mt-0 first:pt-0">
+                <div class="form-label xl:w-2 mt-3">
+                    <div class="text-left">
+                        <div class="flex items-center">
+                            <div class="font-medium">Ticket No :-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full mt-3 xl:mt-0 flex-1">
+                    <div class="input-group">
+                        <input id="ticketNo" type="text" name="ticketNo" class="form-control">
+                        <div class="input-group-text"> <i data-lucide="edit" class="block mx-auto"></i></div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="fullNameHidden" th:value="${fullName}">
+            <!-- Div with the button on the right -->
+            <div class="flex items-center justify-end space-x-2 ml-3 mt-2">
+                
+                <!-- Generate Button (Initially hidden) -->
+                <a id="generate_button" class="btn btn-primary shadow-md"
+                   data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view" >
+                    Generate
+                </a>
+            </div>
+        </div>     
+       
+    </div>
+    <!-- END: Content -->
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<!-- Include jQuery and DataTables JS -->
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+   <script>      
+
+        document.getElementById("generate_button").addEventListener("click", function () {
+            triggerGeneratePdf(); // your actual function to download PDF
+        });
+
+        function triggerGeneratePdf() {
+        	let ticketInput = document.getElementById("ticketNo");
+        	
+        	let ticketNo = ticketInput.value.trim();
+           
+        	ticketInput.value = "0";
+
+               // Clear "0" when the user starts typing
+               ticketInput.addEventListener("focus", function () {
+                   if (ticketInput.value === "0") {
+                	   ticketInput.value = "";
+                   }
+               });
+               // Restore "0" if empty
+               ticketInput.addEventListener("blur", function () {
+                   if (ticketInput.value.trim() === "") {
+                	   ticketInput.value = "0";
+                   }
+               });
+            
+            fetch('/tcos/members/generateauditpdf/' + ticketNo )
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob(); // Receive PDF as blob
+                })
+                .then(blob => {
+                    // Create a link and trigger download
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'audit_settlement'+ ticketNo +".pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        }
+
+        // Function to clean up "JS:xxx" from values
+        function cleanData(value) {
+            return value.toString().replace(/JS:\d+/g, '').trim();
+        }
+        
+
+    </script>
+
+
+<div id="customAlertBox" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #007BFF;
+    color: white;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    z-index: 9999;
+    text-align: center;
+">
+    Loan Vouchers are being saved.<br>
+    Please Wait.
+</div>
+</body>
+</html>

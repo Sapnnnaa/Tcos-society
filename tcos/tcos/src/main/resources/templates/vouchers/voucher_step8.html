@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Approved Vouchers</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="overflow-x-auto py-5">
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{fragments/top}"></div>
+        <div class="intro-y flex items-center mt-4">
+            <h2 class="text-2xl font-medium mr-auto">
+                Approved Voucher
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+
+                <div class="mb-5">
+                    <label for="minDate">From:</label>
+                    <input type="date" id="minDate" class="border p-2 rounded">
+
+                    <label for="maxDate" class="ml-2">To:</label>
+                    <input type="date" id="maxDate" class="border p-2 rounded">
+                </div>
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Voucher ID</th>
+                                <th class="whitespace-nowrap">V. UID</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Ticket No.</th>
+                                <th class="whitespace-nowrap">Bank Name</th>
+                                <th class="whitespace-nowrap">Category</th>
+                                <th class="whitespace-nowrap">Cheque Number</th>
+                                <th class="whitespace-nowrap">Payment Type</th>
+                                <th class="whitespace-nowrap">Payment Bank</th>
+                                <th class="whitespace-nowrap">Total Amount</th>
+                                <th class="whitespace-nowrap">Approved At</th>
+                                <th class="whitespace-nowrap">Voucher Status</th>
+                                <th class="whitespace-nowrap">Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${mvoucher != null and not #lists.isEmpty(mvoucher)}"
+                                th:each="mv : ${mvoucher}">
+                                <td th:text="${mv.vId}">Ticket Number</td>
+                                <td th:text="${mv.gid}">Voucher UID</td>
+                                <td th:text="${mv.Name}">Name</td>
+                                <td th:text="${mv.userId}">Ticket No</td>
+                                <td th:text="${mv.bankName}">Bank Name</td>
+                                <td th:text="${mv.category}">Category</td>
+                                <td th:text="${mv.chequeNo}">Cheque No</td>
+                                <td th:text="${mv.paymenttype}">Payment Type</td>
+                                <td th:text="${mv.paymentBank}">Payment Bank</td>
+                                <td th:text="${mv.totalAmount}">Total Amount</td>
+                                <td th:text="${mv.voucherApprovedDate}">voucherApprovedDate</td>
+                                <td th:text="${mv.paymentStatus}">Status</td>
+                                <td class="flex-1">
+                                    <a class="btn btn-primary shadow-md" th:href="@{/members/membervoucher/approvedVoucher/details/{Id}(Id=${mv.vId})}"
+                                       data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view">
+                                        Update
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Content -->
+
+    <!-- BEGIN: Super Large Modal Content -->
+    <div id="superlarge-modal-size-preview"
+         class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-xl bg-white rounded-lg shadow-lg overflow-hidden">
+        </div>
+
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            columnDefs: [
+                {
+                    targets: 10, // Updated Date column (0-based index)
+                    render: function (data, type, row) {
+                        if (!data) return '';
+                        var date = new Date(data); // raw ISO yyyy-MM-dd
+                        return date.toLocaleDateString('en-GB'); // dd/MM/yyyy
+                    }
+                }
+            ]
+        });
+
+        // Filtering by date range
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = $('#minDate').val();
+                var max = $('#maxDate').val();
+                var minDate = min ? new Date(min) : null;
+                var maxDate = max ? new Date(max) : null;
+
+                // Get raw ISO value from row (still yyyy-MM-dd)
+                var rowData = table.row(dataIndex).data();
+                var rowDateStr = rowData[10];
+                var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+
+                if (!rowDate) return false;
+                if (minDate && rowDate < minDate) return false;
+                if (maxDate && rowDate > maxDate) return false;
+
+                return true;
+            }
+        );
+
+        $('#minDate, #maxDate').on('change', function () {
+            table.draw();
+        });
+    });
+</script>
+</body>
+
+</html>

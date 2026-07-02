@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Cd Enquiry</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<style>
+    
+    /* Modern badge styles */
+    .badge {
+        display: inline-block;
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-other {
+        color: white;
+        background: linear-gradient(135deg, #ff5e62, #ff2400);
+        box-shadow: 0 2px 5px rgba(255, 94, 98, 0.3);
+    }
+
+    .badge-active {
+        color: white;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        box-shadow: 0 2px 5px rgba(79, 172, 254, 0.3);
+    }
+
+    /* Dashboard card styling */
+    .dashboard-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        background: white;
+        overflow: hidden;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Statistic boxes */
+    .stat-box {
+        padding: 25px 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    }
+
+    .stat-box .stat-label {
+        font-size: 14px;
+        color: #6b7280;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .stat-box .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    /* Form styling */
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-card .form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-card .form-title i {
+        margin-right: 10px;
+        color: #3b82f6;
+    }
+
+    /* Alert styling */
+    .alert {
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .alert-success {
+        background-color: #d1fae5;
+        color: #065f46;
+        border-left: 4px solid #10b981;
+    }
+
+    .alert-danger {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border-left: 4px solid #ef4444;
+    }
+
+    /* Button styling */
+    .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: white;
+        border: none;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 10px 20px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+    }
+
+    /* Input styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Section header */
+    .section-header {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-header i {
+        margin-right: 12px;
+        color: #3b82f6;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .stat-box {
+            padding: 20px 15px;
+        }
+
+        .stat-box .stat-value {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<body class="py-5">
+     <div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content content--top-nav">
+        <div th:replace="~{./fragments/top}"></div>  
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="section-header">
+                    <i class="fas fa-piggy-bank"></i>
+                    CD & Share Details
+                </h2>
+            </div>
+                 <div class="box grid grid-cols-12">
+                        <!-- Left Column - Statistics -->
+                        <div class="col-span-12 lg:col-span-4 px-8 py-12 flex flex-col justify-center">
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-hand-holding-usd mr-2"></i>
+                                    My Total Share Amount
+                                </div>
+                                <div class="stat-value"  th:text="'₹' + ${cdShareDeductions.shareDeductionTotal}"></div>
+                            </div>
+
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-calendar-alt mr-2"></i>
+                                    My CD Cut Per Month
+                                </div>
+                                <div class="stat-value"  th:text="'₹' + ${user.cdCut}"></div>
+                            </div>
+
+                            <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-wallet mr-2"></i>
+                                    My Total CD Amount
+                                </div>
+                                <div class="stat-value"  th:text="'₹' + ${cdShareDeductions.cdDeductionTotal}"></div>
+                            </div>
+                             <div class="stat-box">
+                                <div class="stat-label">
+                                    <i class="fas fa-wallet mr-2"></i>
+                                    My Loan Due 
+                                </div>
+                                <div class="stat-value"  ></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Form -->
+                        <div
+                            class="col-span-12 lg:col-span-8 p-8 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-darkmode-300 border-dashed">
+                            <div class="form-card">
+                                <div class="form-title">
+                                    <i class="fas fa-edit"></i>
+                                    Change Monthly CD Cut Rate
+                                </div>
+
+                                <form  th:action="@{/members/loan/cd_share}" method="post">
+                                    <div class="flex items-center gap-4">
+                                        <input type="number" th:value="${amt != null ? amt : 0}"
+                                            class="form-control w-56 box pr-10" th:name="amt" value="0"
+                                            placeholder="Enter amount" id="amt">
+                                        <button class="btn btn-warning w-24 mr-1 mb-2"  onfocus="setDefaultAmount()">
+                                            Update
+                                        </button>
+                                    </div>
+
+                                    <div th:if="${message}" class="alert alert-success" role="alert">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        <span th:text="${message}"></span>
+                                    </div>
+                                    <div th:if="${messageerr}" class="alert alert-danger" role="alert">
+                                        <i class="fas fa-exclamation-circle mr-2"></i>
+                                        <span th:text="${messageerr}"></span>
+                                    </div>
+                                </form>
+                                <div>
+                                 <form class="grid grid-cols-12 gap-4 mb-4 items-end" method="get" action="/tcos/members/loan/termsper">
+                                   <div class="col-span-12 sm:col-span-6 md:col-span-2"> 
+                                   <button type="submit"  class="btn btn-primary w-full">Personal Loan</button>
+                                 </div>
+                               </form>
+                                <form class="grid grid-cols-12 gap-4 mb-4 items-end" method="get" action="/tcos/members/loan/termscom">
+                                   <div class="col-span-12 sm:col-span-6 md:col-span-2"> 
+                                   <button type="submit"  class="btn btn-primary w-full">Commodity Loan</button>
+                                 </div>
+                               </form>
+                               </div>
+                            </div>
+                            
+                            <!-- Right Column - Form -->
+                           
+                            <!--<div class="form-card">
+                                <div class="form-title">
+                                    <i class="fas fa-edit"></i>
+                                    Change Monthly CD and Share Deductions
+                                </div>
+                                <form  id="updateForm" th:action="@{/members/loan/cd_share_deducation}" method="post">
+                                 <div class="flex items-center gap-4">
+                                  <label for="cddeduct" class="form-label">CD Deductions</label>
+                                 <input  id="txtcddeduct" type="number"  name="txtcddeduct"   class="form-control w-56 box pr-10"                   
+                    required
+                  />
+                                 <label for="sharededuct" class="form-label">Share Deductions</label>
+                                 <input  id="txtsharededuct" type="number"  name="txtsharededuct"   class="form-control w-56 box pr-10"                   
+                    required
+                  />
+                                 </div>
+                                 <div class="flex items-center gap-4">
+                                   <label for="Payment Date" class="form-label">Payment Date</label>
+                                   <input id="Paymentdt" type="date" class="form-date" name="Paymentdt"
+                    
+                    required
+                  />               <button type="submit"  class="btn btn-warning w-24 mr-1 mb-2">Save Deductions</button>    
+                                 </div>
+
+                                   
+                                </form>
+                                
+                               </div>-->
+                           
+                          <!-- Right Column - Form -->
+                        </div>
+                         
+                    </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- Scripts -->
+   <script>
+            function setDefaultAmount() {
+                var amountInput = document.getElementById('amt');
+                if (!amountInput.value) {
+                    amountInput.value = 0;  // Set to 0 if the input is empty
+                }
+            }
+        </script>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+<script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+</body>
+</html>

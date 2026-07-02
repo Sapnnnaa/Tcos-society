@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Member Registration</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+</head>
+
+<!--</head>-->
+<!-- END: Head -->
+<body class="py-5">
+<!-- BEGIN: Mobile Menu -->
+<div th:insert="~{./fragments/mob}"></div>
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+        <h2 class="intro-y text-lg font-medium mt-5">Employee Details</h2>
+        <div class="box grid grid-cols-12 gap-6 mt-5 p-5 bg-white shadow-lg rounded-2xl">
+            <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+                <table class="table table-report -mt-2" id="table">
+                    <thead>
+                    <tr>
+                        <th class="whitespace-nowrap">User Id</th>
+                        <th class="whitespace-nowrap">Name</th>
+                        <th class="whitespace-nowrap">DOB</th>
+                        <th class="whitespace-nowrap">Phone Number</th>
+                        <th class="whitespace-nowrap">Joining Date</th>
+                        <th class="whitespace-nowrap">Closed Date</th>
+                        <th class="whitespace-nowrap">Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.userId}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.dob}"></td>
+                        <td th:text="${user.phoneNum}"></td>
+                        <td th:text="${user.approvedate}"></td>
+                        <td th:text="${user.closedate}"></td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a th:href="@{/members/user_registration/updateUser/{empId}(empId=${user.empId})}" class="btn btn-primary flex items-center"><i data-lucide="check-square" class="w-6 h-4 mr-1"></i>Details</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+</body>
+</html>

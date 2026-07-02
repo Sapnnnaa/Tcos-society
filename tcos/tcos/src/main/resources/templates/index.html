@@ -1,0 +1,159 @@
+    <!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TELCO - M</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link href="/tcos/dist/css/all.min.css" rel="stylesheet">
+    <!-- END: CSS Assets-->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+        .calendar div {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .calendar .active {
+            background-color: #007bff;
+            color: white;
+        }
+        .notice {
+            margin-top: 10px;
+            padding: 5px;
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+        }
+    </style>
+</head>
+<!-- END: Head -->
+
+<body class="py-5">
+<div th:replace="~{./fragments/mob}"></div>
+    <div class="flex mt-[4.7rem] md:mt-0">
+        <div th:replace="~{./fragments/nav}"></div>
+        <div class="content">
+            <div th:replace="~{./fragments/top}"></div>
+            <div class="grid grid-cols-12 gap-6">
+                        <div class="col-span-12 mt-8">
+                            <div class="intro-y flex items-center h-10">
+                                <h2 class="text-lg font-medium truncate mr-5">
+                                    General Report
+                                </h2>
+                                <a href="" class="ml-auto flex items-center text-primary"> <i data-lucide="refresh-ccw"
+                                        class="w-4 h-4 mr-3"></i> Reload Data </a>
+                            </div>
+                            <div class="grid grid-cols-13 gap-6 mt-5">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="col-span-1 intro-y">
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="users" class="report-box__icon text-primary"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6" ><div th:text="${ActiveMember}">0</div></div>
+                                                <div class="text-base text-slate-500 mt-1">Total Active Members</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-1 intro-y">
+                                        <a th:href="@{/members/user_registration}" class="block">
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="user-plus" class="report-box__icon text-warning"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${InActiveMember}">0</div></div>
+                                                <div class="text-base text-slate-500 mt-1">Membership Pending</div>
+                                            </div>
+                                        </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-span-1 intro-y">
+                                        <a th:href="@{/members/loan/loan_status}" class="block">
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="file-plus" class="report-box__icon text-warning"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${LPending}">0</div></div>
+                                                <div class="text-base text-slate-500 mt-1">Loan Pending</div>
+                                            </div>
+                                        </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-span-1 intro-y">
+
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="file-text" class="report-box__icon text-warning"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${LPassed}">0</div></div>
+                                                <div class="text-base text-slate-500 mt-1">Loan Passed (this Month)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-span-1 intro-y">
+                                        <a th:href="@{/members/advice/createAdvice}" class="block">
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="file-minus" class="report-box__icon text-success"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${APending}">0</div></div>
+                                                <div class="text-base text-slate-500 mt-1">Advice Pending</div>
+                                            </div>
+                                        </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-span-1 intro-y">
+                                        <div class="report-box zoom-in">
+                                            <div class="box p-5">
+                                                <div class="flex">
+                                                    <i data-lucide="user-plus" class="report-box__icon text-danger"></i>
+                                                    <div class="ml-auto"></div>
+                                                </div>
+                                                <div class="text-3xl font-medium leading-8 mt-6">0</div>
+                                                <div class="text-base text-slate-500 mt-1">Account Termination Pending</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{./fragments/footer}"></div>
+    <script src="/tcos/dist/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,650 @@
+<div th:fragment="nav" xmlns:th="http://www.w3.org/1999/xhtml">
+<nav class="side-nav">
+    <a th:href="@{/members/index}" class="intro-x flex items-center pl-5 pt-4">
+        <img alt="Midone - HTML Admin Template" class="w-12 h-12" src="/tcos/dist/images/logo2.svg">
+        <span class="hidden xl:block text-white text-lg ml-3"> TCOS </span>
+    </a>
+    <div class="side-nav__devider my-6"></div>
+<!--    <a href="javascript:;.html" class="side-menu side-menu&#45;&#45;active">-->
+<!--    </a>-->
+    <ul>
+        <li>
+            <a th:href="@{/members/user_registration}" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="user-plus"></i> </div>
+                <div class="side-menu__title">Member Registration</div>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/members/reports/loans}" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="twitch"></i> </div>
+                <div class="side-menu__title">Enquiry</div>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                </div>
+                <div class="side-menu__title">
+                    MIS Reports
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+
+            <ul class="side-menu__sub">
+
+                <!-- 1. Membership -->
+                <li>
+                    <a th:href="@{/mis/membership}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="side-menu__title">Membership</div>
+                    </a>
+                </li>
+
+                <!-- 2. Loan & Recoveries -->
+                <li>
+                    <a th:href="@{/mis/loan-recovery}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="book-open"></i>
+                        </div>
+                        <div class="side-menu__title">Loan & Recoveries</div>
+                    </a>
+                </li>
+
+                <!-- 3. Sureties -->
+                <li>
+                    <a th:href="@{/mis/sureties}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <div class="side-menu__title">Sureties</div>
+                    </a>
+                </li>
+                <!-- 3. Sureties user loan -->
+                <li>
+                    <a th:href="@{/mis/sureties-loanreport}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <div class="side-menu__title">Sureties user loan</div>
+                    </a>
+                </li>
+
+                    <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon">
+                    <i data-lucide="zap" class="w-4 h-4"></i>
+                </div>
+                <div class="side-menu__title">
+                    Receipts
+                    <div class="side-menu__sub-icon">
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                </div>
+            </a>
+            <ul class="side-menu__sub">
+                <!-- 4. Receipts -->
+                <li>
+                    <a th:href="@{/mis/receipt-report}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="pocket"></i>
+                        </div>
+                        <div class="side-menu__title">Receipts</div>
+                    </a>
+                </li>
+                        <li>
+                    <a th:href="@{/mis/accountreceipt-report}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="pocket"></i>
+                        </div>
+                        <div class="side-menu__title">Account Receipts</div>
+                    </a>
+                </li>
+
+           <li>
+                    <a th:href="@{/mis/receiptstatus-report}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="pocket"></i>
+                        </div>
+                        <div class="side-menu__title">Receipts Status</div>
+                    </a>
+                </li>
+           </ul>
+
+     </li>
+
+                <!-- 5. Payments -->
+         <li>
+			<a href="javascript:;" class="side-menu">
+			                <div class="side-menu__icon">
+			                    <i data-lucide="zap" class="w-4 h-4"></i>
+			                </div>
+			                <div class="side-menu__title">
+			                    Payments
+			                    <div class="side-menu__sub-icon">
+			                        <i data-lucide="chevron-down"></i>
+			                    </div>
+			                </div>
+			            </a>
+
+                
+             <ul class="side-menu__sub">
+                
+                <li>
+                    <a th:href="@{/mis/payments}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <div class="side-menu__title">Payments Cleared</div>
+                    </a>
+                </li>  
+                
+                 <li>
+                    <a th:href="@{/mis/paymentsPosted}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <div class="side-menu__title">Payments Posted</div>
+                    </a>
+                </li>
+                    <li>
+                    <a th:href="@{/mis/paymentsNew}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <div class="side-menu__title">Payments New</div>
+                    </a>
+                </li>
+                
+                 <!-- 8. Payments Account -->
+                <li>
+                    <a th:href="@{/mis/paymentsaccount}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="wallet"></i>
+                        </div>
+                        <div class="side-menu__title">Account Payments</div>
+                    </a>
+                </li>
+                
+            </ul>
+        </li> 
+                <!-- 6. Advice Generated -->
+                <li>
+                    <a th:href="@{/mis/advice}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="file-text"></i>
+                        </div>
+                        <div class="side-menu__title">Advice Generated</div>
+                    </a>
+                </li>
+
+                <!-- 7. CD & Share -->
+                <li>
+                    <a th:href="@{/mis/cd-share}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <div class="side-menu__title">CD & Share</div>
+                    </a>
+                </li>
+                
+               
+                
+
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="book-open"></i> </div>
+                <div class="side-menu__title">
+                    Bank Book
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/bankbook/transactionHistory}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="database" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Transaction History</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/bankbook/history}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="clipboard" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Bank Record</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="book-open"></i> </div>
+                <div class="side-menu__title">
+                    Cash Book
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/cashbook/bondHistory}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="database" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Bond History</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/cashbook/voucherHistory}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="clipboard" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Voucher History</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="refresh-cw"></i> </div> <!-- Recovery Main Icon -->
+                <div class="side-menu__title">
+                    Recovery
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/uploadData}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="calendar" class="w-4 h-4"></i> </div> <!-- Monthly Recovery -->
+                        <div class="side-menu__title">Monthly Recovery</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/recoveryDue}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="alert-triangle" class="w-4 h-4"></i> </div> <!-- Due Recoveries -->
+                        <div class="side-menu__title">Due Recoveries</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="layers"></i> </div>
+                <div class="side-menu__title">
+                    Bank Clearing
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/advice/bankClearing}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Bond Tally</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/membervoucher/bankClearing}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Voucher Tally</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="users"></i> </div>
+                <div class="side-menu__title">
+                    Reports
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="javascript:;" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="globe"></i> </div>
+                        <div class="side-menu__title">Tata Motors<div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a th:href="@{/members/tm/member_details}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="user" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Member Details
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/members/tm/report}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="zap" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Report
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="globe"></i> </div>
+                        <div class="side-menu__title">TMLBSL<div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a th:href="@{/members/tmlbsl/member_details}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="user" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Member Details
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/members/hvtl/report}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="zap" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Report
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="globe"></i> </div>
+                        <div class="side-menu__title">Tata Technologies<div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a th:href="@{/members/ttl/member_details}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="user" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Member Details
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/members/tt/report}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="zap" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Report
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="globe"></i> </div>
+                        <div class="side-menu__title">Tata Hitachi<div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="">
+                        <li>
+                            <a th:href="@{/members/tcn/member_details}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="user" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">
+                                    Member Details
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/members/th/report}" class="side-menu">
+                                <div class="side-menu__icon"> <i data-lucide="zap" class="w-4 h-4"></i> </div>
+                                <div class="side-menu__title">Report</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="briefcase"></i>  </div>
+                <div class="side-menu__title">
+                    Loan
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                   <li>
+                    <a th:href="@{/members/loan/loan_apply}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="airplay" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Loan Apply</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/loan/loan_status}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="airplay" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Loan Pending</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/loan/checkedLoan}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Loan Checked</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/loan/verifiedLoan}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit-3" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Loan Verified</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/loan/commodityloan}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="archive" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title"> Commodity Loan </div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/loan/normalloan}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="archive" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Personal Loan</div>
+                    </a>
+                </li>
+
+                <li>
+                    <a th:href="@{/members/loan/loanUpdate}" class="side-menu">
+                        <div class="side-menu__icon">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </div>
+                        <div class="side-menu__title">Loan Update</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="book"></i> </div>
+                <div class="side-menu__title">
+                    Advice
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/advice/createAdvice}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Prepare Advice</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/advice/checkAdvice}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit-3" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Check Advice</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/advice/passAdvice}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="archive" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Pass Advice</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/advice/approvedAdvice}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="repeat" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Approved Advice</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="pocket"></i> </div>
+                <div class="side-menu__title">
+                    Voucher
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/membervoucher/createVoucher}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="file-plus" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Prepare Voucher</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/membervoucher/checkVoucher}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Check Voucher</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/membervoucher/passVoucher}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit-3" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Pass Voucher</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/membervoucher/approvedVoucher}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="archive" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Approved Voucher</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/membervoucher/voucherReport}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="clipboard" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Voucher Report</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="pocket"></i> </div>
+                <div class="side-menu__title">
+                    Receipt
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/memberReceipt/createReceipt}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="file-plus" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Prepare Receipt</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/memberReceipt/checkReceipt}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Check Receipt</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/memberReceipt/passReceipt}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="edit-3" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Pass Receipt</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/memberReceipt/approvedReceipt}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="archive" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Approved Receipt</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/memberReceipt/receiptReport}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="clipboard" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Receipt Report</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="dollar-sign"></i> </div>
+                <div class="side-menu__title">
+                    Cashier
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a th:href="@{/members/cashier/bond}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="database" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Bond</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/cashier/voc}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="clipboard" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Voucher</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="user-x"></i> </div>
+                <div class="side-menu__title">
+                    Account Closure
+                    <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
+                </div>
+            </a>
+            <ul class="">
+                  <li>
+		            <a th:href="@{/members/reports/auditdetsettlement}" class="side-menu">
+		                <div class="side-menu__icon"> <i data-lucide="twitch"></i> </div>
+		                <div class="side-menu__title">Audit Details Settlement</div>
+		            </a>
+                </li>                   
+               <!-- <li>
+                    <a th:href="@{/members/audit_settlement}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="user-minus" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Audit Settlement</div>
+                    </a>
+                </li> -->
+                <li>
+                    <a th:href="@{/members/account_closure}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="user-minus" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Account Closure</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/settlement}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="file-minus" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Settlement</div>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/members/closed}" class="side-menu">
+                        <div class="side-menu__icon"> <i data-lucide="user-x" class="w-4 h-4"></i> </div>
+                        <div class="side-menu__title">Closed Account</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a th:href="@{/members/userValidation}" class="side-menu">
+                <div class="side-menu__icon"> <i data-lucide="eye"></i> </div>
+                <div class="side-menu__title">Access Control</div>
+            </a>
+        </li>
+
+    </ul>
+</nav>
+
+</div>    <!-- END: Side Menu -->

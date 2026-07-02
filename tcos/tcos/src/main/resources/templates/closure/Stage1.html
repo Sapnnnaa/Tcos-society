@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8">
+  <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+  <title>Account Settlement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+  <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+  <div th:replace="~{./fragments/nav}"></div>
+  <div class="content">
+    <div th:replace="~{./fragments/top}"></div>
+
+    <div class="intro-y flex items-center justify-between w-full">
+      <h2 class="intro-y text-lg font-medium mt-5">Employee details</h2>
+    </div>
+
+    <div class="container mt-4">
+      <!-- Search Form -->
+      <form class="grid grid-cols-12 gap-4 mb-4 items-end">
+        <div class="col-span-12 sm:col-span-6 md:col-span-4">
+          <label for="userId" class="form-label">Enter Ticket Number</label>
+          <input type="text" name="ticketNumber" id="userId" class="form-control">
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-2">
+          <input type="button" value="Search" class="btn btn-primary w-full">
+        </div>
+      </form>
+      <!-- Result Fields -->
+      <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="name" class="w-1/4 text-gray-700 font-medium">Name</label>
+          <input type="text" id="name" name="name" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="phno" class="w-1/4 text-gray-700 font-medium">Phone</label>
+          <input type="text" id="phno" name="phno" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="approvedAt" class="w-1/4 text-gray-700 font-medium">Member Join Date</label>
+          <input type="text" id="approvedAt" name="approvedAt" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="dor" class="w-1/4 text-gray-700 font-medium">Date of retirement</label>
+          <input type="text" id="dor" name="dor" class="form-control w-2/3" disabled>
+        </div>
+      </div>
+      <div class="intro-y flex items-center justify-between w-full mt-8">
+        <h2 class="intro-y text-lg font-medium">CD/Share Details </h2>
+      </div>
+      <div class="grid grid-cols-12 mt-4 gap-4">
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="cdDeductionTotal" class="w-1/4 text-gray-700 font-medium">CD Deduction (Total)</label>
+          <input type="text" id="cdDeductionTotal" name="cdDeductionTotal" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="cdInterestTotal" class="w-1/4 text-gray-700 font-medium">CD Interest (Total)</label>
+          <input type="text" id="cdInterestTotal" name="cdInterestTotal" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="cdDeductionGenerated" class="w-1/4 text-gray-700 font-medium">CD Deduction (Current)</label>
+          <input type="text" id="cdDeductionGenerated" name="cdDeductionGenerated" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="shareDeductionGenerated" class="w-1/4 text-gray-700 font-medium">Share Deduction (Current)</label>
+          <input type="text" id="shareDeductionGenerated" name="shareDeductionGenerated" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="shareDeductionTotal" class="w-1/4 text-gray-700 font-medium">Share Deduction (Total)</label>
+          <input type="text" id="shareDeductionTotal" name="shareDeductionTotal" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="totalDeduction" class="w-1/4 text-gray-700 font-medium">Total Deduction</label>
+          <input type="text" id="totalDeduction" name="totalDeduction" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="surety" class="w-1/4 text-gray-700 font-medium">Guarantor For</label>
+          <input type="text" id="surety" name="surety" class="form-control w-2/3" disabled>
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="otherCharge" class="w-1/4 text-gray-700 font-medium">Other Charges</label>
+          <input type="number" id="otherCharge" name="otherCharge" class="form-control w-2/3">
+        </div>
+        <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+          <label for="payable" class="w-1/4 text-gray-700 font-medium">Net Payable</label>
+          <div>
+          <input type="text" id="payable" name="payable" class="form-control w-2/3 border-danger" disabled>
+          <span id="payableStatus" class="ml-2 font-semibold text-sm"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Loans Table -->
+      <div class="intro-y flex items-center justify-between w-full mt-8">
+        <h2 class="intro-y text-lg font-medium">Loan Details</h2>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <h3><b>Active Loan</b></h3>
+        <table id="loansTable" class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Loan Type</th>
+            <th>Current Loan Balance</th>
+            <th>Current Loan Interest</th>
+            <th>Last Loan Approve Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Data will be inserted here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div class="overflow-x-auto mt-4">
+        <h3><b>Recently Applied Loan ( Not Approved yet )</b></h3>
+        <table id="loansTable2" class="table table-bordered">
+          <thead>
+          <tr>
+            <th>Loan Type</th>
+            <th>Loan Amount</th>
+            <th>Loan Status</th>
+            <th>Loan Apply Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Data will be inserted here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div class="intro-y flex items-center justify-between w-full mt-12">
+        <h2 class="intro-y text-lg font-medium">Initiate Settlement Process for <span id="name1"> - </span></h2>
+        <button id="initiateButton"
+                class="btn btn-primary shadow-md"
+                type="button"
+                data-tw-toggle="modal"
+                data-tw-target="#header-footer-modal-preview-view" disabled>Initiate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="header-footer-modal-preview-view" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form id="updateForm" th:action="@{/members/account_closure}" method="post" th:object="${accountClosureDto}" class="content content--top-nav">
+      <div class="modal-header rounded-2xl mt-2 bg-primary">
+        <h3 class="text-white font-medium text-2xl px-4 py-2">
+          Settlement Process
+        </h3>
+        <button type="button" class="btn-close" data-tw-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-content-placeholder">
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Deposit Balance
+            </label>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Includes CD, CD Interest and<br>Share.</p>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input id="deposit" type="number" name="deposit" class="form-control" placeholder="Total Deposit" th:field="*{deposit}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Outstanding Amount
+            </label>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Includes Loan Amount, Balance and <br>Interest.(Personal + Commodity)</p>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input id="dues" type="number" name="dueAmount" class="form-control" placeholder="Dues" th:field="*{dueAmount}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surety
+            </label>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Stood For</p>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input id="suretyNo" type="number" name="surety" class="form-control" placeholder="Surety Count" th:field="*{surety}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Other Charges
+            </label>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Charges include miscellaneous<br>factors.</p>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input id="others" type="number" name="others" class="form-control" placeholder="Miscellaneous Charge" th:field="*{others}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Net Payable
+            </label>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">After deducting the outstanding amount <br>from the payable balance.</p>
+          </div>
+          <div class="w-full xl:flex-1">
+            <span id="payableStatus1" class="ml-2 font-semibold text-sm"></span>
+            <input id="Payout" type="number" name="Payout" class="form-control" placeholder="Settlement Amount" th:field="*{Payout}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Mode
+              <span class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</span>
+            </label>
+          </div>
+          <div class="w-full xl:flex-1">
+            <select id="settlement" name="settlement" class="form-select w-full">
+              <option value="">-----------  Select   -----------</option>
+              <option value="NA">Not Applicable</option>
+              <option value="Recovery">Recovery From Company</option>
+              <option value="Receipt">Payment through Receipt</option>
+              <option value="Guarantor">Recovery From Guarantor</option><!--application_type- enum-->
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Closure Type
+              <span class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</span>
+            </label>
+          </div>
+          <div class="w-full xl:flex-1">
+            <select id="closureType" name="closureType" class="form-select w-full">
+              <option value="">-----------  Select   -----------</option>
+              <option value="Company_Transfer">Company Transfer (Still a member)</option>
+              <option value="Company_Termination">Company Termination (Still a member)</option><!--application_type- enum-->
+              <option value="Membership_Closure">Membership Closure</option><!--application_type- enum-->
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-70LL0 dark:text-gray-300">Prepared By
+              <span class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</span>
+            </label>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input type="text" id="preparedBy" name="preparedBy" class="form-control" th:value="${fullName}" readonly>
+          </div>
+        </div>
+        <div class="flex flex-col xl:flex-row items-start gap-4 mt-5">
+          <div class="w-full xl:w-1/3">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Security Key
+              <span class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</span>
+            </label>
+          </div>
+          <div class="w-full xl:flex-1">
+            <input id="key" type="password"/>
+            <button id="validateBtn" type="button" class="btn mt-2 btn-success mr-4">Validate</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-tw-dismiss="modal">Close</button>
+        <button type="button" id="submitBondUpdate" class="btn btn-primary mr-4" disabled>Submit</button>
+      </div>
+      <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+    </form>
+  </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/tcos/dist/js/flowbite.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+      jQuery(document).ready(function($){
+          $("#validateBtn").on("click", function() {
+              const key = document.getElementById("key").value;
+              const errorBox = document.getElementById("errorBox");
+              const registerBtn = document.getElementById("submitBondUpdate");
+
+              errorBox.classList.add("hidden");
+              registerBtn.disabled = true;
+
+              if (!key) {
+                  errorBox.innerText = "Security Key is required.";
+                  errorBox.classList.remove("hidden");
+                  return;
+              }
+
+              $.ajax({
+                  url: "/tcos/members/account_closure/security/" + key,
+                  type: 'GET',
+                  success: function (response) {
+                      if (response === true) {
+                          registerBtn.disabled = false;
+                          errorBox.classList.add("hidden");
+                      } else {
+                          errorBox.innerText = "Unauthorized Access";
+                          errorBox.classList.remove("hidden");
+                          registerBtn.disabled = true;
+                      }
+                  },
+                  error: function () {
+                      errorBox.innerText = "Server error. Please try again.";
+                      errorBox.classList.remove("hidden");
+                      registerBtn.disabled = true;
+                  }
+              });
+          });
+      });
+</script>
+<script>
+  $(document).ready(function () {
+      // Handle search button click
+      const initiateButton = document.getElementById("initiateButton");
+
+      let totalDeduction = 0;
+      let totalLoanBalance = 0;
+      let totalLoanAmount = 0;
+
+      const payable = document.getElementById("payable");
+      const otherChargeInput = document.getElementById("otherCharge");
+      const deposit = document.getElementById("deposit");
+      const dues = document.getElementById("dues");
+      const others = document.getElementById("others");
+      const Payout = document.getElementById("Payout");
+
+      otherChargeInput.addEventListener("input", calculatePayable);
+
+      $('input[type="button"][value="Search"]').click(function () {
+          const userId = $('#userId').val().trim();
+
+          if (!userId) {
+              alert('Please enter a Ticket Number');
+              return;
+          }
+
+          fetchUserData(userId);
+      });
+
+      // Function to fetch user data
+      function fetchUserData(userId) {
+          $.ajax({
+              url: `/tcos/members/account_closure/${userId}`,
+              method: 'GET',
+              dataType: 'json',
+              success: function (response) {
+                  if (response.user) {
+                      initiateButton.disabled = false;
+                      populateUserData(response.user);
+
+                      // Populate loans if they exist
+                      if (response.surety) {
+                      $('#surety').val(response.surety);
+                      } else {
+                          $('#surety').val('0');
+                      }
+                      if (response.loans1 && response.loans1.length > 0) {
+                          populateLoansTable(response.loans1);
+                      } else {
+                          $('#loansTable tbody').html('<tr><td colspan="5" class="text-center">No loan data found</td></tr>');
+                      }
+                      if (response.loans2 && response.loans2.length > 0) {
+                          populateLoans1Table(response.loans2);
+                      } else {
+                          $('#loansTable2 tbody').html('<tr><td colspan="4" class="text-center">No loan data found</td></tr>');
+                      }
+                      // Populate EMIs if they exist
+                      if (response.emis) {
+                          populateEmisTable(response.emis);
+                      }
+                      else{ $('#cdDeductionTotal').val('0');
+                            $('#cdInterestTotal').val('0');
+                            $('#shareDeductionTotal').val('0');
+                            $('#totalDeduction').val('0');
+                            $('#cdDeductionGenerated').val('0');
+                            $('#shareDeductionGenerated').val('0');}
+                  } else {
+                      alert('No user data found');
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.error('Error fetching user data:', error);
+                  alert('Error fetching user data. Please try again.');
+              }
+          });
+      }
+
+      // Function to populate loans table
+      function populateLoansTable(loans) {
+          const tbody = $('#loansTable tbody');
+          tbody.empty();
+
+          totalLoanBalance = 0;
+
+          loans.forEach(loan => {
+              const balance = parseFloat(loan.loanBalance) || 0;
+              totalLoanBalance += balance;
+
+              tbody.append(`
+              <tr>
+                  <td>${loan.loantype || 'N/A'}</td>
+                  <td>₹${loan.loanBalance || '0'}</td>
+                  <td>₹${loan.loanInterest || '0'}</td>
+                  <td>${loan.loanDate || 'N/A'}</td>
+              </tr>
+         `);
+          });
+
+        calculatePayable();
+      }
+
+      function populateLoans1Table(loans) {
+            const tbody = $('#loansTable2 tbody');
+            tbody.empty();
+
+            totalLoanAmount = 0;
+
+            loans.forEach(loan => {
+                const amount = parseFloat(loan.loanAmount) || 0;
+                totalLoanAmount += amount;
+                tbody.append(`
+        <tr>
+            <td>${loan.loanType || 'N/A'}</td>
+            <td>₹${loan.loanAmount || '0'}</td>
+            <td>${loan.loanStatus || 'N/A'}</td>
+            <td>${loan.loanApproveDate || 'N/A'}</td>
+        </tr>
+          `);
+        });
+        calculatePayable();
+      }
+
+      // Function to populate EMIs table
+      function populateEmisTable(emis) {
+          $('#cdDeductionTotal').val(emis.cdDeductionTotal || '0');
+          $('#cdInterestTotal').val(emis.cdInterestTotal || '0');
+          $('#shareDeductionTotal').val(emis.shareDeductionTotal || '0');
+          $('#totalDeduction').val(emis.totalDeduction || '0');
+          $('#cdDeductionGenerated').val(emis.cdDeductionGenerated || '0');
+          $('#shareDeductionGenerated').val(emis.shareDeductionGenerated || '0');
+          totalDeduction = parseFloat(emis.totalDeduction || 0);
+          calculatePayable();
+      }
+
+      // Function to populate form fields with user data
+      function populateUserData(user) {
+          // Basic Information
+          $('#name1').text(user.name || '');
+          $('#name').val(user.name || '');
+          $('#phno').val(user.phoneNum || '');
+          $('#dor').val(user.dateOfRetirement || '');
+          $('#approvedAt').val(user.approvedAt || '');
+          // Address Information
+      }
+
+      // Optional: Allow search on Enter key press
+      $('#userId').keypress(function (e) {
+          if (e.which === 13) { // Enter key
+              $('input[type="button"][value="Search"]').click();
+              e.preventDefault();
+          }
+      });
+
+      function calculatePayable() {
+          const otherCharge = parseFloat(otherChargeInput.value) || 0;
+          const deduction = parseFloat(totalDeduction) || 0;
+          const totalLoans = totalLoanBalance + totalLoanAmount;
+          const result = deduction - (totalLoans + otherCharge);
+          payable.value = `₹${Math.abs(result).toFixed(2)}`;
+          payableStatus.textContent = result < 0 ? "Realizable" : "Payable";
+          payableStatus.className = result < 0 ? "text-red-600" : "text-green-600";
+      }
+
+    if (initiateButton) {
+      initiateButton.addEventListener("click", function () {
+        const otherCharge = parseFloat(otherChargeInput.value) || 0;
+        const deduction = parseFloat(totalDeduction) || 0;
+        const totalLoans = totalLoanBalance + totalLoanAmount;
+
+        const result = deduction - (totalLoans + otherCharge);
+
+        deposit.value = deduction.toFixed(2);     // totalDeduction → deposit
+        dues.value = totalLoans.toFixed(2);       // totalLoans → dues
+        others.value = otherCharge.toFixed(2);    // otherCharge → others
+        Payout.value = Math.abs(result).toFixed(2); // Net Payable → payout
+
+        $('#suretyNo').val($('#surety').val());
+
+        if (typeof payableStatus1 !== "undefined") {
+          payableStatus1.textContent = result < 0 ? "Realizable" : "Payable";
+          payableStatus1.className = result < 0 ? "text-red-600" : "text-green-600";
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>

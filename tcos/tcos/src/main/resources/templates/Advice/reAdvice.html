@@ -1,0 +1,97 @@
+<!-- <!DOCTYPE html>-->
+<!--<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--&lt;!&ndash; BEGIN: Head &ndash;&gt;-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/tcos/dist/images/logo.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <meta name="description"-->
+<!--          content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">-->
+<!--    <meta name="keywords"-->
+<!--          content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">-->
+<!--    <meta name="author" content="LEFT4CODE">-->
+<!--    <title>Loan Approval</title>-->
+<!--    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/tcos/dist/css/app.css" />-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>-->
+<!--    &lt;!&ndash; END: CSS Assets&ndash;&gt;-->
+<!--</head>-->
+
+<!--<body class="overflow-x-auto py-5">-->
+<!--&lt;!&ndash; BEGIN: Mobile Menu &ndash;&gt;-->
+
+<!--&lt;!&ndash; END: Mobile Menu &ndash;&gt;-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    &lt;!&ndash; BEGIN: Side Menu &ndash;&gt;-->
+<!--    <div th:replace="~{./fragments/nav}"></div>-->
+<!--    &lt;!&ndash; END: Side Menu &ndash;&gt;-->
+<!--    &lt;!&ndash; BEGIN: Content &ndash;&gt;-->
+<!--    <div class="content">-->
+<!--        &lt;!&ndash; BEGIN: Top Bar &ndash;&gt;-->
+<!--        <div th:replace="~{./fragments/top}"></div>-->
+<!--        &lt;!&ndash; END: Top Bar &ndash;&gt;-->
+<!--        <div class="intro-y flex justify-between mt-6">-->
+<!--            <div class="flex-1">-->
+<!--                <h1 class=" font-medium mr-auto text-2xl">-->
+<!--                    Re-Generated Advice-->
+<!--                </h1>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="grid grid-cols-12 gap-6 mt-5">-->
+<!--            <div class="intro-y col-span-12 lg:col-span-12">-->
+<!--                &lt;!&ndash; BEGIN: Responsive Table &ndash;&gt;-->
+<!--                <div class="overflow-x-auto box">-->
+<!--                    <div class="m-5">-->
+<!--                        <table class="table" id="table">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th class="whitespace-nowrap">Ticket Number</th>-->
+<!--                                <th class="whitespace-nowrap">Name</th>-->
+<!--                                <th class="whitespace-nowrap">Bank Name</th>-->
+<!--                                <th class="whitespace-nowrap">Account Number</th>-->
+<!--                                <th class="whitespace-nowrap">Amount</th>-->
+<!--                                <th class="whitespace-nowrap">Payment Type</th>-->
+<!--                                <th class="whitespace-nowrap">Generated Date</th>-->
+<!--                                <th class="whitespace-nowrap">Generated Times</th>-->
+<!--                                <th class="whitespace-nowrap">Re-Generated Date</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="mv : ${mvoucher}">-->
+<!--                                <td th:text="${mv.userId}">Ticket Number</td>-->
+<!--                                <td th:text="${mv.Name}">Name</td>-->
+<!--                                <td th:text="${mv.bname}">Bank Name</td>-->
+<!--                                <td th:text="${mv.accountNum}">Account Number</td>-->
+<!--                                <td th:text="${mv.loanAmount}">Amount</td>-->
+<!--                                <td th:text="${mv.paymenttype}">Payment Type</td>-->
+<!--                                <td th:text="${#dates.format(mv.adviceDate, 'yyyy-MM-dd')}">Advice Date</td>-->
+<!--                                <td th:text="${mv.times}">Generated Times</td>-->
+<!--                                <td th:text="${#dates.format(mv.adviceDate2, 'yyyy-MM-dd')}">Advice Date 2</td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; END: Responsive Table &ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; END: Content &ndash;&gt;-->
+<!--</div>-->
+<!--<div th:replace="~{./fragments/footer}"></div>-->
+<!--&lt;!&ndash; BEGIN: JS Assets&ndash;&gt;-->
+<!--<script src="/tcos/dist/js/app.js"></script>-->
+<!--&lt;!&ndash; Include jQuery and DataTables JS &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#table').DataTable();-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+
+<!--</html>-->

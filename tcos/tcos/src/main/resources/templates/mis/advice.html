@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Advice Report</title>
+
+    <!-- BEGIN: CSS Assets -->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/datatables2.3.4.min.css">
+    <link rel="stylesheet" href="/tcos/dist/css/buttons.datatables.3.2.5.css">
+ <style type="text/css">
+     .table-container {
+  /* Gives the container a fixed height and enables vertical scrolling */
+  max-height: 400px;
+  overflow-y: auto;
+  /* Required for horizontal scrolling if needed */
+  overflow-x: auto; 
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Helps borders stay with sticky cells */
+}
+
+thead th {
+  position: sticky;
+  top: 0; /* Sticks the header to the top of the scrolling container */
+  background-color: #f1f1f1; /* Add a background color so content doesn't show through */
+  z-index: 1; /* Ensures the header appears above the table body content */
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+     
+   </style>
+</head>
+
+<body class="overflow-x-auto py-5">
+
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex justify-between mt-6 items-start">
+            <div class="flex-1">
+                <h1 class="font-medium mr-auto text-2xl">ADVICE REPORT</h1>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto box">
+            <div class="m-5">
+              <div class="table-container">
+              
+                <table class="table" id="table">
+                    <thead>
+                    <tr>
+                        <th>Bond Number</th>
+                        <th>Bond UID</th>
+                        <th>Ticket Number</th>
+                        <th>Name</th>
+                        <th>Bank Name</th>
+                        <th>Bond Type</th>
+                        <th>Amount</th>
+                        <th>Cheque Number</th>
+                        <th>Payment Type</th>
+                        <th>Approved Date</th>
+                        <th>Payment Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="mv : ${advice}">
+                        <td th:text="${mv.bondId}"></td>
+                        <td th:text="${mv.gid}"></td>
+                        <td th:text="${mv.userId}"></td>
+                        <td th:text="${mv.memberName}"></td>
+                        <td th:text="${mv.paymentBank}"></td>
+                        <td th:text="${mv.bondType}"></td>
+                        <td th:text="${mv.amount}"></td>
+                        <td th:text="${mv.chequeNo}"></td>
+                        <td th:text="${mv.paymentType}"></td>
+                        <td th:text="${mv.adviceApprovedDate}"></td>
+                        <td th:text="${mv.paymentStatus}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+               </div>
+             </div>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- JS Assets -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.1.js"></script>
+<script src="/tcos/dist/js/datatables.2.3.4.js"></script>
+<script src="/tcos/dist/js/datatables.button.3.2.5.js"></script>
+<script src="/tcos/dist/js/buttons.datatables.3.2.5.js"></script>
+<script src="/tcos/dist/js/jszip.js"></script>
+<script src="/tcos/dist/js/html5.buttons.js"></script>
+
+<script>
+    $(document).ready(function () {
+        new DataTable('#table', {
+            ordering: false,
+            pageLength: 10,
+            lengthMenu: [5, 10, 25, 50, 100],
+            layout: {
+                topStart: {
+                    buttons: [
+                        'pageLength',
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Export to Excel'
+                        }
+                    ]
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

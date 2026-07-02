@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Member Registration</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+</head>
+
+<!-- END: Head -->
+
+<body class="py-5">
+    <!-- BEGIN: Mobile Menu -->
+    <div th:include="~{./fragments/mob}"></div>
+    <!-- END: Mobile Menu -->
+    <div class="flex mt-[4.7rem] md:mt-0">
+        <div th:replace="~{./fragments/nav}"></div>
+        <div class="content">
+            <div th:replace="~{./fragments/top}"></div>
+            <div class="intro-y flex items-center justify-between w-full">
+                <div>
+                    <h2 class="intro-y text-lg font-medium mt-5">Amounts and Wage Types for - <span
+                            th:text="${company}"> Company</span> </h2>
+                </div>
+
+            </div>
+
+            <div>
+                <label for="enddate">Enter year and month:</label>
+                <input type="date" id="enddate" name="enddate">
+
+                <button class="btn" style="background-color: cadetblue;" onclick="fetchInterest()">Calculate
+                </button>
+                <button class="btn" style="background-color: bisque;"
+                    onclick="window.location.href='/tcos/members/reports/compare';">
+                    Upload to Compare
+                </button>
+            </div>
+            <div class="box grid grid-cols-12 gap-6 mt-5 p-5 bg-white shadow-lg rounded-2xl">
+                <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+                    <table class="table table-report -mt-2 display" id="table">
+                        <thead>
+                            <tr>
+                                <!-- <th>Loan ID</th> -->
+                                <th>Name</th>
+                                <th>Loan Type</th>
+                                <th>Ticket Number</th>
+                                <th>Loan Balance</th>
+                                <th>Instalment</th>
+                                <th>Interest</th>
+                                <!-- <th>Share</th> -->
+                                <!-- <th>CD</th> -->
+                                <!-- <th>Extra Charges</th> -->
+                                <th>Dated For</th>
+                                <!-- <th>Created At</th> -->
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data will be filled here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="popup-modal" tabindex="-1"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <button type="button"
+                    class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="popup-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Generate PDF</span>
+                </button>
+                <div class="p-4 md:p-5 text-center">
+                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"> <span style="color: green;">
+                            Are you sure
+                            you want to download interest report?</span> <br>
+                    </h3>
+                    <button id="confirmDownloadBtn" data-modal-hide="popup-modal" type="button"
+                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                        Yes, I'm sure
+                    </button>
+                    <button data-modal-hide="popup-modal" type="button"
+                        class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No,
+                        cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{./fragments/footer}"></div>
+    <script src="/tcos/dist/js/app.js"></script>
+    <script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+    <script>
+        $("#downloanBtn").on("click", function () {
+            const modalEl = document.getElementById("popup-modal");
+            const modal = new Modal(modalEl); // Flowbite's Modal instance
+            modal.show();
+        });
+
+        $(document).ready(function () {
+            $('#table').DataTable({
+                // Optional features:
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true
+            });
+        });
+
+        document.getElementById("confirmDownloadBtn").addEventListener("click", function () {
+            triggerGeneratePdf(); // your actual function to download PDF
+        });
+
+        function triggerGeneratePdf() {
+            fetch('/tcos/members/generateinterestpdf')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.blob(); // Receive PDF as blob
+                })
+                .then(blob => {
+                    // Create a link and trigger download
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'interest_report.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        }
+
+		function fetchInterest() {
+		    var enddate = document.getElementById("enddate").value;
+		    var currentPath = window.location.pathname;
+		    var url = "";
+
+		    if (currentPath.includes('/tm/report')) {
+		        url = '/tcos/members/tms/interest';
+		    } else if (currentPath.includes('/th/report')) {
+		        url = '/tcos/members/th/interest';
+		    } else if (currentPath.includes('/tt/report')) {
+		        url = '/tcos/members/tt/interest';
+		    } else if (currentPath.includes('/hvtl/report')) {
+		        url = '/tcos/members/hvtl/interest';
+		    } else {
+		        url = '/tcos/members/hval/interest';
+		    }
+
+		    console.log("Fetching interest data from URL:", url);
+
+		    $.ajax({
+		        url: url,
+		        type: 'GET',
+		        data: { endDate: enddate },
+		        timeout: 30000, // 30 second timeout for async operations
+		        success: function (response) {
+		            console.log("Response received:", response);
+
+		            if (!response || response.length === 0) {
+		                console.warn("No data returned from server.");
+		                return;
+		            }
+
+		            var table = $('#table').DataTable();
+		            table.clear().draw();
+
+		            response.forEach(item => {
+		                table.row.add([
+		                    // cleanData(item.loanId),
+		                    cleanData(item.name),
+		                    cleanData(item.loanType),
+		                    cleanData(item.userId),
+		                    cleanData(item.loanBalance),
+		                    cleanData(item.instalment),
+		                    cleanData(item.interest),
+		                    // cleanData(item.share),
+		                    // cleanData(item.cd),
+		                    // cleanData(item.extraCharges),
+		                    (item.generatedFor),
+		                    // (item.createdAt)
+		                ]).draw(false);
+		            });
+		        },
+		        error: function (xhr, status, error) {
+		            console.error("AJAX Error:", error);
+		            console.error("Status:", status);
+		            console.error("Response Text:", xhr.responseText);
+		            
+		            // Handle specific error cases for async operations
+		            if (status === 'timeout') {
+		                alert('Request timed out. The server might be processing your request. Please try again.');
+		            } else if (xhr.status === 500) {
+		                alert('Server error occurred while processing your request. Please try again.');
+		            }
+		        }
+		    });
+		}
+
+        // Function to clean up "JS:xxx" from values
+        function cleanData(value) {
+            return value.toString().replace(/JS:\d+/g, '').trim();
+        }
+
+        const input = document.getElementById('enddate');
+        input.addEventListener('change', (event) => {
+            const selectedMonth = event.target.value; // Format: 'YYYY-MM'
+            console.log('Selected Year and Month:', selectedMonth);
+        });
+
+
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</body>
+
+</html>

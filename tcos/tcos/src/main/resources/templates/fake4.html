@@ -1,0 +1,477 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--&lt;!&ndash; BEGIN: Head &ndash;&gt;-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/static/dist/images/logo.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <meta name="description"-->
+<!--          content="Midone admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">-->
+<!--    <meta name="keywords"-->
+<!--          content="admin template, Midone Admin Template, dashboard template, flat admin template, responsive admin template, web app">-->
+<!--    <meta name="author" content="LEFT4CODE">-->
+<!--    <title>Loan Approval</title>-->
+<!--    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/static/dist/css/app.css" />-->
+<!--    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">-->
+<!--    &lt;!&ndash; Include Select2 CSS &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>-->
+<!--    &lt;!&ndash; END: CSS Assets&ndash;&gt;-->
+<!--    <style>-->
+<!--        .step {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .step.active {-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        #nextBtn {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        #previousBtn,-->
+<!--        #nextBtn2,-->
+<!--        #previousBtn2,-->
+<!--        #previousBtn3,-->
+<!--        #previousBtn4,-->
+<!--        #previousBtn5 {-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        .dataTables_length select {-->
+<!--            width: 60px;-->
+<!--        }-->
+
+<!--        .badge {-->
+<!--            display: inline-block;-->
+<!--            padding: 5px 10px;-->
+<!--            font-size: 14px;-->
+<!--            font-weight: bold;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+
+<!--        .badge-other {-->
+<!--            color: white;-->
+<!--            background-color: red;-->
+<!--        }-->
+
+<!--        .badge-active {-->
+<!--            color: white;-->
+<!--            background-color: green;-->
+<!--        }-->
+
+<!--        /* Style for the form inputs */-->
+<!--        .form-control {-->
+<!--            padding: 0.5rem;-->
+<!--            border-radius: 0.375rem;-->
+<!--            border: 1px solid #ccc;-->
+<!--        }-->
+
+<!--        .font-medium {-->
+<!--            font-weight: 500;-->
+<!--        }-->
+
+<!--        /* Styling for error messages */-->
+<!--        #passwordError {-->
+<!--            color: red;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .tab-header {-->
+<!--            display: flex;-->
+<!--            background: #f5f5f5;-->
+<!--            border-bottom: 1px solid #ccc;-->
+<!--        }-->
+
+<!--        .tab-header button {-->
+<!--            flex: 1;-->
+<!--            padding: 10px;-->
+<!--            background: #eaeaea;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        .tab-header button.active {-->
+<!--            background: #ffcc00;-->
+<!--        }-->
+
+<!--        .tab-content {-->
+<!--            display: none;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .tab-content.active {-->
+<!--            display: block;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body class="overflow-x-auto py-5">-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    &lt;!&ndash; BEGIN: Side Menu &ndash;&gt;-->
+<!--    <div th:replace="fragments/nav"></div>-->
+<!--    &lt;!&ndash; END: Side Menu &ndash;&gt;-->
+<!--    &lt;!&ndash; BEGIN: Content &ndash;&gt;-->
+<!--    <div class="content">-->
+<!--        &lt;!&ndash; BEGIN: Top Bar &ndash;&gt;-->
+<!--        <div th:replace="fragments/top"></div>-->
+<!--        &lt;!&ndash; BEGIN: Content &ndash;&gt;-->
+<!--        <form method="post" class="content content&#45;&#45;top-nav" id="FormData">-->
+<!--            <div class="intro-y flex items-center mt-8">-->
+<!--                <h2 class="text-lg font-medium mr-auto">Voucher Creation</h2>-->
+<!--            </div>-->
+<!--            <div class="box mt-5">-->
+<!--                <div class="col-span-12 lg:col-span-8 2xl:col-span-9">-->
+<!--                    &lt;!&ndash; BEGIN: Personal Details &ndash;&gt;-->
+<!--                    <div id="step1" class="all-d intro-y box col-span-12 2xl:col-span-6 step tab-content active">-->
+<!--                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-4 gap-3">-->
+<!--                            <div class="mb-4">-->
+<!--                                <label for="receiptType" class="form-label">Voucher made for:</label>-->
+<!--                                <select id="receiptType" name="receiptType" class="form-select" th:value="${mv.paymenttype}">-->
+<!--                                    <option value="MEMBERS">MEMBERS</option>-->
+<!--                                    <option value="EMPLOYEE">EMPLOYEE</option>-->
+<!--                                    <option value="VENDOR">VENDOR</option>-->
+<!--                                    <option value="OTHER">OTHER</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="form-label" for="ticketNo">Search Tickect No:</label>-->
+<!--                                <select id="ticketNo" name="ticketNo" class="form-control w-full">-->
+<!--                                    <option value="" disabled selected>Select Ticket</option>-->
+<!--                                    <option th:each="ticket : ${alluser}" th:value="${ticket}" th:text="${ticket}">-->
+<!--                                    </option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">-->
+<!--                            <h2 class="font-medium text-base mr-auto">Details</h2>-->
+<!--                            <button class="btn btn-primary" type="button" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview" id="add_btn">Add</button>-->
+<!--                        </div>-->
+<!--                        <form th:object="${memberVoucher}">-->
+<!--                            <div class="box">-->
+<!--                                <table id="table" class="table table-responsive table-stripped table-bordered">-->
+<!--                                    <thead class="table-dark">-->
+<!--                                    <th>SL</th>-->
+<!--                                    <th>Voucher</th>-->
+<!--                                    <th>Amount</th>-->
+<!--                                    <th>Action</th>-->
+<!--                                    </thead>-->
+<!--                                    <tbody id="voucherList">-->
+
+<!--                                    </tbody>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-2 gap-5">-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">-->
+<!--                            <h2 class="font-medium text-base mr-auto">Personal Details</h2>-->
+<!--                        </div>-->
+<!--                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="name">Name:</label>-->
+<!--                                <input type="text" id="name" name="name" class="form-control w-full box pr-10" disabled>-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="ticket_no">Ticket No:</label>-->
+<!--                                <input type="text" id="ticket_no" name="ticket_no" class="form-control w-full box pr-10" disabled>-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="createdAt">Date:</label>-->
+<!--                                <input type="Date" id="createdAt" name="createdAt" class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="bname">Bank Name:</label>-->
+<!--                                <input type="text" id="bname" name="bankName" class="form-control w-full box pr-10" disabled>-->
+<!--                            </div>-->
+
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="accountNum">Account Number:</label>-->
+<!--                                <input type="text" id="accountNum" name="accountNum" class="form-control w-full box pr-10" disabled>-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="branch">Branch:</label>-->
+<!--                                <input type="text" id="branch" name="branchName" class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="ifscCode">Ifsc Code:</label>-->
+<!--                                <input type="text" id="ifscCode" name="ifscCode"-->
+<!--                                       class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="payableAt">Payable At:</label>-->
+<!--                                <input type="text" id="payableAt" name="payableAt"-->
+<!--                                       class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="totalAmount">Total Amount:</label>-->
+<!--                                <input type="text" id="totalAmount" name="totalAmount" class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-1 gap-2">-->
+<!--                            <label class="block font-medium" for="description">Description</label>-->
+<!--                            <textarea id="description" name="description" class="form-control w-full" rows="4" placeholder="Enter description here..."></textarea>-->
+<!--                        </div>-->
+<!--                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="paymenttype">Payment Type:</label>-->
+<!--                                <select id="paymenttype" name="paymenttype" class="form-select" th:value="${mv.paymenttype}">-->
+<!--                                    <option value="NONE" >SELECT</option>-->
+<!--                                    <option value="CASH">SBI</option>-->
+<!--                                    <option value="CHEQUE">NEFT</option>-->
+<!--                                    <option value="CHEQUE">CHEQUE</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+
+<!--                                <div class="mb-4">-->
+<!--                                    <label class="block font-medium" for="creditedTo">Bank Name:</label>-->
+<!--                                    <input type="text" id="creditedTo" name="ticket_no" class="form-control w-full box pr-10" >-->
+<!--                                </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="chequeNo">Cheque Number:</label>-->
+<!--                                <input type="text" id="chequeNo" name="account_no"-->
+<!--                                       class="form-control w-full box pr-10">-->
+<!--                            </div>-->
+<!--                            <div class="mb-4">-->
+<!--                                <label class="block font-medium" for="preparedBy">Prepared By:</label>-->
+<!--                                <input type="text" id="preparedBy" name="ticket_no" class="form-control w-full box pr-10" >-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">-->
+<!--                        <a th:href ="@{/members/advice/monitorAdvice}" type="button" class="btn py-3 mb-4 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">Cancel</a>-->
+<!--                        <button type="submit" class="btn mb-4 mr-4 py-3 btn-primary w-full md:w-52">Save</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--        &lt;!&ndash; END: Content &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash; END: Content &ndash;&gt;-->
+<!--</div>-->
+
+<!--&lt;!&ndash; END: Super Large Modal Content &ndash;&gt;-->
+<!--&lt;!&ndash; BEGIN: Super Large Modal Content &ndash;&gt;-->
+<!--<div id="superlarge-modal-size-preview"-->
+<!--     class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" tabindex="-1"-->
+<!--     aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-lg bg-white rounded-lg shadow-lg overflow-hidden">-->
+
+<!--        &lt;!&ndash; Modal Body &ndash;&gt;-->
+<!--        <div class="modal-body px-8 py-6 bg-white rounded-lg shadow-lg">-->
+<!--            &lt;!&ndash; Personal Details Section &ndash;&gt;-->
+<!--            <h4 class="text-xl font-semibold mb-4 text-gray-800 border-b pb-2">Receipt Details</h4>-->
+<!--            <div class="grid grid-cols-2 gap-6 mb-4">-->
+<!--                <div class="p-4 bg-gray-50 rounded-lg shadow-sm">-->
+<!--                    <div class="grid grid-cols-3 items-center gap-2 mb-4">-->
+<!--                        <div class="flex justify-end">-->
+<!--                            <strong class="text-gray-800">Voucher:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="col-span-2">-->
+<!--                            <select id="voucher_type" name="voucher_type"-->
+<!--                                    class="form-control w-full p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500">-->
+<!--                                <option value="1">Option 1</option>-->
+<!--                                <option value="2">Option 2</option>-->
+<!--                                <option value="3">Option 3</option>-->
+<!--                                <option value="4">Option 4</option>-->
+<!--                                <option value="5">Option 5</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="p-4 bg-gray-50 rounded-lg shadow-sm">-->
+<!--                    <div class="grid grid-cols-3 items-center gap-2 mb-4">-->
+<!--                        <div class="flex justify-end">-->
+<!--                            <strong class="text-gray-800">Amount:</strong>-->
+<!--                        </div>-->
+<!--                        <div class="col-span-2">-->
+<!--                            <input type="number" id="amount" name="amount"-->
+<!--                                   class="form-control w-full p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Modal Footer  &ndash;&gt;-->
+<!--        <div class="modal-footer">-->
+<!--            <button class="btn btn-primary w-24 mr-1 mb-2" data-tw-toggle="modal"-->
+<!--                    data-tw-target="#superlarge-modal-size-preview" id="membership_btn"-->
+<!--                    data-tw-dismiss="modal">Save</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+<!--&lt;!&ndash; BEGIN: JS Assets&ndash;&gt;-->
+<!--<script-->
+<!--        src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>-->
+<!--<script src="/static/dist/js/app.js"></script>-->
+<!--&lt;!&ndash; Include jQuery and DataTables JS &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>-->
+<!--<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>-->
+<!--&lt;!&ndash; Include Select2 JS &ndash;&gt;-->
+<!--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
+<!--<script>-->
+<!--    let sl = 0;-->
+
+<!--    $(document).ready(function () {-->
+<!--        $('#ticketNo').select2({-->
+<!--            placeholder: "Select or search a ticket",-->
+<!--            allowClear: true-->
+<!--        });-->
+
+
+<!--        $('#ticketNo').on('change', function () {-->
+<!--            const ticket_no = $(this).val();-->
+<!--            clearFormFields();-->
+<!--            $("#voucherList").empty();-->
+
+<!--            $.ajax({-->
+<!--                url: "/tcos/members/membervouchers/ticketNumber/" + ticket_no,-->
+<!--                type: 'GET',-->
+<!--                success: function (result) {-->
+<!--                    console.log(Array.isArray(result.mvdto.memberVoucher));-->
+<!--                    let memberVoucher = result.mvdto.memberVoucher;-->
+
+<!--                    if (result && result.mvdto) {-->
+<!--                        if (result.mvdto.user) {-->
+<!--                            $("#name").val(result.mvdto.user.name || '');-->
+<!--                            $("#ticket_no").val(result.mvdto.user.userId || '');-->
+<!--                            $("#userid").val(result.mvdto.user.userId || '');-->
+<!--                        }-->
+<!--                        if (result.mvdto.bank) {-->
+<!--                            $("#bank_name").val(result.mvdto.bank.bankName || '');-->
+<!--                            $("#branch_name").val(result.mvdto.bank.branchName || '');-->
+<!--                            $("#ifsc_code").val(result.mvdto.bank.ifscCode || '');-->
+<!--                            $("#account_no").val(result.mvdto.bank.accountNum || '');-->
+<!--                        }-->
+
+<!--                        let rows = ""; // Accumulate rows in a variable-->
+
+<!--                        if (Array.isArray(memberVoucher) && memberVoucher.length > 0) {-->
+<!--                            memberVoucher.forEach(function (voucher, index) {-->
+<!--                                rows += `<tr id='row-${voucher.mvId}'>`;-->
+<!--                                rows += `<td>${index + 1}</td>`;-->
+<!--                                rows += `<td>${voucher.amount || 'N/A'}</td>`;-->
+<!--                                rows += `<td>${voucher.voucherId || 'N/A'}</td>`;-->
+<!--                                rows += `<td>${voucher.paymentType || 'N/A'}</td>`;-->
+<!--                                rows += `<td><button type="button" class="btn btn-primary" onclick="deleteVoucher(${voucher.mvId})">Delete</button></td>`;-->
+<!--                                rows += `</tr>`;-->
+
+<!--                                sl = index + 1;-->
+<!--                            });-->
+
+<!--                            $("#voucherList").append(rows); // Append all rows at once-->
+<!--                        } else {-->
+<!--                            console.warn("No vouchers found, skipping table update.");-->
+<!--                        }-->
+
+
+<!--                        $("#voucherList").append(rows); // Append all rows at once-->
+
+<!--                    }-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('Error fetching ticket details. Please try again.');-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+
+<!--    function deleteVoucher(mvId) {-->
+
+<!--        $.ajax({-->
+<!--            url: '/tcos/members/membervouchers/delete',-->
+<!--            type: 'GET',  // Changed from POST to GET-->
+<!--            data: {-->
+<!--                mvId: mvId-->
+<!--            },-->
+<!--            success: function (response) {-->
+<!--                if (response.status === 'deleted') {-->
+<!--                    const row = document.getElementById(`row-${mvId}`);-->
+<!--                    if (row) {-->
+<!--                        row.remove(); // Remove the row from the table-->
+<!--                    }-->
+<!--                }-->
+<!--            },-->
+<!--            error: function () {-->
+<!--                console.error("Error deleting member voucher.");-->
+<!--            }-->
+<!--        });-->
+
+
+<!--    }-->
+
+
+<!--    $('#membership_btn').on('click', function () {-->
+<!--        var amount = $('#amount').val();-->
+<!--        var voucher_type = $('#voucher_type').val();-->
+<!--        var payment_type = $('#payment_type').val();-->
+<!--        var userId = $('#ticket_no').val();-->
+<!--        var description=$('#desc').val();-->
+
+<!--        $.ajax({-->
+<!--            url: `/tcos/members/membervouchers/doadd?amount=${amount}&voucherType=${voucher_type}&paymentType=${payment_type}&userId=${userId}&description=${description}`,-->
+<!--            type: 'GET',-->
+<!--            success: function (result) {-->
+<!--                if (result.status === 'saved') {-->
+<!--                    console.log('saved');-->
+<!--                    let rows = `<tr id="row-${sl + 1}">`;-->
+<!--                    rows += `<td>${sl + 1}</td>`;-->
+<!--                    rows += `<td>${amount}</td>`;-->
+<!--                    rows += `<td>${voucher_type}</td>`;-->
+<!--                    rows += `<td>${payment_type}</td>`;-->
+<!--                    rows += `<td>${description}</td>`;-->
+<!--                    rows += `<td><button type="button" class="btn btn-primary" onclick="deleteVoucher(${result.mvId})">Delete</button></td>`;-->
+<!--                    rows += `</tr>`;-->
+<!--                    $("#voucherList").append(rows);-->
+<!--                    sl++;-->
+<!--                } else {-->
+<!--                    console.log('not saved');-->
+<!--                }-->
+<!--            },-->
+<!--            error: function () {-->
+<!--                console.log('error saving data');-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+
+
+
+<!--    function clearFormFields() {-->
+<!--        $("#name").val('');-->
+<!--        $("#ticket_no").val('');-->
+<!--        $("#userid").val('');-->
+<!--        $("#bank_name").val('');-->
+<!--        $("#branch_name").val('');-->
+<!--        $("#ifsc_code").val('');-->
+<!--        $("#account_no").val('');-->
+<!--        $("#amount").val('');-->
+<!--        $("#voucher_type").val('');-->
+<!--        $("#payment_type").val('');-->
+<!--    }-->
+
+<!--    // Convert form data to JSON (if needed for submission)-->
+<!--    function convertFormToJSON(form) {-->
+<!--        const array = $(form).serializeArray(); // Serialize form into an array-->
+<!--        const json = {};-->
+<!--        $.each(array, function () {-->
+<!--            const key = this.name; // Ensure input has a valid name-->
+<!--            json[key] = this.value || ""; // Use empty string if value is empty-->
+<!--        });-->
+<!--        return json;-->
+<!--    }-->
+
+
+<!--</script>-->
+<!--<script src="/static/dist/js/ckeditor-classic.js"></script>-->
+<!--</body>-->
+
+<!--</html>-->

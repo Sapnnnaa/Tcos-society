@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Application Form</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+
+        body {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 10.5px;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .container {
+            width: 95%;
+            margin: 0 auto;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .sub-header {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 1px solid #bbb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .field {
+            font-size: 11px;
+            color: #070707;
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+
+        .signature {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 100px;
+            margin-left: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 11px;
+        }
+
+        table thead {
+            background-color: #f4f4f4;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #000;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .logo-cell {
+            width: 100px;
+            vertical-align: middle;
+        }
+
+        .logo-img {
+            width: 90px;
+            height: auto;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .print-date {
+            text-align: right;
+            font-size: 9px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .bordered {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            margin: 10px 0;
+            background-color: #fcfcfc;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            border-left: 5px solid #3498db;
+            padding: 10px;
+            background-color: #f0f8ff;
+            margin: 10px 0;
+        }
+
+        .sureties {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .sureties th,
+        .sureties td {
+            border: 1.5px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .sureties th {
+            background-color: #eaeaea;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Print Date -->
+        <div class="print-date">
+            Printed on: <span th:text="${#dates.format(printDate, 'dd-MM-yyyy')}">24-03-2025</span>
+        </div>        
+
+        <!-- Header with logo -->
+        <table>
+            <tr>
+                <td class="logo-cell">
+                    <img th:src="${logoPath}" alt="Company Logo" class="logo-img" />
+                </td>
+                <td class="header" colspan="3">
+                    Telco Co-operative Society Ltd., Jamshedpur - 831004<br />
+                    APPLICATION FOR COMMODITY LOAN
+                </td>
+            </tr>
+        </table>
+
+        <!-- Section Title -->
+        <div class="sub-header">Loan Interest Report for - <span th:text="${company}"></span></div>
+
+        <!-- Loan Interest Report Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Wage Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="report : ${interestReports}">
+                    <td th:text="${report.userId}">User ID</td>
+                    <td th:text="${report.name}">Name</td>
+                    <td th:text="${report.wageType}">Loan Type</td>
+                    <td th:text="${report.systemAmount}">Interest</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Signature Section -->
+        <div class="signature">
+            Authorized Signatory<br />
+            <span class="underline"></span>
+        </div>
+    </div>
+</body>
+
+</html>

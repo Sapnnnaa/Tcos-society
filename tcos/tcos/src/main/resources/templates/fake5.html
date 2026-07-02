@@ -1,0 +1,818 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash; BEGIN: Head &ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="utf-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="/static/dist/images/logo.svg" rel="shortcut icon">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Loan Approval</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="/static/dist/css/app.css" />&ndash;&gt;-->
+<!--&lt;!&ndash;    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; END: CSS Assets&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<body class="overflow-x-auto py-5">&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="flex mt-[4.7rem] md:mt-0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div th:replace="fragments/nav"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="content">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div th:replace="fragments/top"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="intro-y flex items-center mt-4">&ndash;&gt;-->
+<!--&lt;!&ndash;            <h2 class="text-2xl font-medium mr-auto">&ndash;&gt;-->
+<!--&lt;!&ndash;                Monitor Voucher&ndash;&gt;-->
+<!--&lt;!&ndash;            </h2>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="grid grid-cols-12 gap-6 mt-5">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="intro-y col-span-12 lg:col-span-12">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="overflow-x-auto box">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div class="m-5">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <table class="table" id="table">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <th class="whitespace-nowrap">Sl. No</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <th class="whitespace-nowrap">Process Name</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <th class="whitespace-nowrap">Key Value</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <th class="whitespace-nowrap">Update</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <tr th:if="${mvoucher != null and not #lists.isEmpty(mvoucher)}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                th:each="mvDto : ${mvoucher}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <td th:text="${mvDto.id}">Sl.NO</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <td th:text="${mvDto.name}">Process Name</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <td th:text="${mvDto.userId}">Key</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <button class="btn btn-sm btn-primary open-modal"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            data-tw-toggle="modal"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            data-tw-target="#superlarge-modal-size-preview"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            th:attr="data-mid=${mvoucher.id}">Update</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                                </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </table>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash; END: Content &ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash; BEGIN: Super Large Modal Content &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <div id="superlarge-modal-size-preview"&ndash;&gt;-->
+<!--&lt;!&ndash;         class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" tabindex="-1"&ndash;&gt;-->
+<!--&lt;!&ndash;         aria-hidden="true">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="modal-dialog modal-xl bg-white rounded-lg shadow-lg overflow-hidden">&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash; BEGIN: JS Assets&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="/static/dist/js/app.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    $(document).ready(function () {&ndash;&gt;-->
+<!--&lt;!&ndash;        var table = $('#table').DataTable();&ndash;&gt;-->
+
+<!--&lt;!&ndash;        // Custom filter function for date range&ndash;&gt;-->
+<!--&lt;!&ndash;        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {&ndash;&gt;-->
+<!--&lt;!&ndash;            var minDate = $('#minDate').val();&ndash;&gt;-->
+<!--&lt;!&ndash;            var maxDate = $('#maxDate').val();&ndash;&gt;-->
+<!--&lt;!&ndash;            var createdAt = data[4]; // "Created At" column (0-based index)&ndash;&gt;-->
+
+<!--&lt;!&ndash;            if (!createdAt) return false; // Skip empty dates&ndash;&gt;-->
+
+<!--&lt;!&ndash;            var rowDate = new Date(createdAt); // Convert row date to Date object&ndash;&gt;-->
+<!--&lt;!&ndash;            if (minDate) minDate = new Date(minDate);&ndash;&gt;-->
+<!--&lt;!&ndash;            if (maxDate) maxDate = new Date(maxDate);&ndash;&gt;-->
+
+<!--&lt;!&ndash;            return (!minDate || rowDate >= minDate) && (!maxDate || rowDate <= maxDate);&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+
+<!--&lt;!&ndash;        // Apply filter when dates are changed&ndash;&gt;-->
+<!--&lt;!&ndash;        $('#minDate, #maxDate').on('change', function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            table.draw();&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    function toggleInputField() {&ndash;&gt;-->
+<!--&lt;!&ndash;        var onlineRadio = document.getElementById("onlineRadio");&ndash;&gt;-->
+<!--&lt;!&ndash;        var utrField = document.getElementById("utrField");&ndash;&gt;-->
+
+<!--&lt;!&ndash;        if (onlineRadio.checked) {&ndash;&gt;-->
+<!--&lt;!&ndash;            utrField.style.display = "block"; // Show the UTR input field&ndash;&gt;-->
+<!--&lt;!&ndash;        } else {&ndash;&gt;-->
+<!--&lt;!&ndash;            utrField.style.display = "none"; // Hide the UTR input field&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    }&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;    $(document).ready(function () {&ndash;&gt;-->
+<!--&lt;!&ndash;        const urls = {&ndash;&gt;-->
+<!--&lt;!&ndash;            "SBI": "/tcos/members/membervouchers/sbi-vouchers",&ndash;&gt;-->
+<!--&lt;!&ndash;            "NEFT": "/tcos/members/membervouchers/neft-vouchers"&ndash;&gt;-->
+<!--&lt;!&ndash;        };&ndash;&gt;-->
+
+<!--&lt;!&ndash;        // Event listener for the select dropdown&ndash;&gt;-->
+<!--&lt;!&ndash;        $("#voucher_generation").change(function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            var selectedValue = $(this).val();&ndash;&gt;-->
+
+<!--&lt;!&ndash;            if (selectedValue) {&ndash;&gt;-->
+<!--&lt;!&ndash;                // Show the Generate button&ndash;&gt;-->
+<!--&lt;!&ndash;                // $("#generate_button").show();&ndash;&gt;-->
+
+<!--&lt;!&ndash;                // Set the href for the Generate button based on the selected option&ndash;&gt;-->
+<!--&lt;!&ndash;                $("#generate_button").attr("href", urls[selectedValue]);&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;            // else {&ndash;&gt;-->
+<!--&lt;!&ndash;            //     // Hide the Generate button if no option is selected&ndash;&gt;-->
+<!--&lt;!&ndash;            //     $("#generate_button").hide();&ndash;&gt;-->
+<!--&lt;!&ndash;            // }&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;        // Handle button click to open modal&ndash;&gt;-->
+<!--&lt;!&ndash;        $('.open-modal').on('click', function () {&ndash;&gt;-->
+<!--&lt;!&ndash;            const mid = $(this).data('mid'); // Get the 'mid' value from data attribute&ndash;&gt;-->
+<!--&lt;!&ndash;            console.log(mid);&ndash;&gt;-->
+<!--&lt;!&ndash;            $('#modal-mid').text(mid); // Update the modal with the MID&ndash;&gt;-->
+<!--&lt;!&ndash;            $.ajax({&ndash;&gt;-->
+<!--&lt;!&ndash;                url: "../members/" + mid, // Update the URL to match your API&ndash;&gt;-->
+<!--&lt;!&ndash;                type: 'GET',&ndash;&gt;-->
+<!--&lt;!&ndash;                success: function (result) {&ndash;&gt;-->
+<!--&lt;!&ndash;                    let res = result[0];&ndash;&gt;-->
+<!--&lt;!&ndash;                    console.log(res);&ndash;&gt;-->
+<!--&lt;!&ndash;                    //Personal Detail&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#memberId').text(mid);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#aadhar_no').text(res.aadharNumber);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#fullname').text(res.fullname);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#gender').text(res.gender);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#empid').text(res.empId);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#dob').text(res.dob);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#father_name').text(res.fatherName);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#pan_card').text(res.panCard);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#email').text(res.email);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#mobile').text(res.mobileNo);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#whatsap_no').text(res.whatsappNumber);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#company_name').text(res.companyId);&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    //Permanemt Address&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#p_addr').text(res.permanemtAddress);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#p_thana').text(res.permanemtThana);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#p_post_office').text(res.permanemtPostOffice);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#p_state').text(res.permanemtState);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#p_pincode').text(res.permanemtPincode);&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    //Current Address&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#current_addr').text(res.currentAddress);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#current_thana').text(res.currentThana);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#current_post_office').text(res.currentPostOffice);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#current_state').text(res.currentState);&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#current_pincode').text(res.currentPincode);&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    //Bank details&ndash;&gt;-->
+<!--&lt;!&ndash;                    $('#bank_name').text(res.bankId);&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;                },&ndash;&gt;-->
+<!--&lt;!&ndash;                error: function () {&ndash;&gt;-->
+<!--&lt;!&ndash;                    alert('Failed to fetch data for MID: ' + mid);&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;            $('#membership_btn').on('click', function () {&ndash;&gt;-->
+<!--&lt;!&ndash;                const mid = $(this).data('mid'); // Get the Member ID&ndash;&gt;-->
+<!--&lt;!&ndash;                const status = $('#membership_status').val(); // Get the selected status (Pending/Approved/Rejected)&ndash;&gt;-->
+
+<!--&lt;!&ndash;                if (!status) {&ndash;&gt;-->
+<!--&lt;!&ndash;                    alert('Please select a status');&ndash;&gt;-->
+<!--&lt;!&ndash;                    return;&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+
+<!--&lt;!&ndash;                $.ajax({&ndash;&gt;-->
+<!--&lt;!&ndash;                    url: "../members/" + mid, // API endpoint&ndash;&gt;-->
+<!--&lt;!&ndash;                    type: 'POST',&ndash;&gt;-->
+<!--&lt;!&ndash;                    contentType: 'application/json',&ndash;&gt;-->
+<!--&lt;!&ndash;                    data: JSON.stringify({ status: status }), // Send status in request body&ndash;&gt;-->
+<!--&lt;!&ndash;                    success: function (result) {&ndash;&gt;-->
+<!--&lt;!&ndash;                        alert('Membership status updated successfully!');&ndash;&gt;-->
+<!--&lt;!&ndash;                    },&ndash;&gt;-->
+<!--&lt;!&ndash;                    error: function (err) {&ndash;&gt;-->
+<!--&lt;!&ndash;                        console.error('Error updating membership status:', err);&ndash;&gt;-->
+<!--&lt;!&ndash;                        alert('Failed to update membership status.');&ndash;&gt;-->
+<!--&lt;!&ndash;                    }&ndash;&gt;-->
+<!--&lt;!&ndash;                });&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;    });&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--&lt;!&ndash;-->
+<!--Template Name: Midone - HTML Admin Dashboard Template-->
+<!--Author: Left4code-->
+<!--Website: http://www.left4code.com/-->
+<!--Contact: muhammadrizki@left4code.com-->
+<!--Purchase: https://themeforest.net/user/left4code/portfolio-->
+<!--Renew Support: https://themeforest.net/user/left4code/portfolio-->
+<!--License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.-->
+<!--&ndash;&gt;-->
+<!--<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">-->
+<!--&lt;!&ndash; BEGIN: Head &ndash;&gt;-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>TELCO - M</title>-->
+<!--    &lt;!&ndash; BEGIN: CSS Assets&ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/tcos/dist/css/app.css" />-->
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">-->
+<!--    &lt;!&ndash; END: CSS Assets&ndash;&gt;-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--        .box {-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--            padding: 10px;-->
+<!--            margin-top: 20px;-->
+<!--            background-color: #f9f9f9;-->
+<!--        }-->
+<!--        .calendar {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(7, 1fr);-->
+<!--            gap: 4px;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--        .calendar div {-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+<!--        .calendar .active {-->
+<!--            background-color: #007bff;-->
+<!--            color: white;-->
+<!--        }-->
+<!--        .notice {-->
+<!--            margin-top: 10px;-->
+<!--            padding: 5px;-->
+<!--            background-color: #e7f3fe;-->
+<!--            border-left: 6px solid #2196F3;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--&lt;!&ndash; END: Head &ndash;&gt;-->
+
+<!--<body class="py-5">-->
+<!--<div th:replace="~{./fragments/mob}"></div>-->
+<!--<div class="flex mt-[4.7rem] md:mt-0">-->
+<!--    &lt;!&ndash; BEGIN: Side Menu &ndash;&gt;-->
+<!--    <div th:replace="~{./fragments/nav}"></div>-->
+<!--    &lt;!&ndash; END: Side Menu &ndash;&gt;-->
+<!--    &lt;!&ndash; BEGIN: Content &ndash;&gt;-->
+<!--    <div class="content">-->
+<!--        &lt;!&ndash; BEGIN: Top Bar &ndash;&gt;-->
+<!--        <div th:replace="~{./fragments/top}"></div>-->
+<!--        &lt;!&ndash; END: Top Bar &ndash;&gt;-->
+<!--        <div class="grid grid-cols-12 gap-6">-->
+<!--            <div class="col-span-12 2xl:col-span-9">-->
+<!--                <div class="grid grid-cols-12 gap-6">-->
+<!--                    &lt;!&ndash; BEGIN: General Report &ndash;&gt;-->
+<!--                    <div class="col-span-12 mt-8">-->
+<!--                        <div class="intro-y flex items-center h-10">-->
+<!--                            <h2 class="text-lg font-medium truncate mr-5">-->
+<!--                                General Report-->
+<!--                            </h2>-->
+<!--                            <a href="" class="ml-auto flex items-center text-primary"> <i data-lucide="refresh-ccw"-->
+<!--                                                                                          class="w-4 h-4 mr-3"></i> Reload Data </a>-->
+<!--                        </div>-->
+<!--                        <div class="grid grid-cols-13 gap-6 mt-5">-->
+<!--                            <div class="grid grid-cols-2 gap-4">-->
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="users" class="report-box__icon text-primary"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6" ><div th:text="${ActiveMember}">0</div></div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Total Active Members</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="user-plus" class="report-box__icon text-warning"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${InActiveMember}">0</div></div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Membership Pending</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="file-plus" class="report-box__icon text-warning"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${LPending}">0</div></div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Loan Pending</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="file-text" class="report-box__icon text-warning"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${LPassed}">0</div></div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Loan Passed (this Month)</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="file-minus" class="report-box__icon text-success"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6"><div th:text="${APending}">0</div></div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Advice Pending</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-span-1 intro-y">-->
+<!--                                    <div class="report-box zoom-in">-->
+<!--                                        <div class="box p-5">-->
+<!--                                            <div class="flex">-->
+<!--                                                <i data-lucide="user-plus" class="report-box__icon text-danger"></i>-->
+<!--                                                <div class="ml-auto"></div>-->
+<!--                                            </div>-->
+<!--                                            <div class="text-3xl font-medium leading-8 mt-6">0</div>-->
+<!--                                            <div class="text-base text-slate-500 mt-1">Account Termination Pending</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash; END: General Report &ndash;&gt;-->
+<!--                    &lt;!&ndash; BEGIN: Weekly Top Products &ndash;&gt;-->
+<!--                    &lt;!&ndash;                        <div class="col-span-12 mt-6">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                            <div class="intro-y block sm:flex items-center h-10">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                <h2 class="text-lg font-medium truncate mr-5">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                    Total Transaction this month&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                </h2>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                    <button class="btn box flex items-center text-slate-600 dark:text-slate-300"> <i&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                            data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                        Excel </button>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                    <button class="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                        <i data-lucide="file-text" class="hidden sm:block w-4 h-4 mr-2"></i> Export to&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                        PDF </button>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                            <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                <table class="table table-report sm:mt-2">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <thead>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <th class="whitespace-nowrap">IMAGES</th>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <th class="whitespace-nowrap">PRODUCT NAME</th>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <th class="text-center whitespace-nowrap">STOCK</th>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <th class="text-center whitespace-nowrap">STATUS</th>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <th class="text-center whitespace-nowrap">ACTIONS</th>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    </thead>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <tbody>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <tr class="intro-x">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-12.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 3 June 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-6.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 6 August 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-13.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 3 July 2022">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <a href="" class="font-medium whitespace-nowrap">Samsung Galaxy S20&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    Ultra</a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">Smartphone&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    &amp; Tablet</div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="text-center">88</td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex items-center justify-center text-success"> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        data-lucide="check-square" class="w-4 h-4 mr-2"></i> Active&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="table-report__action w-56">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex justify-center items-center">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center mr-3" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center text-danger" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <tr class="intro-x">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-15.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 18 October 2022">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-5.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 15 June 2021">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-5.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 12 June 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <a href="" class="font-medium whitespace-nowrap">Oppo Find X2 Pro</a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">Smartphone&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    &amp; Tablet</div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="text-center">94</td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex items-center justify-center text-danger"> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        data-lucide="check-square" class="w-4 h-4 mr-2"></i> Inactive&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="table-report__action w-56">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex justify-center items-center">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center mr-3" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center text-danger" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <tr class="intro-x">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-5.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 5 September 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-14.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 23 August 2021">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-9.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 27 July 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <a href="" class="font-medium whitespace-nowrap">Nike Tanjun</a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">Sport &amp;&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    Outdoor</div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="text-center">103</td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex items-center justify-center text-success"> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        data-lucide="check-square" class="w-4 h-4 mr-2"></i> Active&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="table-report__action w-56">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex justify-center items-center">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center mr-3" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center text-danger" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <tr class="intro-x">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-12.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 21 May 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-6.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 4 February 2022">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <div class="w-10 h-10 image-fit zoom-in -ml-5">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        <img alt="Midone - HTML Admin Template"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            class="tooltip rounded-full"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            src="/tcos/dist/images/preview-14.jpg"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            title="Uploaded at 24 July 2020">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <a href="" class="font-medium whitespace-nowrap">Apple MacBook Pro&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    13</a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="text-slate-500 text-xs whitespace-nowrap mt-0.5">PC &amp;&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    Laptop</div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="text-center">164</td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="w-40">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex items-center justify-center text-success"> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                        data-lucide="check-square" class="w-4 h-4 mr-2"></i> Active&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <td class="table-report__action w-56">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                <div class="flex justify-center items-center">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center mr-3" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    <a class="flex items-center text-danger" href=""> <i&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                            data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            </td>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </tr>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    </tbody>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                </table>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                            </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                            <div class="intro-y flex flex-wrap sm:flex-row sm:flex-nowrap items-center mt-3">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                <nav class="w-full sm:w-auto sm:mr-auto">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <ul class="pagination">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <a class="page-link" href="#"> <i class="w-4 h-4"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    data-lucide="chevrons-left"></i> </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <a class="page-link" href="#"> <i class="w-4 h-4"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    data-lucide="chevron-left"></i> </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item"> <a class="page-link" href="#">...</a> </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item"> <a class="page-link" href="#">1</a> </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item active"> <a class="page-link" href="#">2</a> </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item"> <a class="page-link" href="#">3</a> </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item"> <a class="page-link" href="#">...</a> </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <a class="page-link" href="#"> <i class="w-4 h-4"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    data-lucide="chevron-right"></i> </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        <li class="page-item">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                            <a class="page-link" href="#"> <i class="w-4 h-4"&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                                    data-lucide="chevrons-right"></i> </a>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                        </li>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    </ul>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                </nav>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                <select class="w-20 form-select box mt-3 sm:mt-0">&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <option>10</option>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <option>25</option>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <option>35</option>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                    <option>50</option>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                                </select>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;&lt;!&ndash;                            </div>&ndash;&gt;&ndash;&gt;-->
+<!--                    &lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    &lt;!&ndash; END: Weekly Top Products &ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="col-span-12 2xl:col-span-3">-->
+<!--                <div class="2xl:border-l -mb-10 pb-10">-->
+<!--                    <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 2xl:gap-x-0 gap-y-6">-->
+<!--                        &lt;!&ndash; BEGIN: Transactions &ndash;&gt;-->
+<!--                        &lt;!&ndash;                            <div class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 mt-3 2xl:mt-8">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                <div class="intro-x flex items-center h-10">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <h2 class="text-lg font-medium truncate mr-5">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        Transactions&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </h2>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                <div class="mt-5">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <div class="intro-x">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        <div class="box px-5 py-3 mb-3 flex items-center zoom-in">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <img alt="Midone - HTML Admin Template"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                    src="/tcos/dist/images/profile-14.jpg">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="ml-4 mr-auto">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="font-medium">Russell Crowe</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="text-slate-500 text-xs mt-0.5">3 June 2020</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="text-success">+$36</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <div class="intro-x">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        <div class="box px-5 py-3 mb-3 flex items-center zoom-in">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <img alt="Midone - HTML Admin Template"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                    src="/tcos/dist/images/profile-11.jpg">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="ml-4 mr-auto">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="font-medium">John Travolta</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="text-slate-500 text-xs mt-0.5">18 October 2022</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="text-danger">-$179</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <div class="intro-x">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        <div class="box px-5 py-3 mb-3 flex items-center zoom-in">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <img alt="Midone - HTML Admin Template"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                    src="/tcos/dist/images/profile-11.jpg">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="ml-4 mr-auto">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="font-medium">Tom Cruise</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="text-slate-500 text-xs mt-0.5">5 September 2020</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="text-success">+$32</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <div class="intro-x">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        <div class="box px-5 py-3 mb-3 flex items-center zoom-in">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <img alt="Midone - HTML Admin Template"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                    src="/tcos/dist/images/profile-13.jpg">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="ml-4 mr-auto">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="font-medium">Denzel Washington</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="text-slate-500 text-xs mt-0.5">21 May 2020</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="text-success">+$36</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <div class="intro-x">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        <div class="box px-5 py-3 mb-3 flex items-center zoom-in">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <img alt="Midone - HTML Admin Template"&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                    src="/tcos/dist/images/profile-14.jpg">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="ml-4 mr-auto">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="font-medium">Al Pacino</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                                <div class="text-slate-500 text-xs mt-0.5">6 February 2022</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                            <div class="text-success">+$56</div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                    <a href=""&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        class="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500">View&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                        More</a>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                        &lt;!&ndash; END: Transactions &ndash;&gt;-->
+<!--                        &lt;!&ndash; BEGIN: Schedules &ndash;&gt;-->
+<!--                        <div-->
+<!--                                class="col-span-12 md:col-span-6 xl:col-span-4 2xl:col-span-12 xl:col-start-1 xl:row-start-2 2xl:col-start-auto 2xl:row-start-auto mt-3">-->
+<!--                            <div class="intro-x flex items-center h-10">-->
+<!--                                <h2 class="text-lg font-medium truncate mr-5">-->
+<!--                                    Notice Board-->
+<!--                                </h2>-->
+<!--                                <a href="" class="ml-auto text-primary truncate flex items-center"> <i-->
+<!--                                        data-lucide="plus" class="w-4 h-4 mr-1"></i>  </a>-->
+<!--                            </div>-->
+<!--                            <div class="mt-5">-->
+<!--                                <div class="intro-x box">-->
+<!--                                    <div class="p-5">-->
+<!--                                        <div class="flex">-->
+<!--                                            <i data-lucide="chevron-left" class="w-5 h-5 text-slate-500"></i>-->
+<!--                                            <div class="font-medium text-base mx-auto">Feburary</div>-->
+<!--                                            <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500"></i>-->
+<!--                                        </div>-->
+<!--                                        <div class="grid grid-cols-7 gap-4 mt-5 text-center">-->
+<!--                                            <div class="font-medium">Su</div>-->
+<!--                                            <div class="font-medium">Mo</div>-->
+<!--                                            <div class="font-medium">Tu</div>-->
+<!--                                            <div class="font-medium">We</div>-->
+<!--                                            <div class="font-medium">Th</div>-->
+<!--                                            <div class="font-medium">Fr</div>-->
+<!--                                            <div class="font-medium">Sa</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">27</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">28</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">29</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">30</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">31</div>-->
+<!--                                            <div class="py-0.5 rounded relative">1</div>-->
+<!--                                            <div class="py-0.5 rounded relative">2</div>-->
+<!--                                            <div class="py-0.5 rounded relative">3</div>-->
+<!--                                            <div class="py-0.5 rounded relative">4</div>-->
+<!--                                            <div class="py-0.5 rounded relative">5</div>-->
+<!--                                            <div class="py-0.5 rounded relative">6</div>-->
+<!--                                            <div class="py-0.5 rounded relative">7</div>-->
+<!--                                            <div class="py-0.5 rounded relative">8</div>-->
+<!--                                            <div class="py-0.5 rounded relative">9</div>-->
+<!--                                            <div class="py-0.5 rounded relative">10</div>-->
+<!--                                            <div class="py-0.5 rounded relative">11</div>-->
+<!--                                            <div class="py-0.5 rounded relative">12</div>-->
+<!--                                            <div class="py-0.5 rounded relative">13</div>-->
+<!--                                            <div class="py-0.5 rounded relative">14</div>-->
+<!--                                            <div class="py-0.5 rounded relative">15</div>-->
+<!--                                            <div class="py-0.5 rounded relative">16</div>-->
+<!--                                            <div class="py-0.5 rounded relative">17</div>-->
+<!--                                            <div class="py-0.5 rounded relative">18</div>-->
+<!--                                            <div class="py-0.5 rounded relative">19</div>-->
+<!--                                            <div class="py-0.5 rounded relative">20</div>-->
+<!--                                            <div class="py-0.5 rounded relative">21</div>-->
+<!--                                            <div class="py-0.5 rounded relative">22</div>-->
+<!--                                            <div class="py-0.5 rounded relative">23</div>-->
+<!--                                            <div class="py-0.5 rounded relative">24</div>-->
+<!--                                            <div class="py-0.5 rounded relative">25</div>-->
+<!--                                            <div class="py-0.5 rounded relative">26</div>-->
+<!--                                            <div class="py-0.5 rounded relative">27</div>-->
+<!--                                            <div class="py-0.5 bg-primary text-white rounded relative">28</div>-->
+<!--                                            <div class="py-0.5 rounded relative">29</div>-->
+<!--                                            <div class="py-0.5 rounded relative">30</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">1</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">2</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">3</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">4</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">5</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">6</div>-->
+<!--                                            <div class="py-0.5 rounded relative text-slate-500">7</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="border-t border-slate-200/60 p-5">-->
+<!--                                        <div class="flex items-center">-->
+<!--                                            <div class="w-2 h-2 bg-pending rounded-full mr-3"></div>-->
+<!--                                            <span class="truncate">Telco Meeting</span> <span-->
+<!--                                                class="font-medium xl:ml-auto">30th</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="flex items-center mt-4">-->
+<!--                                            <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>-->
+<!--                                            <span class="truncate">SHO Development Display</span> <span-->
+<!--                                                class="font-medium xl:ml-auto">10th</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="flex items-center mt-4">-->
+<!--                                            <div class="w-2 h-2 bg-warning rounded-full mr-3"></div>-->
+<!--                                            <span class="truncate">Half Application</span> <span-->
+<!--                                                class="font-medium xl:ml-auto">15th</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; END: Schedules &ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; END: Content &ndash;&gt;-->
+<!--</div>-->
+
+<!--&lt;!&ndash; BEGIN: Footer &ndash;&gt;-->
+<!--<div th:replace="~{./fragments/footer}"></div>-->
+<!--&lt;!&ndash; END: Footer &ndash;&gt;-->
+
+<!--&lt;!&ndash; BEGIN: JS Assets&ndash;&gt;-->
+<!--&lt;!&ndash;    <script&ndash;&gt;-->
+<!--&lt;!&ndash;        src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;    <script src="https://maps.googleapis.com/maps/api/js?key=[" your-google-map-api"]&libraries=places"></script>&ndash;&gt;-->
+<!--<script src="/tcos/dist/js/app.js"></script>-->
+<!--&lt;!&ndash; END: JS Assets&ndash;&gt;-->
+<!--</body>-->
+
+<!--</html>'-->

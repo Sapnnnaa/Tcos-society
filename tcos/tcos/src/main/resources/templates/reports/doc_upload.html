@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta th:name="_csrf" th:content="${_csrf.token}" />
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+
+    <style>
+        /* Modified CSS to prevent conflicts */
+        #saveConfirmationModal {
+            transition: opacity 0.3s ease;
+        }
+
+        .fa-spinner {
+            margin-right: 5px;
+        }
+
+        /* Add Tailwind-like modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            transform: translate(0, 0);
+            /* Reset any accidental transforms */
+            margin: 0 auto;
+        }
+
+        /* Force button visibility */
+        #confirmSaveBtn {
+            background-color: #2563eb !important;
+            /* Fallback blue color */
+        }
+
+        /* Table full styling */
+        #comparisonTable {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        /* All cells */
+        #comparisonTable th,
+        #comparisonTable td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
+        /* Group headers (Normal Loan, Commodity Loan) */
+        #comparisonTable th.group-header {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            font-size: 16px;
+            border: 2px solid #000;
+        }
+
+        /* Sub-headers (Balance, Recovery, Interest) */
+        #comparisonTable th.sub-header {
+            background-color: #e8e8e8;
+            font-weight: bold;
+        }
+
+        /* Upload/Generated row */
+        #comparisonTable th.upload-generated {
+            background-color: #fafafa;
+        }
+
+        /* Highlight rows on hover */
+        #comparisonTable tbody tr:hover {
+            background-color: #f1f7ff;
+        }
+    </style>
+    <title>Member Registration</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<!-- END: Head -->
+
+<body class="py-5">
+    <div th:insert="~{./fragments/mob}"></div>
+    <div class="flex mt-[4.7rem] md:mt-0">
+        <div th:replace="~{./fragments/nav}"></div>
+        <div class="content">
+            <div th:replace="~{./fragments/top}"></div>
+            <div class="intro-y flex items-center justify-between w-full">
+                <div>
+                    <h2 class="intro-y text-lg font-medium mt-5">Amounts and Wage Types for - <span
+                            th:text="${company}"> Company</span> </h2>
+                </div>
+
+
+            </div>
+
+            <div>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" id="fileInput" name="file" accept=".xlsx,.xls" required>
+                    <button id="uploadBtn" class="btn" style="background-color: bisque;" type="button"
+                        onclick="uploadFile()">Upload & Compare</button>
+
+                </form>
+                <button class="block btn btn-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                    onclick="window.location.href='/tcos/members/reports/downloadExcel'">
+                    Download Report
+                </button>
+            </div>
+
+            <div class="box grid grid-cols-12 gap-6 mt-5 p-5 bg-white shadow-lg rounded-2xl">
+                <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+                    <table class="table table-report display" id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th rowspan="3">Ticket Number</th>
+                                <th rowspan="3">Name</th>
+                                <th colspan="9" class="group-header">Normal Loan</th>
+                                <th colspan="9" class="group-header">Commodity Loan</th>
+                                <th colspan="3" rowspan="2" class="group-header">Share</th>
+                                <th colspan="3" rowspan="2" class="group-header">CD</th>
+                            </tr>
+                            <tr>
+                                <th colspan="3" class="sub-header">Balance</th>
+                                <th colspan="3" class="sub-header">Recovery</th>
+                                <th colspan="3" class="sub-header">Interest</th>
+                                <th colspan="3" class="sub-header">Balance</th>
+                                <th colspan="3" class="sub-header">Recovery</th>
+                                <th colspan="3" class="sub-header">Interest</th>
+                            </tr>
+                            <tr>
+                                <!-- Normal Loan -->
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <!-- Commodity Loan -->
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <!-- Share -->
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+
+                                <!-- CD -->
+                                <th class="upload-generated">Upload</th>
+                                <th class="upload-generated">Generated</th>
+                                <th class="upload-generated">Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{./fragments/footer}"></div>
+    <script src="/tcos/dist/js/app.js"></script>
+    <script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+    <script>
+        // Initialize DataTable when page loads
+        $(document).ready(function () {
+            $('#comparisonTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true
+            });
+        });
+
+        function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            if (!fileInput.files.length) {
+                alert("Please select a file first");
+                return;
+            }
+
+            // Get existing system reports (you need to implement this)
+            const existingReports = [];
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            formData.append("existingReports", JSON.stringify(existingReports));
+
+            // Show loading state
+            const submitBtn = document.getElementById("uploadBtn");
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            const token = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+            fetch("/tcos/members/reports/uploadExcel", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    [header]: token,
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    renderComparisonTable(data);
+                    // Show save button again and hide any existing message when new data is uploaded
+                    document.getElementById('saveBtn').style.display = 'block';
+                    document.getElementById('saveMessage').classList.add('hidden');
+                    alert(`Successfully processed ${data.length} records`);
+                })
+                .catch(error => {
+                    console.error("Upload error:", error);
+                    alert("Upload failed: " + error.message);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                });
+        }
+
+        function renderComparisonTable(data) {
+            // Get the DataTable instance or initialize it if not already done
+            const table = $('#comparisonTable').DataTable();
+
+            // Clear previous data
+            table.clear();
+
+            // Add new rows
+            data.forEach(report => {
+                table.row.add([
+                    report.userId || '',
+                    report.name || '',
+
+                    // Normal Loan - Balance
+                    report.normalBalanceUpload ?? '',
+                    report.normalBalanceGenerated ?? '',
+                    ((report.normalBalanceUpload ?? 0) - (report.normalBalanceGenerated ?? 0)).toFixed(2),
+
+                    // Normal Loan - Recovery
+                    report.noramlRecoveryUpload ?? '',
+                    report.noramlRecoveryGenerated ?? '',
+                    ((report.noramlRecoveryUpload ?? 0) - (report.noramlRecoveryGenerated ?? 0)).toFixed(2),
+
+                    // Normal Loan - Interest
+                    report.normalInterestUpload ?? '',
+                    report.normalInterestGenerated ?? '',
+                    ((report.normalInterestUpload ?? 0) - (report.normalInterestGenerated ?? 0)).toFixed(2),
+
+                    // Commodity Loan - Balance
+                    report.commBalanceUpload ?? '',
+                    report.commBalanceGenerated ?? '',
+                    ((report.commBalanceUpload ?? 0) - (report.commBalanceGenerated ?? 0)).toFixed(2),
+
+                    // Commodity Loan - Recovery
+                    report.commRecoveryUpload ?? '',
+                    report.commRecoveryGenerated ?? '',
+                    ((report.commRecoveryUpload ?? 0) - (report.commRecoveryGenerated ?? 0)).toFixed(2),
+
+                    // Commodity Loan - Interest
+                    report.commInterestUpload ?? '',
+                    report.commInterestGenerated ?? '',
+                    ((report.commInterestUpload ?? 0) - (report.commInterestGenerated ?? 0)).toFixed(2),
+
+                    // Share
+                    report.shareUpload ?? '',
+                    report.shareGenerated ?? '',
+                    ((report.shareUpload ?? 0) - (report.shareGenerated ?? 0)).toFixed(2),
+
+                    // CD
+                    report.cdUpload ?? '',
+                    report.cdGenerated ?? '',
+                    ((report.cdUpload ?? 0) - (report.cdGenerated ?? 0)).toFixed(2)
+                ]);
+            });
+
+
+
+            // Redraw the table with new data
+            table.draw();
+        }
+
+
+        function formatCurrency(amount) {
+            return amount ? amount.toFixed(2) : "0.00";
+        }
+
+        // Modified JavaScript with proper modal handling
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get elements
+            const saveBtn = document.getElementById('saveBtn');
+            const modal = document.getElementById('saveConfirmationModal');
+            const confirmBtn = document.getElementById('confirmSaveBtn');
+            const cancelBtn = document.getElementById('cancelSaveBtn');
+            const saveMessage = document.getElementById('saveMessage');
+
+            // Show modal when save button is clicked
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function () {
+                    const table = $('#comparisonTable').DataTable();
+                    if (table.data().count() === 0) {
+                        alert("Please upload and compare data first");
+                        return;
+                    }
+                    modal.style.display = 'block';
+                });
+            }
+
+            // Hide modal when cancel is clicked
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function () {
+                    modal.style.display = 'none';
+                });
+            }
+
+            // Handle proceed action
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function () {
+                    modal.style.display = 'none';
+
+                    // Show loading state
+                    saveBtn.disabled = true;
+                    const originalText = saveBtn.innerHTML;
+                    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                    const token = document.querySelector('meta[name="_csrf"]').content;
+                    const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+                    fetch('/tcos/members/reports/savedata', {
+                        method: "GET",
+                        headers: {
+                            [header]: token,
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Hide save button and show permanent success message
+                            saveBtn.style.display = 'none';
+                            saveMessage.classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error("Save error:", error);
+                            alert("Save failed: " + error.message);
+                        })
+                        .finally(() => {
+                            saveBtn.disabled = false;
+                            saveBtn.innerHTML = originalText;
+                        });
+                });
+            }
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+
+    </script>
+    
+</body>
+
+</html>

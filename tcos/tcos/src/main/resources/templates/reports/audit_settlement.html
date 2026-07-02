@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audit Form</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+
+        body {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 10.5px;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .container {
+            width: 95%;
+            margin: 0 auto;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .sub-header {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 1px solid #bbb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .field {
+            font-size: 11px;
+            color: #070707;
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+
+        .signature {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            text-align: right;
+            margin-top: 40px;
+        }
+        
+           .namedesc {
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            text-align: left;
+            margin-top: 10px;
+        }
+         
+            .tddesc {
+            font-size: 13px;            
+            color: #000;
+           
+        }
+        .underline {
+            display: inline-block;
+            border-bottom: 1px solid #000;
+            width: 100px;
+            margin-left: 5px;
+        }
+   
+
+        .logo-cell {
+            width: 100px;
+            vertical-align: middle;
+        }
+
+        .logo-img {
+            width: 90px;
+            height: auto;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .print-date {
+            text-align: right;
+            font-size: 9px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .bordered {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            margin: 10px 0;
+            background-color: #fcfcfc;
+            border-radius: 4px;
+        }
+
+        .highlight-box {
+            border-left: 5px solid #3498db;
+            padding: 10px;
+            background-color: #f0f8ff;
+            margin: 10px 0;
+        }
+
+        .sureties {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .sureties th,
+        .sureties td {
+            border: 1.5px solid #000;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .sureties th {
+            background-color: #eaeaea;
+            font-weight: bold;
+        }
+    </style>
+  <style>
+		* {
+		  box-sizing: border-box;
+		}
+		
+		.row {
+		  margin-left:-5px;
+		  margin-right:-5px;
+		}
+		  
+		.column {
+		  float: left;
+		  width: 50%;
+		  padding: 5px;
+		}
+		
+		/* Clearfix (clear floats) */
+		.row::after {
+		  content: "";
+		  clear: both;
+		  display: table;
+		}
+		
+		table {
+		  border-collapse: collapse;
+		  border-spacing: 0;
+		  width: 100%;
+		  border: 1px solid #ddd;
+		}
+		
+		th, td {
+		  text-align: left;
+		  padding: 16px;
+		}
+		
+		tr:nth-child(even) {
+		  background-color: #f2f2f2;
+		}
+  </style>
+     
+</head>
+<body>
+    <div class="container">
+        <!-- Print Date -->
+        <div class="print-date">
+            Printed on: <span th:text="${#dates.format(printDate, 'dd-MM-yyyy')}">24-03-2025</span>
+        </div>        
+
+        <!-- Header with logo -->
+        <table>
+            <tr>
+             
+                <td class="header" colspan="3">
+                    TELCO CO-OPERATIVE SOCIETY LTD., JAMSHEDPUR - 831004<br />
+                      FINAL STATEMENT OF ACCOUNTS
+                </td>
+            </tr>
+        </table>
+
+        <!-- Section Title -->
+        <div class="namedesc"> Name  :  <span th:text="${auditsummary.varname}"></span></div>
+        <div class="namedesc">Ticket No - <span th:text="${ticketNo}"></span> &nbsp;&nbsp;&nbsp;  Company : <span th:text="${auditsummary1.varcompany}"></span></div>
+        <!-- Loan Interest Report Table -->  
+  
+
+		<div class="row">
+			  <div class="column">
+			    <table>
+			      <tr>
+			        <th colspan="2" style="text-align: center; vertical-align: middle;font-weight: bold;font-size: 13px;">CREDIT A/cs.</th>
+			       			        
+			      </tr>
+			      <tr>
+			        <td class="tddesc">ShareAcnt.</td>
+                    <td th:text="${auditsummary.shareclosing_bal}" class="tddesc"></td>
+			      </tr>
+			      <tr>
+			        <td class="tddesc">Comp.Dep.</td>
+			        <td th:text="${auditsummary.cdacclosingtotal}" class="tddesc"></td>
+			        
+			      </tr>
+			      <tr>
+			        <td class="tddesc">Int.on C.D</td>
+			       <td th:text="${auditsummary.cdduction_totalint}" class="tddesc"></td>
+			        
+			      </tr>
+			      <tr><td></td><td></td></tr>
+			      <tr><td></td><td></td></tr>
+			      <tr><td class="tddesc">Tot.Deposit</td>
+			        <td th:text="${auditsummary1.totalcrdeposit}" class="tddesc"></td>
+			        </tr>
+			    </table>
+			  </div>
+			  <div class="column">
+			    <table>
+			      <tr>
+			        <th colspan="2" style="text-align: center; vertical-align: middle;font-weight: bold;font-size: 13px;">DEBIT A/cs.</th>
+			        			       
+			      </tr>
+			      <tr>
+			        <td class="tddesc">AOLoan</td>
+			        <td th:text="${auditsummary1.AOLoantotalbal}" class="tddesc"></td>
+			       
+			      </tr>
+			      <tr>
+			        <td class="tddesc">Int on Loan </td>
+			        <td th:text="${auditsummary1.AOLoanintamt}" class="tddesc"></td>
+			      
+			      </tr>
+			      <tr>
+			        <td class="tddesc">Comd.Loan</td>
+			        <td th:text="${auditsummary1.AVLoantotalbal}" class="tddesc"></td>
+			        			        
+			      </tr>
+			      <tr><td class="tddesc">Comd.Ln.Int.</td>
+			         <td th:text="${auditsummary1.AVLoanintamt}" class="tddesc"></td>
+			        </tr>
+			      <tr><td class="tddesc">Surety</td>
+			        <td th:text="${auditsummary1.suretyamt}" class="tddesc"></td>
+			        </tr>			        
+			        <tr><td class="tddesc">ToLiability</td>
+			        <td th:text="${auditsummary1.Totliabilityamt}" class="tddesc"></td>
+			        </tr>
+			    </table>
+			  </div>
+		</div>
+		<div class="namedesc">Amount Rallsable / Payble - <span th:text="${company}"></span></div>
+</div>
+
+    
+</body>
+</html>

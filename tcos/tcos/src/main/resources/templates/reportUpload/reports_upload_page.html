@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+  <meta charset="utf-8">
+  <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta th:name="_csrf" th:content="${_csrf.token}" />
+  <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+
+  <style>
+    /* Modified CSS to prevent conflicts */
+    #saveConfirmationModal {
+        transition: opacity 0.3s ease;
+    }
+
+    .fa-spinner {
+        margin-right: 5px;
+    }
+
+    /* Add Tailwind-like modal styling */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+        transform: translate(0, 0);
+        /* Reset any accidental transforms */
+        margin: 0 auto;
+    }
+
+    /* Force button visibility */
+    #confirmSaveBtn {
+        background-color: #2563eb !important;
+        /* Fallback blue color */
+    }
+
+    /* Table full styling */
+    #comparisonTable {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+
+    /* All cells */
+    #comparisonTable th,
+    #comparisonTable td {
+        border: 1px solid #000;
+        padding: 8px;
+    }
+
+    /* Group headers (Normal Loan, Commodity Loan) */
+    #comparisonTable th.group-header {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        font-size: 16px;
+        border: 2px solid #000;
+    }
+
+    /* Sub-headers (Balance, Recovery, Interest) */
+    #comparisonTable th.sub-header {
+        background-color: #e8e8e8;
+        font-weight: bold;
+    }
+
+    /* Upload/Generated row */
+    #comparisonTable th.upload-generated {
+        background-color: #fafafa;
+    }
+
+    /* Highlight rows on hover */
+    #comparisonTable tbody tr:hover {
+        background-color: #f1f7ff;
+    }
+
+    /* Hide save button initially */
+    #saveButton {
+        display: none;
+    }
+  </style>
+  <title>Member Registration</title>
+  <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+  <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+  <div th:replace="~{./fragments/nav}"></div>
+  <div class="content">
+    <div th:replace="~{./fragments/top}"></div>
+    <div class="intro-y flex items-center justify-between w-full">
+      <div>
+        <h2 class="intro-y text-lg font-medium mt-5"> Upload the monthly Report </h2>
+      </div>
+    </div>
+    <div>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div>
+          <input type="file" id="fileInput" name="file" accept=".xlsx,.xls,.pdf" required>
+        </div>
+        <div>
+          <label for="yearmonth">Entering data for :- </label>
+          <input type="date" name="yearmonth" id="yearmonth" required>
+          <label for="companyIds" class="form-label">Company</label>
+          <select id="companyIds" name="companyIdSelect" required>
+            <option value="" disabled selected>Select a company</option>
+            <option value="TML">TML</option>
+            <option value="TMLBSL">TMLBSL</option>
+            <option value="TTL">TTL</option>
+            <option value="TCN">TCN</option>
+          </select>
+          <button id="uploadBtn" class="btn" style="background-color: bisque;" type="button"
+                  onclick="uploadFile()">Upload Report</button>
+        </div>
+      </form>
+
+      <!-- Save Report button - shown after successful upload -->
+      <button id="saveButton"
+              class="block btn btn-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-3">
+        Save Report
+      </button>
+
+    </div>
+
+    <div class="box grid grid-cols-12 gap-6 mt-5 p-5 bg-white shadow-lg rounded-2xl">
+      <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
+        <table class="table table-report display" id="comparisonTable">
+          <thead>
+          <tr>
+            <th>Ticket Number</th>
+            <th>Wage Type</th>
+            <th>Amount</th>
+          </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+  let dataTableInitialized = false;
+
+  // Initialize DataTable when page loads
+  $(document).ready(function () {
+      $('#comparisonTable').DataTable({
+          paging: true,
+          searching: true,
+          ordering: true,
+          info: true
+      });
+      dataTableInitialized = true;
+  });
+
+  function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const yearMonthInput = document.getElementById("yearmonth");
+      const companyName = document.getElementById("companyIds");
+
+      // Validation
+      if (!fileInput.files.length) {
+          alert("Please select a file first");
+          return;
+      }
+
+      if (!yearMonthInput.value) {
+          alert("Please select a year and month");
+          return;
+      }
+
+      if (!companyName.value) {
+          alert("Please Select company");
+          return;
+      }
+
+      // Validate file type
+      const file = fileInput.files[0];
+      const validTypes = ['.xlsx', '.xls', '.pdf'];
+      const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+      if (!validTypes.includes(fileExtension)) {
+          alert("Please select a valid file (.xlsx, .xls or .pdf)");
+          return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("yearmonth", yearMonthInput.value);
+      formData.append("companyName", companyName.value);
+
+      const submitBtn = document.getElementById("uploadBtn");
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+      const token = document.querySelector('meta[name="_csrf"]').content;
+      const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+      fetch("/tcos/members/tempupload", {
+          method: "POST",
+          body: formData,
+          headers: {
+              [header]: token,
+              'Accept': 'application/json'
+          }
+      })
+          .then(async response => {
+
+           const data = await response.json();
+
+           if (!response.ok) {
+              throw new Error(data.error || "Upload failed");
+           }
+
+           return data;
+      })
+          .then(data => {
+              // Handle response - data is just for display, not saved yet
+              renderComparisonTable(data);
+              alert(`Successfully processed ${data.length} records. Click 'Save Report' to save to database.`);
+              // FIXED: Now properly using template literal
+
+              // Show save button after successful upload
+              document.getElementById('saveButton').style.display = 'block';
+          })
+          .catch(error => {
+              console.error("Upload error:", error);
+              alert("Upload failed: " + error.message);
+          })
+          .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalText;
+          });
+  }
+
+  function renderComparisonTable(data) {
+      let dataTable;
+
+      // Check if DataTable is already initialized
+      if ($.fn.DataTable.isDataTable('#comparisonTable')) {
+          dataTable = $('#comparisonTable').DataTable();
+      } else {
+          dataTable = $('#comparisonTable').DataTable({
+              paging: true,
+              searching: true,
+              ordering: true,
+              info: true
+          });
+      }
+
+      dataTable.clear(); // Clear existing rows
+
+      data.forEach(item => {
+          dataTable.row.add([
+              item.userId,
+              item.wageType,
+              item.amount
+          ]);
+      });
+
+      dataTable.draw(); // Redraw the table with new data
+  }
+
+  // Save button event listener
+  document.getElementById('saveButton').addEventListener('click', async function () {
+      const saveBtn = this;
+      const originalText = saveBtn.innerHTML;
+
+      try {
+          // Disable button and show loading
+          saveBtn.disabled = true;
+          saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+          const token = document.querySelector('meta[name="_csrf"]').content;
+          const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+          const response = await fetch('/tcos/members/saveReport', {
+              method: 'GET',
+              headers: {
+                  [header]: token,
+                  'Accept': 'application/json'
+              }
+          });
+
+          if (response.ok) {
+              const result = await response.json();
+              if (result.status === 'success') {
+                  // Hide button on success
+                  saveBtn.style.display = 'none';
+                  alert('Data saved successfully to database!');
+
+                  // Optionally reset the form
+                  document.getElementById('uploadForm').reset();
+              } else {
+                  alert('Unexpected response from server');
+              }
+          } else {
+              const errorResult = await response.json();
+              alert('Failed to save data: ' + (errorResult.error || 'Unknown error'));
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred while saving: ' + error.message);
+      } finally {
+          // Re-enable button if not hidden
+          if (saveBtn.style.display !== 'none') {
+              saveBtn.disabled = false;
+              saveBtn.innerHTML = originalText;
+          }
+      }
+  });
+
+</script>
+
+</body>
+
+</html>

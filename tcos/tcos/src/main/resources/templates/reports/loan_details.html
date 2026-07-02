@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Enquiry</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex items-center justify-between w-full">
+            <h2 class="intro-y text-lg font-medium mt-5">Employee details</h2>
+        </div>
+
+        <div class="container mt-4">
+            <!-- Search Form -->
+            <form class="grid grid-cols-12 gap-4 mb-4 items-end">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4">
+                    <label for="ticketNumber" class="form-label">Enter Ticket Number</label>
+                    <input type="text" name="ticketNumber" id="userId" class="form-control">
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-2">
+                    <input type="button" value="Search" class="btn btn-primary w-full">
+                </div>
+            </form>
+
+            <!-- Result Fields -->
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="name" class="w-1/4 text-gray-700 font-medium">Name</label>
+                    <input type="text" id="name" name="name" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="phno" class="w-1/4 text-gray-700 font-medium">Phone</label>
+                    <input type="text" id="phno" name="phno" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="dor" class="w-1/4 text-gray-700 font-medium">Date of retirement</label>
+                    <input type="text" id="dor" name="dor" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="approvedAt" class="w-1/4 text-gray-700 font-medium">Member Join Date</label>
+                    <input type="text" id="approvedAt" name="approvedAt" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="surety" class="w-1/4 text-gray-700 font-medium">Guarantor For</label>
+                    <input type="text" id="surety" name="surety" class="form-control w-2/3" disabled>
+                </div>
+            </div>
+            <div class="intro-y flex items-center justify-between w-full mt-8">
+                <h2 class="intro-y text-lg font-medium">CD, Share & Guarantor Details </h2>
+            </div>
+            <div class="grid grid-cols-12 mt-3 gap-4">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="cdDeductionTotal" class="w-1/4 text-gray-700 font-medium">CD Deduction (Total)</label>
+                    <input type="text" id="cdDeductionTotal" name="cdDeductionTotal" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="cdInterestTotal" class="w-1/4 text-gray-700 font-medium">CD Interest (Total)</label>
+                    <input type="text" id="cdInterestTotal" name="cdInterestTotal" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="cdDeductionGenerated" class="w-1/4 text-gray-700 font-medium">CD Deduction (Current)</label>
+                    <input type="text" id="cdDeductionGenerated" name="cdDeductionGenerated" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="shareDeductionGenerated" class="w-1/4 text-gray-700 font-medium">Share Deduction (Current)</label>
+                    <input type="text" id="shareDeductionGenerated" name="shareDeductionGenerated" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="shareDeductionTotal" class="w-1/4 text-gray-700 font-medium">Share Deduction (Total)</label>
+                    <input type="text" id="shareDeductionTotal" name="shareDeductionTotal" class="form-control w-2/3" disabled>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-4 flex items-center">
+                    <label for="totalDeduction" class="w-1/4 text-gray-700 font-medium">Total Deduction</label>
+                    <input type="text" id="totalDeduction" name="totalDeduction" class="form-control w-2/3" disabled>
+                </div>
+            </div>
+
+            <!-- Loans Table -->
+            <div class="intro-y flex items-center justify-between w-full mt-8">
+                <h2 class="intro-y text-lg font-medium">Loan Details</h2>
+            </div>
+            <div class="overflow-x-auto mt-4">
+                <h3><b>Active Loan</b></h3>
+                <table id="loansTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Loan Type</th>
+                        <th>Current Loan Balance</th>
+                        <th>Last Loan Approve Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Data will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- Scripts -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+<script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Handle search button click
+        $('input[type="button"][value="Search"]').click(function () {
+            const userId = $('#userId').val().trim();
+
+            if (!userId) {
+                alert('Please enter a Ticket Number');
+                return;
+            }
+
+            fetchUserData(userId);
+        });
+
+        // Function to fetch user data
+        function fetchUserData(userId) {
+            $.ajax({
+                url: `/tcos/members/reports/${userId}`,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.user) {
+                        populateUserData(response.user);
+                          if (response.surety) {
+                          $('#surety').val(response.surety);
+                          } else {
+                              $('#surety').val('0');
+                          }
+                        // Populate loans if they exist
+                        if (response.loans && response.loans.length > 0) {
+                            populateLoansTable(response.loans);
+                        } else {
+                            $('#loansTable tbody').html('<tr><td colspan="3" class="text-center">No loan data found</td></tr>');
+                        }
+                        // Populate EMIs if they exist
+                        if (response.emis) {
+                            populateEmisTable(response.emis);
+                        }
+                        else{ $('#cdDeductionTotal').val('0');
+                              $('#cdInterestTotal').val('0');
+                              $('#shareDeductionTotal').val('0');
+                              $('#totalDeduction').val('0');
+                              $('#cdDeductionGenerated').val('0');
+                              $('#shareDeductionGenerated').val('0');}
+                    } else {
+                        alert('No user data found');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching user data:', error);
+                    alert('Error fetching user data. Please try again.');
+                }
+            });
+        }
+
+        // Function to populate loans table
+        function populateLoansTable(loans) {
+            const tbody = $('#loansTable tbody');
+            tbody.empty();
+
+            loans.forEach(loan => {
+                tbody.append(`
+        <tr>
+            <td>${loan.loanType || 'N/A'}</td>
+            <td>₹${loan.loanBalance?.toLocaleString('en-IN') || '0'}</td>
+            <td>${loan.loanApproveDate || 'N/A'}</td>
+        </tr>
+    `);
+            });
+        }
+
+        // Function to populate EMIs table
+        function populateEmisTable(emis) {
+            $('#cdDeductionTotal').val(emis.cdDeductionTotal?.toLocaleString('en-IN') || '0');
+            $('#cdInterestTotal').val(emis.cdInterestTotal?.toLocaleString('en-IN') || '0');
+            $('#shareDeductionTotal').val(emis.shareDeductionTotal?.toLocaleString('en-IN') || '0');
+            $('#totalDeduction').val(emis.totalDeduction?.toLocaleString('en-IN') || '0');
+            $('#cdDeductionGenerated').val(emis.cdDeductionGenerated?.toLocaleString('en-IN') || '0');
+            $('#shareDeductionGenerated').val(emis.shareDeductionGenerated?.toLocaleString('en-IN') || '0');
+        }
+
+        // Function to populate form fields with user data
+        function populateUserData(user) {
+            // Basic Information
+            $('#name').val(user.name || '');
+            $('#phno').val(user.phoneNum || '');
+            $('#dor').val(user.dateOfRetirement || '');
+            $('#approvedAt').val(user.approvedAt || '');
+            // Address Information
+        }
+
+        // Optional: Allow search on Enter key press
+        $('#userId').keypress(function (e) {
+            if (e.which === 13) { // Enter key
+                $('input[type="button"][value="Search"]').click();
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

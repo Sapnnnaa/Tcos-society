@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Voucher Checking</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="py-5">
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+        <div class="intro-y box p-5 mt-5">
+            <h3 class="font-medium text-lg mb-4 text-blue-700">Voucher Details</h3>
+            <form id="updateForm" th:action="@{/members/membervoucher/passVoucher/details}" method="post" th:object="${memberVoucherDTO}" class="content content--top-nav">
+                <div class="box mt-5">
+                    <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+                        <!-- BEGIN: Personal Details -->
+                        <div id="step1" class="all-d intro-y box col-span-12 2xl:col-span-6 step tab-content active">
+                            <div id="hiddenVoucherData"></div>
+                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-2 gap-5">
+                            </div>
+                            <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                                <h2 class="font-medium text-base mr-auto">Personal Details</h2>
+                            </div>
+                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="vId">Voucher ID:</label>
+                                    <input type="text" id="vId" name="vId" class="form-control w-full box pr-10" th:value="${mvDto.vId}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="category">Category:</label>
+                                    <input type="text" id="category" class="form-control w-full box pr-10" th:value="${mvDto.category}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="name">Name:</label>
+                                    <input type="text" id="name" class="form-control w-full box pr-10" th:value="${mvDto.name}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="userId">Ticket No:</label>
+                                    <input type="text" id="userId" class="form-control w-full box pr-10" th:value="${mvDto.userId}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="createdDate">Created Date:</label>
+                                    <input type="text" id="createdDate" class="form-control w-full box pr-10" th:value="${#dates.format(mvDto.createdDate, 'dd-MM-yyyy')}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="updatedDate">Updated Date:</label>
+                                    <input type="text" id="updatedDate" class="form-control w-full box pr-10" th:value="${#dates.format(mvDto.updatedDate, 'dd-MM-yyyy')}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="bname">Bank Name:</label>
+                                    <input type="text" id="bname" class="form-control w-full box pr-10" th:value="${mvDto.bankName}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="accountNum">Account Number:</label>
+                                    <input type="text" id="accountNum" class="form-control w-full box pr-10" th:value="${mvDto.accountNum}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="branch">Branch:</label>
+                                    <input type="text" id="branch" class="form-control w-full box pr-10" th:value="${mvDto.branchName}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="ifscCode">Ifsc Code:</label>
+                                    <input type="text" id="ifscCode" class="form-control w-full box pr-10" th:value="${mvDto.ifscCode}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="payableAt">Payable At:</label>
+                                    <input type="text" id="payableAt" class="form-control w-full box pr-10" th:value="${mvDto.payableAt}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="totalAmount">Total Amount:</label>
+                                    <input type="text" id="totalAmount"  class="form-control w-full box pr-10" th:value="${mvDto.totalAmount}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="chequeNo">Cheque Number:</label>
+                                    <input type="text" id="chequeNo" class="form-control w-full box pr-10" th:value="${mvDto.chequeNo}" readonly>
+                                </div>
+                            </div>
+                            <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                                <h2 class="font-medium text-base mr-auto">Details</h2>
+                            </div>
+                            <div class="box">
+                                <table id="table" class="table table-responsive table-stripped table-bordered">
+                                    <thead class="table-dark">
+                                    <th>SL</th>
+                                    <th>Voucher</th>
+                                    <th>Amount</th>
+                                    </thead>
+                                    <tbody id="voucherList">
+                                    <tr th:each="mv, iterStat : ${mvDto.memberVoucher}" th:data-vsln="${mv.vSln}">
+                                        <td th:text="${iterStat.index + 1}">SL</td>
+                                        <td th:text="${mv.vouchertype}">Account Head</td>
+                                        <td th:text="${mv.amount}">Amount</td>
+                                        <td style="display: none;" th:text="${mv.vSln}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-1 gap-2">
+                                <label class="block font-medium" for="description">Description</label>
+                                <input type="text" id="description" class="form-control w-full" rows="4" placeholder="Enter description here..." th:value="${mvDto.description}" readonly>
+                            </div>
+                            <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="paymenttype">Payment Type</label>
+                                    <input id="paymenttype" type="text" class="form-control" th:value="${mvDto.paymenttype}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="paymentBank">Payment Bank:</label>
+                                    <input id="paymentBank" type="text" class="form-control" th:value="${mvDto.paymentBank}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="accountNumber">Account Number:</label>
+                                    <input id="accountNumber" type="text" class="form-control" placeholder="Account Number" th:value="${mvDto.paymentAccountNum}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="preparedBy">Prepared By:</label>
+                                    <input type="text" id="preparedBy" class="form-control w-full box pr-10" th:value="${mvDto.preparedBy}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="checkedBy">Checked By:</label>
+                                    <input type="text" id="checkedBy" class="form-control w-full box pr-10" th:value="${mvDto.checkedBy}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block font-medium" for="passedBy">Passed By:</label>
+                                    <input type="text" id="passedBy" name="passedBy" class="form-control w-full box pr-10 border-warning" th:value="${fullName}" readonly>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="voucherApproved" class="block font-medium">Voucher Pass</label>
+                                    <select id="voucherApproved" name="voucherApproved" class="form-select" th:value="${mvDto.voucherApproved}">
+                                        <option value="1">Waiting</option>
+                                        <option value="2">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                            <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                            <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                            <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                            <div class="form-label ml-8 xl:w-64 xl:!mr-10">
+                                <div class="text-left">
+                                    <div class="flex items-center">
+                                        <div class="font-medium">Security Key</div>
+                                        <div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-full mt-3 xl:mt-0 flex-1">
+                                <input id="key" type="password"/>
+                            </div>
+                            <button type="button" id="validateBtn" class="btn mb-4 mr-2 py-3 btn-warning w-full md:w-52">Approve</button>
+                            <a th:href ="@{/members/membervoucher/passVoucher}" type="button" class="btn py-3 mb-4 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">Cancel</a>
+                            <button id="registerBtn" type="button" class="btn mb-4 mr-4 py-3 btn-primary w-full md:w-52" onclick="nextStep()" disabled>Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- BEGIN: JS Assets-->
+
+<script src="/tcos/dist/js/app.js"></script>
+<script>
+    jQuery(document).ready(function($){
+        $("#validateBtn").on("click", function() {
+            const key = document.getElementById("key").value;
+            const errorBox = document.getElementById("errorBox");
+            const registerBtn = document.getElementById("registerBtn");
+
+            errorBox.classList.add("hidden");
+            registerBtn.disabled = true;
+
+            if (!key) {
+                errorBox.innerText = "Security Key is required.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            $.ajax({
+                url: "/tcos/members/membervoucher/passVoucher/security/" + key,
+                type: 'GET',
+                success: function (response) {
+                    if (response === true) {
+                        registerBtn.disabled = false;
+                        errorBox.classList.add("hidden");
+                    } else {
+                        errorBox.innerText = "Unauthorized Access";
+                        errorBox.classList.remove("hidden");
+                        registerBtn.disabled = true;
+                    }
+                },
+                error: function () {
+                    errorBox.innerText = "Server error. Please try again.";
+                    errorBox.classList.remove("hidden");
+                    registerBtn.disabled = true;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function nextStep() {
+    if(validateStep1()){ document.getElementById("updateForm").submit(); }
+    else{ document.getElementById("error-message").style.display = "block"; }
+    }
+    function validateStep1() {
+        const CheckedBy = document.getElementById("passedBy").value;
+        const CurrentValue = document.getElementById("voucherApproved").value;
+        return (CheckedBy && CurrentValue);
+    }
+</script>
+</body>
+</html>

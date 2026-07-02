@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Closed Membership</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+<body class="py-5">
+<!-- BEGIN: Content -->
+<div class="content">
+    <div class="flex items-center mt-8">
+        <h2 class="intro-y text-lg font-medium mr-auto">Account Settlement</h2>
+    </div>
+    <!-- BEGIN: Wizard Layout -->
+    <div class="intro-y box py-10 sm:py-20 mt-5">
+        <div class="flex justify-center">
+            <button id="step-1-btn" class="intro-y w-10 h-10 rounded-full btn btn-primary mx-2" onclick="goToStep(1)">1</button>
+            <button id="step-2-btn" class="intro-y w-10 h-10 rounded-full btn bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500 mx-2" onclick="goToStep(2)">2</button>
+            <button id="step-3-btn" class="intro-y w-10 h-10 rounded-full btn bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400 text-slate-500 mx-2" onclick="goToStep(3)">3</button>
+        </div>
+
+        <div id="step-1" class="px-5 mt-10">
+            <div class="font-medium text-center text-lg">Member's Personal Details</div>
+            <div class="text-slate-500 text-center mt-2">To start off, please fill out the personal details of the member.</div>
+        </div>
+
+        <div id="step-1-form" class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+<!--            <div class="font-medium text-base">Profile Settings</div>-->
+            <div class="grid grid-cols-12 gap-4 gap-y-5 mt-5">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="Name" class="form-label">Full Name</label>
+                    <input id="Name" type="text" class="form-control" placeholder="Full Name">
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="UserId" class="form-label">User ID/Ticket Number</label>
+                    <input id="UserId" type="text" class="form-control" placeholder="User ID">
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="joiningDate" class="form-label">Joining Date</label>
+                    <input id="joiningDate" type="Date" class="form-control">
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="PhoneNum" class="form-label">Phone Number</label>
+                    <div class="input-group">
+                        <div class="input-group-text">+91</div>
+                        <input id="PhoneNum" type="text" class="form-control" placeholder="Phone Number">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="Dor" class="form-label">Date Of Retirement</label>
+                    <input id="Dor" type="Date" class="form-control" placeholder="Date of Retirement">
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="Company" class="form-label">Company</label>
+                    <input id="Company" type="text" class="form-control" placeholder="Company">
+                </div>
+            </div>
+            <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                <button class="btn btn-secondary w-24" onclick="prevStep()">Previous</button>
+                <button class="btn btn-primary w-24 ml-2" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="px-5 mt-10" style="display:none;">
+            <div class="font-medium text-center text-lg">Loan and CD/Share Details</div>
+            <div class="text-slate-500 text-center mt-2">Please provide the loan and CD/share details.</div>
+        </div>
+
+        <div id="step-2-form" class="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400" style="display:none;">
+            <div class="grid grid-cols-12 gap-4 gap-y-5 mt-2">
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="CD_total" class="form-label">Total Compulsory Deposit</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="CD_total" type="text" class="form-control" placeholder="Total CD">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="InterestCD" class="form-label">CD Interest (current year)</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="InterestCD" type="text" class="form-control" placeholder="Interest on CD">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="Share" class="form-label">Share Amount</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="Share" type="text" class="form-control" placeholder="Share Amount">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="dividend" class="form-label">Dividend</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="dividend" type="text" class="form-control" placeholder="Dividend">
+                    </div>
+                </div>
+                <div class="grid grid-cols-12 col-span-12 gap-4 gap-y-5 ">
+                    <div class="intro-y col-span-3">
+                        <label for="Normalloan" class="form-label">Normal Loan</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="Normalloan" type="text" class="form-control" placeholder="Normal Loan Balance">
+                        </div>
+                    </div>
+                    <div class="intro-x col-span-3">
+                        <label for="InterestN" class="form-label">Interest Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="InterestN" type="text" class="form-control" placeholder="Loan Amount">
+                        </div>
+                    </div>
+
+                    <div class="intro-y col-span-3">
+                        <label for="applyDate" class="form-label">Loan Approve Date</label>
+                        <input id="applyDate" type="Date" class="form-control" placeholder="Loan Term (Months)">
+                    </div>
+
+                    <div class="intro-y col-span-3">
+                        <label for="Installement" class="form-label">Installment</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="Installement" type="text" class="form-control" placeholder="Installement">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-12 col-span-12 gap-4 gap-y-5 ">
+                    <div class="intro-y col-span-3">
+                        <label for="Commodityloan" class="form-label">Commodity Loan</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="Commodityloan" type="text" class="form-control" placeholder="Commodity Loan Balance">
+                        </div>
+                    </div>
+                    <div class="intro-x col-span-3">
+                        <label for="loan-amount" class="form-label">Interest Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="loan-amount" type="text" class="form-control" placeholder="Loan Amount">
+                        </div>
+                    </div>
+
+                    <div class="intro-y col-span-3">
+                        <label for="applyDate_C" class="form-label">Loan Approve Date (Latest)</label>
+                        <input id="applyDate_C" type="Date" class="form-control" placeholder="Loan Term (Months)">
+                    </div>
+
+                    <div class="intro-y col-span-3">
+                        <label for="Installament" class="form-label">Installment</label>
+                        <div class="input-group">
+                            <div class="input-group-text">Rs.</div>
+                            <input id="Installament" type="text" class="form-control" placeholder="Installment">
+                        </div>
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="loan_balance" class="form-label">Total Loan Balance</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="loan_balance" type="text" class="form-control border-danger" placeholder="Loan Amount">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="deposit_balance" class="form-label">CD & Share</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="deposit_balance" type="text" class="form-control border-success" placeholder="Collected Amount">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="miscellaneous_charge" class="form-label">Miscellaneous Charges</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Rs.</div>
+                        <input id="miscellaneous_charge" type="text" class="form-control border-warning" placeholder="Other_Charges">
+                    </div>
+                </div>
+                <div class="intro-y col-span-12 sm:col-span-6">
+                    <label for="recovery" class="form-label">Settlement</label>
+                    <select id="recovery" name="accountStatus" class="form-select" placeholder="Mode Of Settlement" onchange="updateCurrentStatus()">
+                        <option value="0">Mode Of Settlement</option>
+                        <option value="0">Payable</option>
+                        <option value="ACTIVE">Receive by Member's Account</option>
+                        <option value="CLOSED">Receive by Guarantor</option>
+                    </select>
+                </div>
+            </div>
+            <div class="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">
+                <button class="btn btn-secondary w-24" onclick="prevStep()">Previous</button>
+                <button class="btn btn-primary w-24 ml-2" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="px-5 mt-10" style="display:none;">
+            <div class="font-medium text-center text-lg">Confirmation</div>
+            <div class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert">
+                <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                <span class="text-slate-800 dark:text-slate-500">Make sure the documents submitted by Member are valid and the payment is successful before approving the application.</span>
+                <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="text-center mt-5">
+                <button class="btn btn-primary" onclick="submitForm()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Error message alert -->
+        <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display:none;">
+            <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+            <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+            <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+    <!-- END: Wizard Layout -->
+</div>
+
+<script>
+    let currentStep = 1;
+
+    function goToStep(step) {
+        if (step === 1) {
+            currentStep = 1;
+        } else if (step === 2 && validateStep1()) {
+            currentStep = 2;
+        } else if (step === 3 && validateStep2()) {
+            currentStep = 3;
+        } else {
+            document.getElementById('error-message').style.display = 'block';
+            return;
+        }
+        updateStep();
+    }
+
+    function nextStep() {
+        if (currentStep === 1 && validateStep1()) {
+            currentStep++;
+            updateStep();
+        } else if (currentStep === 2 && validateStep2()) {
+            currentStep++;
+            updateStep();
+        } else {
+            document.getElementById('error-message').style.display = 'block';
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateStep();
+        }
+    }
+
+    function validateStep1() {
+        const Name = document.getElementById('Name').value;
+        const UserId = document.getElementById('UserId').value;
+        const JoiningDate = document.getElementById('joiningDate').value;
+        const PhoneNum = document.getElementById('PhoneNum').value; // Corrected variable name
+        const Dor = document.getElementById('Dor').value;
+        const Company = document.getElementById('Company').value;
+
+        return Name && UserId && JoiningDate && PhoneNum && Dor && Company; // Ensure all fields are checked
+    }
+
+    function validateStep2() {
+        const loanAmount = document.getElementById('loan-amount').value;
+        const loanTerm = document.getElementById('loan-term').value;
+
+        return loanAmount && loanTerm;
+    }
+
+    function updateStep() {
+        // Hide all steps
+        document.getElementById('step-1').style.display = 'none';
+        document.getElementById('step-1-form').style.display = 'none';
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-2-form').style.display = 'none';
+        document.getElementById('step-3').style.display = 'none';
+        document.getElementById('error-message').style.display = 'none'; // Hide error message when navigating
+
+        // Update button states
+        document.getElementById('step-1-btn').classList.toggle('btn-primary', currentStep === 1);
+        document.getElementById('step-1-btn').classList.toggle('bg-slate-100', currentStep !== 1);
+        document.getElementById('step-2-btn').disabled = currentStep < 2;
+        document.getElementById('step-2-btn').classList.toggle('btn-primary', currentStep === 2);
+        document.getElementById('step-2-btn').classList.toggle('bg-slate-100', currentStep !== 2);
+        document.getElementById('step-3-btn').disabled = currentStep < 3;
+        document.getElementById('step-3-btn').classList.toggle('btn-primary', currentStep === 3);
+        document.getElementById('step-3-btn').classList.toggle('bg-slate-100', currentStep !== 3);
+
+        // Show current step
+        if (currentStep === 1) {
+            document.getElementById('step-1').style.display = 'block';
+            document.getElementById('step-1-form').style.display = 'block';
+        } else if (currentStep === 2) {
+            document.getElementById('step-2').style.display = 'block';
+            document.getElementById('step-2-form').style.display = 'block';
+        } else if (currentStep === 3) {
+            document.getElementById('step-3').style.display = 'block';
+        }
+    }
+
+    function submitForm() {
+        // Implement form submission logic here
+        alert('Form submitted successfully!');
+    }
+</script>
+<!-- END: Content -->
+
+<!-- BEGIN: JS Assets-->
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=["your-google-map-api"]&libraries=places"></script>
+<script src="/tcos/dist/js/app.js"></script>
+<!-- END: JS Assets-->
+</body>
+</html>

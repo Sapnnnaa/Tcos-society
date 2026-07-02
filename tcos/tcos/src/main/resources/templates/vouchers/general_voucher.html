@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+
+    <meta charset="UTF-8"/>
+    <title>Telco Co-Operative Society LTD.</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          font-size: 12px;
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 20px;
+        }
+
+        th, td {
+          padding: 10px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+
+        th {
+          background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>General Voucher</h1>
+
+For the Voucher ID :- <span th:text="${mvDto.vId}" style="text-align: right;"></span><br />
+Created On : <span th:text="${#dates.format(mvDto.createdDate, 'dd-MM-yyyy')}" style="text-align: right;"></span><br /><br />
+Cheque Number : <span th:text="${mvDto.chequeNo}" style="text-align: right;"></span><br/>
+<p>Dear Sir,</p>
+
+<p>Please credit the respective Account of the following member with the amount noted. The total amount as shown below.</p>
+
+<!-- Member Voucher Details -->
+<table>
+    <thead>
+    <tr>
+        <th>Category <td th:text="${mvDto.category}">Category</td></th>
+        <th>Members Name <td th:text="${mvDto.name}">Name</td></th>
+        <th>Ticket Number <td th:text="${mvDto.userId}">Ticket Number</td></th>
+    </tr>
+    </thead>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>Bank Name <td th:text="${mvDto.bankName}">Bank Name</td></th>
+        <th>Account Number(Member) <td th:text="${mvDto.accountNum}">Account Number</td></th>
+        <th>Branch Name <td th:text="${mvDto.branchName}">Branch Name</td></th>
+    </tr>
+    </thead>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>IFSC Code <td th:text="${mvDto.ifscCode}">IFSC Code</td></th>
+        <th>Payable At <td th:text="${mvDto.payableAt}">Payable At</td></th>
+    </tr>
+    </thead>
+</table>
+<h3>Description :</h3><h4> <span th:text = "${mvDto.description}"></span></h4>
+<table>
+    <thead>
+    <tr>
+        <th>Sl.No.</th>
+        <th>Account Head</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="mv, iterStat : ${mvDto.memberVoucher}">
+        <td th:text="${iterStat.index + 1}">SL</td>
+        <td th:text="${mv.vouchertype}">Account Head</td>
+        <td th:text="${mv.amount}">Amount</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="text-align: right;">Total Amount :</td>
+        <td th:text="${mvDto.totalAmount}"></td>
+    </tr>
+    </tbody>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>Payment Type<td th:text="${mvDto.paymenttype}">Payable At</td></th>
+        <th>Payment Bank<td th:text="${mvDto.paymentBank}">Payable At</td></th>
+        <th>Cheque Number<td th:text="${mvDto.chequeNo}">Cheque No.</td></th>
+    </tr>
+    </thead>
+</table>
+<table>
+    <tbody>
+    <tr>
+        <td>Prepared By</td>
+        <td>Checked By</td>
+        <td>Passed By</td>
+    </tr>
+    <tr>
+        <td th:text="${mvDto.preparedBy}"></td>
+        <td></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

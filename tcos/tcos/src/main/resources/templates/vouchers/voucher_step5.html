@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Revise Vouchers</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="overflow-x-auto py-5">
+<!-- BEGIN: Mobile Menu -->
+
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y flex justify-between mt-6">
+            <div class="flex-1">
+                <h1 class=" font-medium mr-auto text-2xl">
+                    Re-Generated Voucher
+                </h1>
+            </div>
+        </div>
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <!-- BEGIN: Responsive Table -->
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Voucher ID</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Ticket No.</th>
+                                <th class="whitespace-nowrap">Category</th>
+                                <th class="whitespace-nowrap">Bank Name</th>
+                                <th class="whitespace-nowrap">Total Amount</th>
+                                <th class="whitespace-nowrap">Cheque Number</th>
+                                <th class="whitespace-nowrap">Payment Type</th>
+                                <th class="whitespace-nowrap">Payment Bank</th>
+                                <th class="whitespace-nowrap">Created At</th>
+                                <th class="whitespace-nowrap">Generated Times</th>
+                                <th class="whitespace-nowrap">Re-Generated Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="mv : ${mvoucher}">
+                                <td th:text="${mv.vId}">Ticket Number</td>
+                                <td th:text="${mv.Name}">Name</td>
+                                <td th:text="${mv.userId}">Ticket No</td>
+                                <td th:text="${mv.category}">Category</td>
+                                <td th:text="${mv.bankName}">Bank Name</td>
+                                <td th:text="${mv.totalAmount}">Total Amount</td>
+                                <td th:text="${mv.chequeNo}">Cheque No</td>
+                                <td th:text="${mv.paymenttype}">Payment Type</td>
+                                <td th:text="${mv.paymentBank}">Payment Bank</td>
+                                <td th:text="${#dates.format(mv.createdDate, 'dd-MM-yyyy')}">CreatedAt</td>
+                                <td th:text="${mv.generatedTimes}">Generated Times</td>
+                                <td th:text="${#dates.format(mv.updatedDate, 'dd-MM-yyyy')}">CreatedAt</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Voucher</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <!-- Include Select2 CSS -->
+    <link href="/tcos/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <style>
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        #nextBtn {
+            display: none;
+        }
+
+        #previousBtn,
+        #nextBtn2,
+        #previousBtn2,
+        #previousBtn3,
+        #previousBtn4,
+        #previousBtn5 {
+            display: block;
+        }
+
+        .dataTables_length select {
+            width: 60px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .badge-other {
+            color: white;
+            background-color: red;
+        }
+
+        .badge-active {
+            color: white;
+            background-color: green;
+        }
+
+        /* Style for the form inputs */
+        .form-control {
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #ccc;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        /* Styling for error messages */
+        #passwordError {
+            color: red;
+            display: none;
+        }
+
+        .tab-header {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .tab-header button {
+            flex: 1;
+            padding: 10px;
+            background: #eaeaea;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tab-header button.active {
+            background: #ffcc00;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-auto py-5">
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- BEGIN: Content -->
+        <form id="updateForm" th:action="@{/members/membervoucher/createVoucher/add}" method="post" th:object="${memberVoucherDTO}" class="content content--top-nav">
+            <div class="intro-y flex items-center mt-8">
+                <h2 class="text-lg font-medium mr-auto">Voucher Creation</h2>
+            </div>
+            <div class="box mt-5">
+                <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+                    <!-- BEGIN: Personal Details -->
+                    <div id="step1" class="all-d intro-y box col-span-12 2xl:col-span-6 step tab-content active">
+                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-4 gap-3">
+                            <div class="mb-4">
+                                <label for="category" class="form-label">Voucher made for:</label>
+                                <select id="category" name="category" class="form-select" >
+                                    <option value="MEMBERS">MEMBERS</option>
+                                    <option value="EMPLOYEE">EMPLOYEE</option>
+                                    <option value="VENDOR">VENDOR</option>
+                                    <option value="OTHER">OTHER</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" for="ticketNo">Search Tickect No:</label>
+                                <select id="ticketNo" class="form-control w-full">
+                                    <option value="" disabled selected>Select Ticket</option>
+                                    <option th:each="ticket : ${alluser}" th:value="${ticket}" th:text="${ticket}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                let category = document.getElementById("category");
+                                let ticketNo = document.getElementById("ticketNo");
+
+                                if (!category || !ticketNo) {
+                                    console.error("Category or TicketNo element not found.");
+                                    return; // Stop execution if elements are missing
+                                }
+
+                                let fieldsToToggle = [
+                                    "name",
+                                    "userId",
+                                    "bname",
+                                    "accountNum",
+                                    "branch",
+                                    "ifscCode",
+                                    "payableAt"
+                                ];
+
+                                function clearFormFields() {
+                                    fieldsToToggle.forEach(fieldId => {
+                                        let field = document.getElementById(fieldId);
+                                        if (field) field.value = ""; // Clear all relevant fields
+                                    });
+                                }
+
+                                function toggleFields() {
+                                    let isMember = category.value === "MEMBERS";
+
+                                    // Enable ticketNo for MEMBERS, disable otherwise
+                                    ticketNo.disabled = !isMember;
+                                    if (!isMember) {
+                                        ticketNo.value = ""; // Clear ticketNo when not MEMBERS
+                                        clearFormFields(); // Also clear form fields when switching category
+                                    }
+
+                                    // Set fields as readonly for MEMBERS, editable otherwise
+                                    fieldsToToggle.forEach(fieldId => {
+                                        let field = document.getElementById(fieldId);
+                                        if (field) field.readOnly = isMember;
+                                    });
+                                }
+
+                                // Run function on page load in case of pre-selected value
+                                toggleFields();
+
+                                // Listen for changes in category
+                                category.addEventListener("change", toggleFields);
+
+                                // Initialize Select2 for ticketNo dropdown
+                                $(document).ready(function () {
+                                    $('#ticketNo').select2({
+                                        placeholder: "Select or search a ticket",
+                                        allowClear: true
+                                    });
+
+                                    // Fetch user details when a ticket number is selected
+                                    $('#ticketNo').on('change', function () {
+                                        if (ticketNo.disabled) return; // Prevent fetch if ticketNo is disabled
+
+                                        const ticket_no = $(this).val();
+                                        clearFormFields(); // Clear previous values
+
+                                        $.ajax({
+                                            url: "/tcos/members/membervoucher/add/ticketNumber/" + ticket_no,
+                                            type: 'GET',
+                                            success: function (response) {
+                                                if (response && response.mvdto) {
+                                                    let mvdto = response.mvdto; // Extract DTO object
+
+                                                    // Populate form fields with correct IDs
+                                                    $("#name").val(mvdto.name || '');
+                                                    $("#userId").val(mvdto.userId || '');
+                                                    $("#bname").val(mvdto.bankName || '');
+                                                    $("#branch").val(mvdto.branchName || '');
+                                                    $("#ifscCode").val(mvdto.ifscCode || '');
+                                                    $("#accountNum").val(mvdto.accountNum || '');
+                                                    $("#payableAt").val(mvdto.payableAt || '');
+                                                } else {
+                                                    console.warn("Invalid response structure.");
+                                                }
+                                            },
+                                            error: function () {
+                                                alert('Error fetching ticket details. Please try again.');
+                                            }
+                                        });
+                                    });
+                                });
+                            });
+                        </script>
+                        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                            <h2 class="font-medium text-base mr-auto">Details</h2>
+                            <button class="btn btn-primary" type="button" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview" id="add_btn">Add</button>
+                        </div>
+                            <div class="box">
+                                <table id="table" class="table table-responsive table-stripped table-bordered">
+                                    <thead class="table-dark">
+                                    <th>SL</th>
+                                    <th>Voucher</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                    </thead>
+                                    <tbody id="voucherList">
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div id="hiddenVoucherData"></div>
+                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-2 gap-5">
+                            </div>
+                        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                            <h2 class="font-medium text-base mr-auto">Personal Details</h2>
+                        </div>
+                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">
+                            <div class="mb-4">
+                                <label class="block font-medium" for="name">Temporary Voucher Number:</label>
+                                <input type="text" id="vId" name="vId" class="form-control w-full box pr-10" th:value="${memberVoucherDTO.vId}" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                    <label class="font-medium" for="name">Name:</label>
+                                    <span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <input type="text" id="name" class="form-control w-full box pr-10" th:field="*{name}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block font-medium" for="userId">Ticket No:</label>
+                                <input type="text" id="userId" class="form-control w-full box pr-10" th:field="*{userId}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block font-medium" for="createdAt">Date:</label>
+                                <input type="Date" id="createdAt" name="createdDate" class="form-control w-full box pr-10" th:field="*{createdDate}">
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="bname">Bank Name:</label>
+                                    <span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <input type="text" id="bname" name="bankName" class="form-control w-full box pr-10" th:field="*{bankName}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block font-medium" for="accountNum">Account Number:</label>
+                                <input type="text" id="accountNum" name="accountNum" class="form-control w-full box pr-10" th:field="*{accountNum}">
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="branch">Branch:</label>
+                                    <span class="ml-1 text-red-500 text-sm">*</span></div>
+                                <input type="text" id="branch" name="branchName" class="form-control w-full box pr-10" th:field="*{branchName}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block font-medium" for="ifscCode">Ifsc Code:</label>
+                                <input type="text" id="ifscCode" name="ifscCode" class="form-control w-full box pr-10" th:field="*{ifscCode}">
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="payableAt">Payable At:</label>
+                                    <span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <input type="text" id="payableAt" name="payableAt" class="form-control w-full box pr-10" th:field="*{payableAt}">
+                            </div>
+                        </div>
+                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-1 gap-2">
+                            <div class="flex justify-between items-center">
+                            <label class="block font-medium" for="description">Description</label><span class="ml-1 text-red-500 text-sm">*</span>
+                            </div>
+                            <textarea id="description" name="description" class="form-control w-full" rows="4" placeholder="Enter description here..." th:field="*{description}"></textarea>
+                        </div>
+                        <div class="pl-5 pr-5 pt-5 page1 grid grid-cols-3 gap-4">
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="totalAmount">Total Amount:</label><span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <input type="text" id="totalAmount" name="totalAmount" class="form-control w-full box pr-10" th:field="*{totalAmount}" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="paymenttype">Payment Type:</label><span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <select id="paymenttype" name="paymenttype" class="form-select" th:field="*{paymenttype}">
+                                    <option value="" >SELECT</option>
+                                    <option value="ADVICE">ADVICE</option>
+                                    <option value="NEFT">NEFT</option>
+                                    <option value="CHEQUE">CHEQUE</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                <label class="block font-medium" for="bankSelect">Payment Bank:</label><span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                                <select id="bankSelect" name="bankNames" class="form-select">
+                                    <option value="">-- Select Bank --</option>
+                                    <option th:each="bank : ${banks}"
+                                            th:value="${bank.accountNumber + '|' + bank.bankName}"  th:text="${bank.bankName}">
+                                    </option>
+                                </select>
+                            </div>
+                            <input type="hidden" id="bankNameInput" name="paymentBank" th:field="*{paymentBank}">
+                            <div class="mb-4">
+                                <label class="block font-medium" for="accountNumber">Account Number:</label>
+                                <input id="accountNumber" type="text" name="paymentAccountNum" class="form-control" placeholder="Account Number" th:field="*{paymentAccountNum}" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block font-medium" for="chequeNo">Cheque Number:</label>
+                                <input type="text" id="chequeNo" name="chequeNo" class="form-control w-full box pr-10" th:field="*{chequeNo}">
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between items-center">
+                                    <label class="block font-medium" for="preparedBy">Prepared By:</label>
+                                    <span class="ml-1 text-red-500 text-sm">*</span></div>
+                                <input type="text" id="preparedBy" name="preparedBy" class="form-control w-full box pr-10" th:value="${fullName}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            let paymentType = document.getElementById("paymenttype");
+                            let chequeNo = document.getElementById("chequeNo");
+                            let bankSelect = document.getElementById("bankSelect");
+                            let accountNumberInput = document.getElementById("accountNumber");
+
+                            function toggleChequeField() {
+                                if (paymentType.value === "CHEQUE") {
+                                    chequeNo.removeAttribute("readonly"); // Enable input
+                                    chequeNo.value = ""; // Clear input for user entry
+                                } else {
+                                    chequeNo.setAttribute("readonly", true); // Disable input
+                                    chequeNo.value = "0"; // Set default value
+                                }
+                            }
+
+                            function updateAccountNumber() {
+                                let selectedValue = bankSelect.value.split("|"); // Split value into account number and bank name
+                                accountNumberInput.value = selectedValue[0] || ""; // Set account number
+                                bankNameInput.value = selectedValue[1];
+                            }
+
+                            // Run function on page load in case of pre-selected value
+                            toggleChequeField();
+                            updateAccountNumber();
+
+                            // Event Listeners
+                            paymentType.addEventListener("change", toggleChequeField);
+                            bankSelect.addEventListener("change", updateAccountNumber);
+                        });
+                    </script>
+                    <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                        <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                        <div class="form-label ml-8 xl:w-64 xl:!mr-10">
+                            <div class="text-left">
+                                <div class="flex items-center">
+                                    <div class="font-medium">Security Key</div>
+                                    <div class="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-darkmode-300 dark:text-slate-400 text-xs rounded-md">Required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full mt-3 xl:mt-0 flex-1">
+                            <input id="key" type="password"/>
+                        </div>
+                        <button type="button" id="validateBtn" class="btn mb-4 mr-2 py-3 btn-warning w-full md:w-52">Approve</button>
+                        <a th:href ="@{/members/membervoucher/createVoucher}" type="button" class="btn py-3 mb-4 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">Cancel</a>
+                        <button id="registerBtn" type="button" class="btn mb-4 mr-4 py-3 btn-primary w-full md:w-52" onclick="fetchTableData()" disabled>Save</button>
+                    </div>
+                </div>
+            </div>
+            <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+        </form>
+    </div>
+</div>
+<div id="superlarge-modal-size-preview"
+     class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50" tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg bg-white rounded-lg shadow-lg overflow-hidden">
+
+        <!-- Modal Body -->
+        <div class="modal-body px-6 py-3 bg-white rounded-lg shadow-lg"> <!-- reduced px and py -->
+
+            <!-- Section Title -->
+            <h4 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-1">Voucher Details</h4> <!-- reduced mb and pb -->
+
+            <!-- Voucher Field -->
+            <div class="grid grid-cols-2 gap-6 mb-2"> <!-- reduced mb -->
+                <div class="grid grid-cols-4 items-center gap-2 mb-2"> <!-- reduced mb -->
+                    <div class="flex justify-end">
+                        <strong class="text-gray-800">Voucher:</strong>
+                    </div>
+                    <div class="col-span-3">
+                        <select id="voucher_type" name="voucher_type"
+                                class="form-control w-full p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500">
+                        </select>
+                        <input type="hidden" id="vSln" name="vSln">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Field -->
+            <div class="grid grid-cols-2 gap-6 mb-2"> <!-- reduced mb -->
+                <div class="grid grid-cols-4 items-center gap-2 mb-2"> <!-- reduced mb -->
+                    <div class="flex justify-end">
+                        <strong class="text-gray-800">Amount:</strong>
+                    </div>
+                    <div class="col-span-3">
+                        <input type="number" id="amount" name="amount"
+                               class="form-control w-full p-2 border rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer px-6 py-3"> <!-- add small padding -->
+            <button class="btn btn-secondary w-24 mr-2 mb-2" data-tw-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary w-24 mr-1 mb-2" data-tw-toggle="modal" data-tw-target="#superlarge-modal-size-preview" id="membership_btn" data-tw-dismiss="modal">Save</button>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function($){
+        $("#validateBtn").on("click", function() {
+            const key = document.getElementById("key").value;
+            const errorBox = document.getElementById("errorBox");
+            const registerBtn = document.getElementById("registerBtn");
+
+            errorBox.classList.add("hidden");
+            registerBtn.disabled = true;
+
+            if (!key) {
+                errorBox.innerText = "Security Key is required.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            $.ajax({
+                url: "/tcos/members/membervoucher/createVoucher/security/" + key,
+                type: 'GET',
+                success: function (response) {
+                    if (response === true) {
+                        registerBtn.disabled = false;
+                        errorBox.classList.add("hidden");
+                    } else {
+                        errorBox.innerText = "Unauthorized Access";
+                        errorBox.classList.remove("hidden");
+                        registerBtn.disabled = true;
+                    }
+                },
+                error: function () {
+                    errorBox.innerText = "Server error. Please try again.";
+                    errorBox.classList.remove("hidden");
+                    registerBtn.disabled = true;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function fetchTableData() {
+        const btn = document.getElementById("registerBtn");
+        btn.disabled = true;
+        $("#hiddenVoucherData").empty(); // Clear existing hidden inputs
+        let vouchers = [];
+
+        $("#voucherList tr").each(function (index) {
+            let voucherType = $(this).find("td:eq(1)").text();
+            let amount = parseFloat($(this).find("td:eq(2)").text()) || 0;
+            let vSln = $(this).find("input[name='vSln[]']").val() || "";
+
+            // Create hidden inputs to send data in form submission
+            let hiddenInputs = `
+                <input type="hidden" name="memberVoucher[${index}].vId" value="0">
+                <input type="hidden" name="memberVoucher[${index}].vSln" value="${vSln}">
+                <input type="hidden" name="memberVoucher[${index}].vouchertype" value="${voucherType}">
+                <input type="hidden" name="memberVoucher[${index}].amount" value="${amount}">
+            `;
+
+            $("#hiddenVoucherData").append(hiddenInputs);
+
+            // Store in JavaScript array (for debugging)
+            vouchers.push({ vId: 0, vSln: vSln, vouchertype: voucherType, amount: amount });
+        });
+        console.log("Vouchers:", vouchers); // Debugging purpose
+        nextStep();
+    }
+
+    function nextStep() {
+        if (validateStep1()) {
+            $.ajax({
+                type: "POST",
+                url: "/tcos/members/membervoucher/createVoucher/add",
+                data: $("#updateForm").serialize(),
+                success: function(response) {
+                    // Show custom alert box
+                    $("#customAlertBox").fadeIn();
+
+                    setTimeout(function () {
+                        $("#customAlertBox").fadeOut();
+                        window.location.href = "/tcos/members/membervoucher/createVoucher";
+                    }, 2000);
+                },
+                error: function(xhr) {
+                    $("#error-message").text("Submission failed! Please try again.").show();
+                }
+            });
+        } else {
+            btn.disabled = false;
+            document.getElementById("error-message").style.display = "block";
+        }
+    }
+
+    function validateStep1() {
+        const CheckedBy = document.getElementById("preparedBy").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const bname = document.getElementById("bname").value.trim();
+        const branch = document.getElementById("branch").value.trim();
+        const payableAt = document.getElementById("payableAt").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const totalAmount = parseFloat(document.getElementById("totalAmount").value) || 0.0;
+        const paymenttype = document.getElementById("paymenttype").value;
+        const paymentBank = document.getElementById("bankNameInput").value;
+
+        return (CheckedBy && name && bname && branch && payableAt && description && totalAmount > 0 && paymenttype && paymentBank);
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        let sl = 1; // Serial number counter
+        let totalAmount = 0; // Variable to track total amount
+
+        $('#membership_btn').on('click', function () {
+            let amount = parseFloat($('#amount').val()) || 0; // Convert to number, default to 0
+            let selectedValue = $('#voucher_type').val(); // Format: "slNo|accountHead"
+
+            if (!amount || !selectedValue) {
+                alert("Please enter a valid amount and select a voucher type.");
+                return;
+            }
+
+            let parts = selectedValue.split("|");
+            let vSln = parts[0]; // Extracted slNo
+            let voucherType = selectedValue; // Extracted accountHead
+
+            // Generate table row with a hidden input for vSln
+            let rowId = `row-${sl}`;
+            let row = `
+                <tr id="${rowId}" data-amount="${amount}">
+                    <td>${sl}</td>
+                    <td>${voucherType}</td>
+                    <td>${amount.toFixed(2)}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger delete-btn" data-row="${rowId}" data-amount="${amount}">Delete</button>
+                    </td>
+                    <td>
+                        <input type="hidden" name="vSln[]" value="${vSln}">
+                    </td>
+                </tr>
+            `;
+
+            // Append row to table
+            $("#voucherList").append(row);
+
+            // Update total amount
+            totalAmount += amount;
+            updateTotalAmount();
+
+            sl++; // Increment serial number
+
+            // Clear input fields after adding the row
+            $('#amount').val('');
+            $('#voucher_type').val('').trigger("change");
+        });
+
+        // Delete row when delete button is clicked
+        $(document).on('click', '.delete-btn', function () {
+            let rowId = $(this).data('row');
+            let amountToRemove = parseFloat($(this).data('amount')) || 0;
+
+            // Remove row from table
+            $("#" + rowId).remove();
+
+            // Update total amount
+            totalAmount -= amountToRemove;
+            updateTotalAmount();
+        });
+
+        // Function to update total amount field
+        function updateTotalAmount() {
+            $("#totalAmount").val(totalAmount.toFixed(2)); // Ensure 2 decimal places
+        }
+    });
+</script>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script src="/tcos/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#ticketNo').select2({
+            placeholder: "Select or search a ticket",
+            allowClear: true
+        });
+
+        $('#ticketNo').on('change', function () {
+            const ticket_no = $(this).val();
+            clearFormFields(); // Clear previous values
+
+            $.ajax({
+                url: "/tcos/members/membervoucher/add/ticketNumber/" + ticket_no,
+                type: 'GET',
+                success: function (response) {
+                    if (response && response.mvdto) {
+                        let mvdto = response.mvdto; // Extract DTO object
+
+                        // Populate form fields with correct IDs
+                        $("#name").val(mvdto.name || '');
+                        $("#ticket_no").val(mvdto.userId || '');
+                        $("#userId").val(mvdto.userId || '');
+                        $("#bname").val(mvdto.bankName || '');
+                        $("#branch").val(mvdto.branchName || '');
+                        $("#ifscCode").val(mvdto.ifscCode || '');
+                        $("#accountNum").val(mvdto.accountNum || '');
+                        $("#payableAt").val(mvdto.payableAt || '');
+                    } else {
+                        console.warn("Invalid response structure.");
+                    }
+                },
+                error: function () {
+                    alert('Error fetching ticket details. Please try again.');
+                }
+            });
+        });
+    });
+
+    function clearFormFields() {
+        $("#name").val('');
+        $("#ticket_no").val('');
+        $("#userId").val('');
+        $("#bname").val('');
+        $("#branch").val('');
+        $("#ifscCode").val('');
+        $("#accountNum").val('');
+        $("#payableAt").val('');
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#voucher_type').select2({
+            placeholder: "Select Account Head",
+            allowClear: true,
+            dropdownParent: $("#superlarge-modal-size-preview") // Ensures dropdown stays inside modal
+        });
+
+        // AJAX call on button click
+        $("#add_btn").on("click", function () {
+            $.ajax({
+                url: "/tcos/members/membervoucher/fetch/accountHead",
+                type: "GET",
+                success: function (response) {
+                    if (response && response.accountHead) {
+                        let options = '<option value="" disabled selected>Select Account Head</option>';
+
+                        response.accountHead.forEach(function (item) {
+                            options += `<option value="${item.slNo}|${item.accountHead}">${item.accountHead}</option>`;
+                        });
+
+                        // Append options to the select box
+                        $("#voucher_type").html(options).trigger("change");
+                    } else {
+                        console.warn("No account heads found in response.");
+                    }
+                },
+                error: function () {
+                    alert("Error fetching account heads. Please try again.");
+                }
+            });
+        });
+            $("#voucher_type").on("change", function () {
+                let selectedValue = $(this).val(); // Format: "slNo|accountHead"
+                if (selectedValue) {
+                    let parts = selectedValue.split("|");
+                    $("#vSln").val(parts[0]); // Set slNo in the hidden field
+                }
+            });
+    });
+</script>
+<script src="/tcos/dist/js/ckeditor-classic.js"></script>
+<div id="customAlertBox" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #007BFF;
+    color: white;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    z-index: 9999;
+    text-align: center;
+">
+    Voucher Saving...!
+</div>
+</body>
+
+</html>

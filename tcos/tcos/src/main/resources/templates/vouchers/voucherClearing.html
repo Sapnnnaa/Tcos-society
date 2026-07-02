@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+  <meta charset="utf-8">
+  <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vouchers Clearing   </title>
+  <!-- BEGIN: CSS Assets-->
+  <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+  <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+  <script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+  <script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+</head>
+
+<body class="overflow-x-auto py-5">
+<div class="flex mt-[4.7rem] md:mt-0">
+  <div th:replace="~{fragments/nav}"></div>
+  <div class="content">
+    <div th:replace="~{fragments/top}"></div>
+    <div class="intro-y flex items-center mt-4">
+      <h2 class="text-2xl font-medium mr-auto">
+        Voucher Bank Clearing
+      </h2>
+    </div>
+    <form class="grid grid-cols-12 mt-4 gap-4 mb-4 items-end">
+      <div class="col-span-12 sm:col-span-6 md:col-span-4">
+        <label for="adminkey" class="form-label  mr-2">Enter the Admin Key</label>
+        <input id="adminkey" type="password"/>
+      </div>
+      <div class="col-span-12 sm:col-span-6 md:col-span-4">
+        <label for="bankSelect" class="mr-2">Select Bank:</label>
+        <select id="bankSelect" class="border ml-2 px-6 rounded">
+          <option value="">---Choose---</option>
+          <option value="State Bank Of India, Telco">SBI</option>
+          <option value="Jharkhand State Co-operative Bank, Telco">JSCB</option>
+          <option value="Central Bank Of India, Telco">CBI</option>
+        </select>
+      </div>
+      <div class="col-span-12 sm:col-span-6 md:col-span-2">
+        <button id="validateBtn"  type="button" class="btn btn-primary w-full">Validate</button>
+      </div>
+    </form>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+      <div class="intro-y col-span-12 lg:col-span-12">
+        <div class="mb-5 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+              <label for="minDate">From:</label>
+              <input type="date" id="minDate" class="border p-2 rounded">
+
+              <label for="maxDate" class="ml-2">To:</label>
+              <input type="date" id="maxDate" class="border p-2 rounded">
+          </div>
+        </div>
+        <button id="openModalBtn" class="hidden" data-tw-toggle="modal" data-tw-target="#voucherModal"></button>
+        <div class="overflow-x-auto box">
+          <div class="m-5">
+            <table class="table" id="table">
+              <thead>
+              <tr>
+                <th class="whitespace-nowrap">Voucher ID</th>
+                <th class="whitespace-nowrap">V. UID</th>
+                <th class="whitespace-nowrap">Category</th>
+                <th class="whitespace-nowrap">Name</th>
+                <th class="whitespace-nowrap">Ticket No.</th>
+                <th class="whitespace-nowrap">Bank Name</th>
+                <th class="whitespace-nowrap">Cheque Number</th>
+                <th class="whitespace-nowrap">Payment Type</th>
+                <th class="whitespace-nowrap">Payment Bank</th>
+                <th class="whitespace-nowrap">Total Amount</th>
+                <th class="whitespace-nowrap">Posting Date</th>
+                <th class="whitespace-nowrap">Details</th>
+              </tr>
+              </thead>
+              <tbody><!-- Data will be inserted here by JavaScript --></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END: Content -->
+
+  <!-- BEGIN: Super Large Modal Content -->
+  <div id="voucherModal" class="modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h2 class="font-medium text-white text-base mr-auto">Bank Clearing - Voucher</h2>
+        </div>
+
+        <div class="modal-body">
+          <form id="bankClearing" th:action="@{/members/membervoucher/bankClearing/details}" method="post">
+            <label class="form-label mb-2" for="paymentStatus">Voucher Cleared</label>
+            <select id="paymentStatus" name="paymentStatus" class="form-select" >
+              <option value="">---Select---</option>
+              <option value="3">CLEAR</option>
+              <option value="0">REVERSE</option>
+            </select>
+
+            <!-- Info message -->
+            <div class="alert alert-outline-warning show flex items-center bg-warning/20 mt-5" role="alert">
+              <i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i>
+              <span class="text-slate-800">Make sure you are clearing voucher for the right ticket number.</span>
+            </div>
+
+            <!-- Error message -->
+            <div id="error-message" class="alert alert-outline-danger show flex items-center bg-danger/20 mt-5 hidden" role="alert">
+              <i data-lucide="alert-circle" class="w-6 h-6 mr-3"></i>
+              <span class="text-slate-800">Please select a value.</span>
+              <button type="button" class="btn-close" onclick="hideErrorMessage()">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+            <div class="text-right mt-4">
+              <button type="button" class="btn btn-outline-secondary mr-2" data-tw-dismiss="modal">
+                Cancel
+              </button>
+              <button type="submit" id="submitBondUpdate" class="btn btn-primary">
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<!-- BEGIN: JS Assets-->
+<script src="/tcos/dist/js/app.js"></script>
+<script>
+  jQuery(document).ready(function($){
+    $(document).on("click", ".update-btn", function () {
+        const id = $(this).data('id');
+        $('#openModalBtn').click(); // triggers voucherModal open
+        $('#submitBondUpdate').data('id', id); // store voucher ID
+        $('#paymentStatus').val(''); // reset dropdown
+        hideErrorMessage();
+    });
+
+    function hideErrorMessage() {
+        $("#error-message").addClass("hidden");
+    }
+
+    function validatePaymentStatus() {
+        const paymentStatus = $("#paymentStatus").val();
+        if (!paymentStatus) {
+            $("#error-message").removeClass("hidden");
+            return false;
+        }
+        hideErrorMessage();
+        return true;
+    }
+
+    $("#submitBondUpdate, #voucherModal .btn-primary").on("click", function (e) {
+        e.preventDefault();
+
+        if (!validatePaymentStatus()) return;
+
+        const id = $(this).data("id");
+        const paymentStatus = $("#paymentStatus").val();
+
+        $.ajax({
+            url: `/tcos/members/membervoucher/bankClearing/update?id=${id}&status=${paymentStatus}`,
+            method: "GET",
+            success: function () {
+                alert("Voucher updated successfully!");
+                $("#voucherModal").attr("aria-hidden", "true");
+                $("#validateBtn").trigger("click"); // refresh table
+            },
+            error: function () {
+                alert("Error updating voucher!");
+            }
+        });
+    });
+
+    $("#paymentStatus").on("change", hideErrorMessage);
+});
+</script>
+<script>
+  jQuery(document).ready(function($) {
+        var table = $('#table').DataTable({
+        columnDefs: [
+            {
+                targets: 10, // Posting Date column
+                render: function (data, type, row) {
+                    if (!data) return '';
+                    var date = new Date(data); // raw ISO date
+                    return date.toLocaleDateString('en-GB'); // format for display
+                }
+            }
+        ]
+    });
+
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var min = $('#minDate').val();
+            var max = $('#maxDate').val();
+            var minDate = min ? new Date(min) : null;
+            var maxDate = max ? new Date(max) : null;
+
+            // ✅ get raw ISO value from the row data (not rendered text)
+            var rowData = table.row(dataIndex).data();
+            var rowDateStr = rowData[10]; // still ISO yyyy-MM-dd
+            var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+
+            if (!rowDate) return false;
+
+            if (minDate && rowDate < minDate) return false;
+            if (maxDate && rowDate > maxDate) return false;
+
+            return true;
+        }
+    );
+
+    $('#minDate, #maxDate').on('change', function () {
+        table.draw();
+    });
+
+    $('#validateBtn').click(function () {
+        const selectedBank = $('#bankSelect').val();
+        const adminKey = $('#adminkey').val();
+        if (!adminKey) return;
+
+        $.ajax({
+            url: "/tcos/members/membervoucher/bankClearing/security/" + adminKey + "/bank/" + selectedBank,
+            method: 'GET',
+            success: function (response) {
+                if (response.access && response.access.length > 0) {
+                    $('#errorBox').addClass('hidden');
+                    populatetable(response.access);
+                } else {
+                    $('#errorBox').removeClass('hidden');
+                    table.clear().draw();
+                }
+            },
+            error: function () {
+                $('#errorBox').removeClass('hidden');
+            }
+        });
+    });
+
+    // Populate table with voucherList
+    function populatetable(voucherList) {
+        table.clear(); // clear existing rows
+
+        voucherList.forEach((item) => {
+            table.row.add([
+                item.vid,
+                item.gid,
+                item.category,
+                item.name,
+                item.userId,
+                item.bankName || '',
+                item.chequeNo || '',
+                item.paymenttype || '',
+                item.paymentBank || '',
+                item.totalAmount != null ? item.totalAmount.toFixed(2) : '',
+                item.postingDate ? new Date(item.postingDate).toISOString().split("T")[0] : '',
+                `<button class="btn btn-sm btn-primary update-btn"
+                         data-id="${item.vid}">Update</button>`
+            ]);
+        });
+
+        table.draw(); // refresh DataTable
+    }
+
+  });
+</script>
+</body>
+
+</html>

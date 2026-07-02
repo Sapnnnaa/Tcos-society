@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pass Advice</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>
+    <!-- END: CSS Assets-->
+</head>
+<!-- END: Head -->
+<body class="py-5">
+<!-- BEGIN: Mobile Menu -->
+<div th:insert="~{./fragments/mob}"></div>
+<!-- END: Mobile Menu -->
+<div class="flex mt-[4.7rem] md:mt-0">
+    <!-- BEGIN: Side Menu -->
+    <div th:replace="~{./fragments/nav}"></div>
+    <!-- END: Side Menu -->
+    <!-- BEGIN: Content -->
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{./fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y box p-5 mt-5">
+            <div class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">Advice Update</div>
+            <form id="updateForm" th:action="@{/members/advice/passAdvice/details/update}" method="post" class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+                <div id="step-1-form" class="px-2 sm:px-20 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
+                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+                        <h3 class="font-medium text-lg mb-4 text-blue-700">
+                            Member Details
+                        </h3>
+                        <div class="grid grid-cols-12 gap-4 gap-y-5">
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="Name" class="form-label">Member Name</label>
+                                <input id="Name" type="text" class="form-control" th:value="${mv.Name}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="userIda" class="form-label">Ticket Number</label>
+                                <input id="userIda" type="text" name="userId" class="form-control" th:value="${mv.userId}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="phoneNo" class="form-label">Phone Number</label>
+                                <input id="phoneNo" type="text" name="phonenum" class="form-control" th:value="${mv.phonenum}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="companyName" class="form-label">Company Name</label>
+                                <input id="companyName" type="text" class="form-control" th:value="${mv.companyName}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bank Details Section -->
+                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+                        <h3 class="font-medium text-lg mb-4 text-blue-700">
+                            Loan & Bond Details
+                        </h3>
+                        <div class="grid grid-cols-12 gap-4 gap-y-5">
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="gid" class="form-label">Bond UID</label>
+                                <input id="gid" type="text" class="form-control" th:value="${mv.gid}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="bondId" class="form-label">Bond ID</label>
+                                <input id="bondId" type="text" class="form-control" th:value="${mv.bondId}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="bondType" class="form-label">Bond Name</label>
+                                <input id="bondType" type="text" class="form-control" th:value="${mv.bondType}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="loanAmount" class="form-label">Loan Amount</label>
+                                <input id="loanAmount" type="text" name="loanAmount" class="form-control" th:value="${mv.loanAmount}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="BankName" class="form-label">Member's Bank Name</label>
+                                <input id="BankName" type="text" class="form-control" th:value="${mv.bname}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="AccNum" class="form-label">Account Number</label>
+                                <input id="AccNum" type="text" name="accountNum" class="form-control" th:value="${mv.accountNum}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="Ifscode" class="form-label">IFSC Code</label>
+                                <input id="Ifscode" type="text" class="form-control" th:value="${mv.ifscode}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="Branch" class="form-label">Branch</label>
+                                <input id="Branch" type="text" class="form-control" th:value="${mv.branch}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="payableAt" class="form-label">Payable At</label>
+                                <input id="payableAt" type="text" class="form-control" th:value="${mv.payableAt}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="paymenttype" class="form-label">Payment Type</label>
+                                <input id="paymenttype" type="text" class="form-control" th:value="${mv.paymenttype}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="paymentbank" class="form-label">Payment Bank</label>
+                                <input id="paymentbank" type="text" class="form-control" th:value="${mv.paymentBank}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="chequeNo" class="form-label">Cheque Number</label>
+                                <input id="chequeNo" type="text" class="form-control" th:value="${mv.chequeNo}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="preparedBy" class="form-label">Prepared By</label>
+                                <input id="preparedBy" type="text" class="form-control" th:value="${mv.preparedBy}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="adviceDate" class="form-label">Prepared Date</label>
+                                <input id="adviceDate" type="text" class="form-control" th:value="${#dates.format(mv.adviceDate, 'dd-MM-yyyy')}" readonly/>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="checkedBy" class="form-label">Checked By</label>
+                                <input id="checkedBy" type="text" class="form-control" th:value="${mv.checkedBy}" readonly/>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="updatedAt" class="form-label">Updated AT</label>
+                                <input id="updatedAt" type="text" class="form-control" th:value="${mv.updatedAt}" readonly/>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="passedBy" class="form-label">Passed By</label>
+                                <input id="passedBy" type="text" name="passedBy" class="form-control" th:value="${fullName}" readonly/>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6"><div>
+                                <label for="adviceApproved" class="form-label">Advice Approved</label>
+                                <span class="ml-1 text-red-500 text-sm">*</span>
+                            </div>
+                                <select id="adviceApproved" name="adviceApproved" class="form-select" th:value="${mv.adviceApproved}">
+                                    <option value="1">Waiting</option>
+                                    <option value="2">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                            <input type="hidden" id="Id" name="AdviceId" class="form-control" th:value="${mv.AdviceId}">
+                        </div>
+                    </div>
+                    <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                        <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                        <div class="form-label xl:w-64 xl:!mr-10">
+                            <div class="text-left">
+                                <div class="flex items-center">
+                                    <div class="font-medium">Security Key</div>
+                                    <span class="ml-1 text-red-500 text-sm">*</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full mt-3 xl:mt-0 flex-1">
+                            <input id="key" type="password"/>
+                        </div>
+                        <button type="button" id="validateBtn" class="btn py-3 btn-warning w-full md:w-52">Approve</button>
+                        <a th:href ="@{/members/advice/passAdvice}" type="button" class="btn py-3 border-slate-300 dark:border-darkmode-400 text-slate-500 w-full md:w-52">Cancel</a>
+                        <button id="registerBtn" type="button" class="btn py-3 btn-primary w-full md:w-52" onclick="nextStep()" disabled>Save</button>
+                    </div>
+                </div>
+                <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+
+<script src="/tcos/dist/js/app.js"></script>
+<script>
+    jQuery(document).ready(function($){
+        $("#validateBtn").on("click", function() {
+            const key = document.getElementById("key").value;
+            const errorBox = document.getElementById("errorBox");
+            const registerBtn = document.getElementById("registerBtn");
+
+            errorBox.classList.add("hidden");
+            registerBtn.disabled = true;
+
+            if (!key) {
+                errorBox.innerText = "Security Key is required.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            $.ajax({
+                url: "/tcos/members/advice/passAdvice/security/" + key,
+                type: 'GET',
+                success: function (response) {
+                    if (response === true) {
+                        registerBtn.disabled = false;
+                        errorBox.classList.add("hidden");
+                    } else {
+                        errorBox.innerText = "Unauthorized Access";
+                        errorBox.classList.remove("hidden");
+                        registerBtn.disabled = true;
+                    }
+                },
+                error: function () {
+                    errorBox.innerText = "Server error. Please try again.";
+                    errorBox.classList.remove("hidden");
+                    registerBtn.disabled = true;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function nextStep() {
+    if(validateStep1()){ document.getElementById("updateForm").submit(); }
+    else{ document.getElementById("error-message").style.display = "block"; }
+    }
+    function validateStep1() {
+        const CheckedBy = document.getElementById("passedBy").value;
+        const CurrentStatus = document.getElementById("adviceApproved").value;
+        return (CheckedBy && CurrentStatus );
+    }
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Voucher</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="overflow-x-auto py-5">
+
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+        <div class="intro-y flex justify-between mt-6">
+            <div class="flex-1">
+                <a class="btn btn-primary shadow-md" th:href="@{/members/membervoucher/createVoucher/add}" data-tw-toggle="modal"
+                   data-tw-target="#header-footer-modal-preview-view">
+                    Create Voucher
+                </a>
+            </div>
+            <div class="form-inline items-start flex-col xl:flex-row mt-2  first:mt-0 first:pt-0">
+                <div class="form-label xl:w-2 mt-3">
+                    <div class="text-left">
+                        <div class="flex items-center">
+                            <div class="font-medium">Cheque No :-</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full mt-3 xl:mt-0 flex-1">
+                    <div class="input-group">
+                        <input id="chequeNo" type="text" name="chequeNo" class="form-control">
+                        <div class="input-group-text"> <i data-lucide="edit" class="block mx-auto"></i></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Div with the button on the right -->
+            <div class="flex items-center justify-end space-x-2 ml-3 mt-2">
+                <div class="text-left">
+                    <div class="flex mr-2 items-center">
+                        <div class="font-medium">Print Vouchers :-</div>
+                    </div>
+                </div>
+                <select id="voucher_generation" class="form-control mr-2 w-48">
+                    <option value="" selected disabled>--select--</option>
+                    <option value="ADVICE/SBI">ADVICE - SBI</option>
+                    <option value="ADVICE/JSCB">ADVICE - JSCB</option>
+                    <option value="ADVICE/CBI">ADVICE - CBI</option>
+                    <option value="NEFT/SBI">NEFT - SBI</option>
+                    <option value="NEFT/JSCB">NEFT - JSCB</option>
+                    <option value="NEFT/CBI">NEFT - CBI</option>
+                    <option value="CHEQUE">CHEQUE </option>
+                </select>
+                <!-- Voucher label -->
+                <a id="generate_button" class="btn btn-primary shadow-md"
+                   data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view" >
+                    Generate
+                </a>
+            </div>
+        </div>
+        <div class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert">
+            <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+            <span class="text-slate-800 dark:text-slate-500"> DO  NOT  ENTER  CHEQUE  NUMBER  ABOVE  WHEN  PAYMENT  TYPE  IS  NEFT  &  CHEQUE</span>
+            <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+        </div>
+        <a id="save_button" class="btn btn-primary mt-2 shadow-md">
+            SAVE
+        </a>
+        <input type="hidden" id="fullNameHidden" th:value="${fullName}">
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <!-- BEGIN: Responsive Table -->
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Voucher ID</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Ticket No.</th>
+                                <th class="whitespace-nowrap">Category</th>
+                                <th class="whitespace-nowrap">Bank Name</th>
+                                <th class="whitespace-nowrap">Account Number</th>
+                                <th class="whitespace-nowrap">Total Amount</th>
+                                <th class="whitespace-nowrap">Cheque Number</th>
+                                <th class="whitespace-nowrap">Payment Type</th>
+                                <th class="whitespace-nowrap">Payment Bank</th>
+                                <th class="whitespace-nowrap">Created At</th>
+                                <th class="whitespace-nowrap">Voucher Status</th>
+                                <th class="whitespace-nowrap">Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="mv : ${mvoucher}">
+                                <td th:text="${mv.vId}">ID</td>
+                                <td th:text="${mv.name}">Name</td>
+                                <td th:text="${mv.userId}">Ticket Number</td>
+                                <td th:text="${mv.category}">Category</td>
+                                <td th:text="${mv.bankName}">Bank Name</td>
+                                <td th:text="${mv.accountNum}">Account Number</td>
+                                <td th:text="${mv.totalAmount}">totalAmount</td>
+                                <td th:text="${mv.chequeNo}">chequeNo</td>
+                                <td th:text="${mv.paymenttype}">Payment Type</td>
+                                <td th:text="${mv.paymentBank}">Payment Bank</td>
+                                <td th:text="${#dates.format(mv.createdDate, 'dd-MM-yyyy')}">Created Date</td>
+                                <td th:text="${mv.paymentStatus}">Status</td>
+                                <td class="flex-1">
+                                    <a class="btn btn-primary shadow-md" th:href="@{/members/membervoucher/createVoucher/details/{Id}(Id=${mv.vId})}"
+                                       data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view">
+                                        Details
+                                    </a>
+                                    <a class="btn btn-success mt-1 shadow-md" th:href="@{/members/membervoucher/createVoucher/print/{Id}(Id=${mv.vId})}"
+                                       data-tw-toggle="modal" data-tw-target="#header-footer-modal-preview-view">
+                                       Print
+                                    </a>
+                                    <a class="btn btn-danger flex items-center mt-1 delete-btn" href="javascript:;" data-tw-toggle="modal" data-tw-target="#delete-confirmation-modal" th:data-id="${mv.vId}">
+                                    Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END: Responsive Table -->
+            </div>
+        </div>
+    </div>
+    <div id="delete-confirmation-modal" class="modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="p-5 text-center">
+                        <i data-lucide="x-circle" class="w-16 h-16 text-danger mx-auto mt-3"></i>
+                        <div class="text-3xl mt-5">Are you sure?</div>
+                        <div class="text-slate-500 mt-2">
+                            Do you really want to delete these records?
+                            <br>This process cannot be undone.
+                        </div>
+                    </div>
+                    <div class="px-5 pb-8 text-center">
+                        <button type="button" data-tw-dismiss="modal" class="btn btn-outline-secondary w-24 mr-1">Cancel</button>
+                        <a id="delete-confirm-btn" href="javascript:;" class="btn btn-danger w-24">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: Content -->
+</div>
+<script>
+    document.querySelectorAll('.delete-btn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const empId = this.getAttribute('data-id'); // Capture empId
+            const deleteUrl = '/tcos/members/membervoucher/createVoucher/delete/' + empId;
+            document.getElementById('delete-confirm-btn').setAttribute('href', deleteUrl);
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let chequeInput = document.getElementById("chequeNo");
+        let fullName = document.getElementById("fullNameHidden").value;
+        // Set default value
+        chequeInput.value = "0";
+
+        // Clear "0" when the user starts typing
+        chequeInput.addEventListener("focus", function () {
+            if (chequeInput.value === "0") {
+                chequeInput.value = "";
+            }
+        });
+
+        // Restore "0" if empty
+        chequeInput.addEventListener("blur", function () {
+            if (chequeInput.value.trim() === "") {
+                chequeInput.value = "0";
+            }
+        });
+
+        // Function to update URLs dynamically
+        function updateUrls() {
+            let chequeNo = chequeInput.value.trim(); // Get the latest cheque number value
+            const urls = {
+                "ADVICE/CBI": "/tcos/members/membervoucher/createVoucher/advice/cbi/" + chequeNo + "?fullName=" + fullName,
+                "ADVICE/JSCB": "/tcos/members/membervoucher/createVoucher/advice/jscb/" + chequeNo + "?fullName=" + fullName,
+                "ADVICE/SBI": "/tcos/members/membervoucher/createVoucher/advice/sbi/" + chequeNo + "?fullName=" + fullName,
+                "NEFT/SBI": "/tcos/members/membervoucher/createVoucher/neft/sbi?fullName=" + fullName,
+                "NEFT/CBI": "/tcos/members/membervoucher/createVoucher/neft/cbi?fullName=" + fullName,
+                "NEFT/JSCB": "/tcos/members/membervoucher/createVoucher/neft/jscb?fullName=" + fullName,
+                "CHEQUE": "/tcos/members/membervoucher/createVoucher/cheque?fullName=" + fullName
+            };
+            console.log("Updated URLs:", urls);
+            return urls;
+        }
+
+        $(document).ready(function () {
+            let urls = updateUrls();
+
+            // Update URLs when chequeNo changes
+            $("#chequeNo").on("input", function () {
+                urls = updateUrls();
+            });
+
+            // Event listener for dropdown selection
+            $("#voucher_generation").change(function () {
+                let urls = updateUrls();
+                let selectedValue = $(this).val();
+                if (selectedValue && urls[selectedValue]) {
+                    $("#generate_button").attr("href", urls[selectedValue]);
+                }
+            });
+            $("#generate_button").on("click", function (e) {
+            });
+        });
+    });
+</script>
+<script>
+    $("#save_button").on("click", function (e) {
+        e.preventDefault();
+
+        let fullName = document.getElementById("fullNameHidden").value;
+        const chequeNo = $("#chequeNo").val().trim();
+        const selectedType = $("#voucher_generation").val();
+
+        // Validate
+        if (!selectedType) {
+            alert("Please select a voucher type.");
+            return;
+        }
+
+        if ((selectedType.includes("ADVICE")) && chequeNo === "") {
+            alert("Please enter a cheque number for ADVICE.");
+            return;
+        }
+
+        $.ajax({
+            url: "/tcos/members/membervoucher/markAdviceDownloaded?fullName=" + fullName,
+            type: "GET",
+            data: {
+                chequeNo: chequeNo,
+                type: selectedType
+            },
+            success: function (response) {
+                $("#customAlertBox").fadeIn();
+                    setTimeout(function () {
+                        $("#customAlertBox").fadeOut();
+                        window.location.href = "/tcos/members/membervoucher/createVoucher";
+                    }, 2000);
+                },
+            error: function (xhr, status, error) {
+                console.error("Error saving data:", error);
+                alert("Failed to save. Try again.");
+            }
+        });
+    });
+</script>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<div id="customAlertBox" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #007BFF;
+    color: white;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    z-index: 9999;
+    text-align: center;
+">
+    Vouchers are being saved.<br>
+    Please Wait.
+</div>
+</body>
+
+</html>

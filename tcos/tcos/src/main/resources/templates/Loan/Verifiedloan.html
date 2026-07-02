@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loan Approval</title>
+    <!-- BEGIN: CSS Assets-->
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>
+    <!-- END: CSS Assets-->
+</head>
+
+<body class="py-5">
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+        <div class="intro-y box p-5 mt-5">
+            <form id="updateForm" th:action="@{/members/loan/verifiedLoan/update}" method="post" class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+                <div class="mt-5">
+                    <!-- Loan Details Section -->
+                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-lg mt-5">
+                        <h3 class="font-medium text-lg mb-4 text-blue-700">Loan Details</h3>
+                        <div class="grid grid-cols-12 gap-4 gap-y-5">
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="userId" class="form-label">Ticket Number</label>
+                                <input id="userId" type="text" class="form-control" th:value="${loan.userId}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input id="name" type="text" th:value="${loan.name}" class="form-control" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="loanType" class="form-label">Loan Type</label>
+                                <input id="loanType" type="text" class="form-control" th:value="${loan.loanType}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="applyDate" class="form-label">Loan Apply Date</label>
+                                <input id="applyDate" type="Date" class="form-control" th:value="${loan.createdAt}" readonly>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="appliedLoan" class="form-label">Loan Amount( Applied For )</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                <input id="appliedLoan" type="text" class="form-control border-warning" th:value="${loan.appliedLoan}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="loanAmount" class="form-label">Net Payable</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                <input id="loanAmount" type="text" class="form-control border-warning" name="loanAmount" th:value="${loan.loanAmount}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="loanBalance" class="form-label">Loan Balance/Contra</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                    <input id="loanBalance" type="text" name="loanBalance" class="form-control border-danger" placeholder="First Loan" th:value="${loan.loanBalance}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="cd_balance" class="form-label">CD Total</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                    <input id="cd_balance" type="text" class="form-control border-success" th:value="${loan.cdDeduction}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="share_balance" class="form-label">Share Total</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                    <input id="share_balance" type="text" class="form-control border-success" th:value="${loan.shareDeduction}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-12 sm:col-span-6">
+                                <label for="deposit_balance" class="form-label">CD & Share</label>
+                                <div class="input-group">
+                                    <div class="input-group-text">Rs.</div>
+                                    <input id="deposit_balance" type="text" class="form-control border-success" th:value="${loan.Deductions}" readonly>
+                                </div>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="bname" class="form-label">Bank</label>
+                                    <input id="bname" type="text" name="bname" class="form-control " placeholder="First Loan" th:value="${loan.bname}" readonly>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="accountNum" class="form-label">Account Number</label>
+                                    <input id="accountNum" type="text" name="accountNum" class="form-control " th:value="${loan.accountNum}" readonly>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="branch" class="form-label">Branch</label>
+                                    <input id="branch" type="text" name="branch" class="form-control" th:value="${loan.branch}" readonly>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="ifscode" class="form-label">Ifsc code</label>
+                                    <input id="ifscode" type="text" name="ifscode" class="form-control"  th:value="${loan.ifscode}" readonly>
+                            </div>
+                            <div class="intro-y col-span-6">
+                                <label for="payableAt" class="form-label">Payable At</label>
+                                <input id="payableAt" type="text" name="payableAt" class="form-control"  th:value="${loan.payableAt}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Guarantors Table -->
+                    <table class="table mt-5" id="table">
+                        <thead>
+                        <tr>
+                            <th class="whitespace-nowrap">Guarantor Id</th>
+                            <th class="whitespace-nowrap">Name</th>
+                            <th class="whitespace-nowrap">Phone Number</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="guarantor : ${guarantor}">
+                            <td th:text="${guarantor.g_userId}"></td>
+                            <td th:text="${guarantor.g_name}"></td>
+                            <td th:text="${guarantor.phone_num}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- Additional Loan Information -->
+                    <div class="grid grid-cols-12 gap-4 gap-y-5 mt-4">
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="checkedBy" class="form-label">Prepared By</label>
+                            <input id="checkedBy" type="text" class="form-control" th:value="${loan.checkedBy}" readonly>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="verifiedBy" class="form-label">Checked By</label>
+                            <input id="verifiedBy" type="text" class="form-control" th:value="${loan.verifiedBy}" readonly>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="loansStatus" class="form-label">Select Loan Status<span class="ml-1 text-red-500 text-sm">*</span></label>
+                            <select id="loansStatus" name="loanStatus" class="form-select" onchange="updateCurrentStatus()">
+                                <option value="">STATUS</option>
+                                <option value="VERIFIED">PENDING</option>
+                                <option value="APPROVED">APPROVED</option>
+                                <option value="CHECKED">REJECTED</option>
+                            </select>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="loanStatus" class="form-label">Loan Status</label>
+                            <input id="loanStatus" type="text" name="loanStatus" class="form-control border-danger" th:value="${loan.loanStatus}" readonly>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="paymenttype" class="form-label">Advice Type<span class="ml-1 text-red-500 text-sm">*</span></label>
+                            <select id="paymenttype" name="paymenttype" class="form-select border-danger" th:value="${loan.paymenttype}">
+                                <option value="">STATUS</option>
+                                <option value="ADVICE">ADVICE</option>
+                                <option value="NEFT">NEFT</option>
+                            </select>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="approvedBy" class="form-label">Passed By</label>
+                            <input id="approvedBy" type="text" class="form-control" name="approvedBy" placeholder="Enter your name" th:value="${fullName}" readonly/>
+                        </div>
+                        <div class="intro-y col-span-12 sm:col-span-6">
+                            <label for="loanReason" class="form-label">Loan Reason</label>
+                            <input id="loanReason" type="text" class="form-control" name="loanReason" placeholder="Loan Reason" th:value="${loan.loanReason}" readonly>
+                        </div>
+                    </div>
+                    <div class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert">
+                        <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                        <span class="text-slate-800 dark:text-slate-500">Please enter your "Name" in "Approved By"  and select the "Advice Type" if you are approving the loan or Keep it empty</span>
+                        <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close"> <i data-lucide="x" class="w-4 h-4"></i> </button>
+                    </div>
+                </div>
+                <!-- JavaScript for Updating Current Status -->
+                <script>
+                    function updateCurrentStatus() {
+                        const membershipSelect = document.getElementById("loansStatus");
+                        const currentStatusInput = document.getElementById("loanStatus");
+
+                        // Update the current status based on the selected option
+                        currentStatusInput.value = membershipSelect.value;
+                    }
+                </script>
+                <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                    <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                    <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                    <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <input type="hidden" id="Id" name="Id" class="form-control" th:value="${loan.id}">
+                <div class="flex justify-end flex-col md:flex-row gap-2 mt-5">
+                    <div class="form-label xl:w-64 xl:!mr-10">
+                        <div class="text-left">
+                            <div class="flex items-center">
+                                <div class="font-medium">Security Key</div>
+                                <span class="ml-1 text-red-500 text-sm">*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-3 xl:mt-0 flex-1">
+                        <input id="key" type="password"/>
+                    </div>
+                    <button type="button" id="validateBtn" class="btn btn-warning mr-4 ml-2 w-24">Approve</button>
+                    <a th:href ="@{/members/loan/verifiedLoan}" type="button" class="btn btn-secondary w-24">Cancel</a>
+                    <button id="registerBtn" type="button" class="btn py-3 btn-primary w-full md:w-52" onclick="nextStep()" disabled>Save</button>
+                </div>
+                <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script>
+    jQuery(document).ready(function($){
+        $("#validateBtn").on("click", function() {
+            const key = document.getElementById("key").value;
+            const errorBox = document.getElementById("errorBox");
+            const registerBtn = document.getElementById("registerBtn");
+
+            errorBox.classList.add("hidden");
+            registerBtn.disabled = true;
+
+            if (!key) {
+                errorBox.innerText = "Security Key is required.";
+                errorBox.classList.remove("hidden");
+                return;
+            }
+
+            $.ajax({
+                url: "/tcos/members/loan/verifiedLoan/security/" + key,
+                type: 'GET',
+                success: function (response) {
+                    if (response === true) {
+                        registerBtn.disabled = false;
+                        errorBox.classList.add("hidden");
+                    } else {
+                        errorBox.innerText = "Unauthorized Access";
+                        errorBox.classList.remove("hidden");
+                        registerBtn.disabled = true;
+                    }
+                },
+                error: function () {
+                    errorBox.innerText = "Server error. Please try again.";
+                    errorBox.classList.remove("hidden");
+                    registerBtn.disabled = true;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function nextStep() {
+    if(validateStep1()){ document.getElementById("updateForm").submit(); }
+    else{ document.getElementById("error-message").style.display = "block"; }
+    }
+    function validateStep1() {
+        const CheckedBy = document.getElementById("approvedBy").value;
+        const CurrentStatus = document.getElementById("loanStatus").value;
+        const paymentType = document.getElementById("paymenttype").value;
+        return (CheckedBy && CurrentStatus && paymentType);
+    }
+</script>
+</body>
+</html>

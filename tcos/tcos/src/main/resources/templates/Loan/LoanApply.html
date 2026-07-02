@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Cd Enquiry</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"
+    />
+    <!-- Include Select2 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+        <!-- JS -->
+    <style>
+      .step {
+        display: none;
+      }
+
+      .step.active {
+        display: block;
+      }
+
+      #nextBtn {
+        display: none;
+      }
+
+      #previousBtn,
+      #nextBtn2,
+      #previousBtn2,
+      #previousBtn3,
+      #previousBtn4,
+      #previousBtn5 {
+        display: block;
+      }
+
+      .dataTables_length select {
+        width: 60px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+
+      .badge-other {
+        color: white;
+        background-color: red;
+      }
+
+      .badge-active {
+        color: white;
+        background-color: green;
+      }
+
+      /* Style for the form inputs */
+      .form-control {
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        border: 1px solid #ccc;
+      }
+
+      .font-medium {
+        font-weight: 500;
+      }
+
+      /* Styling for error messages */
+      #passwordError {
+        color: red;
+        display: none;
+      }
+
+      .tab-header {
+        display: flex;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .tab-header button {
+        flex: 1;
+        padding: 10px;
+        background: #eaeaea;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .tab-header button.active {
+        background: #ffcc00;
+      }
+
+      .tab-content {
+        display: none;
+        padding: 20px;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .is-invalid {
+        border-color: #dc3545 !important;
+      }
+
+      .error-message {
+        color: red;
+        font-size: 0.875rem;
+        display: none;
+      }
+
+      input:invalid,
+      select:invalid {
+        border-color: #ff0000;
+      }
+
+      .border-red-500 {
+        border-color: #ef4444 !important;
+      }
+
+      input:invalid,
+      select:invalid {
+        border-color: #dc3545;
+      }
+
+      #otplog.error-message {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.875rem;
+      }
+
+      #otplog[style*="color: green"] {
+        color: green !important;
+      }
+
+      #otplog[style*="color: red"] {
+        color: red !important;
+      }
+    </style>
+    <!-- END: CSS Assets-->
+</head>
+<body class="py-5">
+<div th:insert="~{./fragments/mob}"></div>
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{./fragments/nav}"></div>
+    <div class="content">
+        <div th:replace="~{./fragments/top}"></div>
+
+        <div class="intro-y flex items-center justify-between w-full">
+            <h2 class="intro-y text-lg font-medium mt-5">Employee details</h2>
+        </div>
+        <div th:if="${message}" class="alert alert-danger" role="alert">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        <span th:text="${message}"></span>
+        </div>
+         <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        <span th:text="${successMessage}"></span>
+        </div>
+        <div class="container mt-4">
+        
+            <!-- Search Form -->
+            <form class="grid grid-cols-12 gap-4 mb-4 items-end" method="get" action="/tcos/members/loan/cd_share">
+                <div class="col-span-12 sm:col-span-6 md:col-span-4">
+                    <label for="ticketNumber" class="form-label">Enter Ticket Number</label>
+                    <input type="text" name="userId" id="userId" class="form-control">
+                </div>
+                <div class="intro-y col-span-4 flex items-end">
+                  <button
+                    type="button"
+                    class="btn btn-primary w-full"
+                    onclick="searchUserData()"
+                  >
+                    Search & Auto-fill
+                  </button>
+                </div>
+                <div class="col-span-12 sm:col-span-6 md:col-span-2">                
+                  
+                  <button type="submit"  class="btn btn-primary w-full">Loan Apply Process</button>
+                  
+                </div>
+           
+                <div id="searchStatus" class="mt-3" style="display: none"></div>
+            </form>
+           <form id="updateForm"
+            th:action="@{/members/loan/registerOld}"
+            method="post"
+            th:object="${UserregisterDTO}"
+            enctype="multipart/form-data"
+            class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+              <div class="grid grid-cols-12 gap-4 gap-y-5">
+              
+                   <!-- Ticket Number -->
+                <div class="intro-y col-span-6">
+                  <label for="userId" class="form-label">Ticket Number</label>
+                  <input
+                    id="userId1"
+                    type="text"
+                    class="form-control"
+                    name="userId1"
+                  
+                    required
+                    readonly
+                  />
+                  <span class="error-message" id="userIdError"></span>
+                </div>
+                   <!-- Name -->
+                <div class="intro-y col-span-6">
+                  <label for="name" class="form-label">Name</label>
+                  <input
+                    id="name"
+                    type="text"                   
+                    name="name"
+                    class="form-control"
+                    required
+                    pattern="[A-Za-z ]+"
+                    oninput="this.value = this.value.toUpperCase()"
+                    readonly
+                  />
+                  <span class="error-message" id="nameError"
+                    >Name is required (letters only)</span
+                  >
+                </div>
+                     <!-- Date of Birth -->
+                <div class="intro-y col-span-6">
+                  <label for="dob" class="form-label">Date of Birth</label>
+                  <input
+                    id="dob"
+                    type="date"
+                    class="form-control"
+                    name="dob"
+                    
+                    required
+                  />
+                  <span class="error-message" id="dobError"
+                    >Date of Birth is required</span>
+                </div>
+                    <!-- Retirement Date -->
+                <div class="intro-y col-span-6">
+                  <label for="dor" class="form-label">Retirement Date</label>
+                  <input
+                    id="dor"
+                    type="date"
+                    class="form-control"
+                    name="dor"
+                    
+                    readonly
+                  />
+                  <span class="error-message" id="dorError"
+                    >Retirement date is required</span
+                  >
+                </div>
+                 <div class="intro-y col-span-6">
+                  <label for="accountNum" class="form-label"
+                    >Member's Account Number</label
+                  >
+                  <input
+                    id="accountNum"
+                    type="text"
+                    name="accountNum"
+                    class="form-control"
+                    
+                    required
+                    pattern="\d{9,18}"
+                  />
+                  <span class="error-message" id="accountNumError"
+                    >9-18 digits required</span
+                  >
+                </div>
+                  <!-- Bank Name -->
+                <div class="intro-y col-span-6">
+                  <label for="bankName" class="form-label"
+                    >Member's Bank Name</label
+                  >
+                  <input
+                    id="bankName"
+                    type="text"
+                    name="bname"
+                    class="form-control"
+                   
+                    required
+                  />
+                  <span class="error-message" id="bankNameError"
+                    >Bank name is required</span
+                  >
+                </div>
+                <!-- Branch Name -->
+                <div class="intro-y col-span-6">
+                  <label for="branchName" class="form-label">Branch Name</label>
+                  <input
+                    id="branchName"
+                    type="text"
+                    name="branch"
+                    class="form-control"
+                   
+                    required
+                  />
+                  <span class="error-message" id="branchNameError"
+                    >Branch name is required</span
+                  >
+                </div>
+                    <div class="intro-y col-span-6">
+                  <label for="payableAt" class="form-label">Payable At</label>
+                  <input
+                    id="payableAt"
+                    type="text"
+                    name="payableAt"
+                    class="form-control"
+                   
+                  />
+                  <span class="error-message" id="payableAtError"
+                    >payableAt is required</span
+                  >
+                </div>
+                       <div class="intro-y col-span-6">
+                  <label for="ifscCode" class="form-label">Ifsc Code</label>
+                  <input
+                    id="ifscCode"
+                    type="text"
+                    name="ifscode"
+                    class="form-control"
+                    
+                    required
+                    pattern="^[A-Z]{4}0[A-Z0-9]{6}$"
+                  />
+                  <span class="error-message" id="ifscCodeError"
+                    >Invalid IFSC format (ex: ABCD0123456)</span
+                  >
+                </div>
+                 <button type="submit" class="btn btn-primary w-full">
+                                🚀 Submit Application
+                   </button>
+               </div>
+           </form>
+
+            <!-- Result Fields -->
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{./fragments/footer}"></div>
+
+<!-- Scripts -->
+<script src="/tcos/dist/js/app.js"></script>
+<script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+<script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+     <!-- Add this JavaScript section at the end of your existing scripts -->
+            <script>
+              async function searchUserData() {
+                const searchUserId = document
+                  .getElementById("userId")
+                  .value.trim();
+                const searchStatus = document.getElementById("searchStatus");
+                const searchBtn = document.querySelector(
+                  'button[onclick="searchUserData()"]'
+                );
+
+                // Clear previous status
+                searchStatus.style.display = "none";
+                searchStatus.className = "mt-3";
+
+                if (!searchUserId) {
+                  showSearchStatus("Please enter a ticket number", "error");
+                  return;
+                }
+
+                // Show loading state
+                const originalText = searchBtn.textContent;
+                searchBtn.disabled = true;
+                searchBtn.innerHTML =
+                  '<i class="fa fa-spinner fa-spin"></i> Searching...';
+
+                try {
+                   
+                  const response = await fetch(
+                    `/tcos/members/loan/user-data/${encodeURIComponent(searchUserId)}`
+                  );
+                  const result = await response.json();
+                //  alert("My age is: " + result.data.name); 
+                clearInput();
+                  if (result.exists && result.data) {
+                    populateForm(result.data);
+                    showSearchStatus(
+                      "Data found and filled successfully!",
+                      "success"
+                    );
+                  } else {
+                    showSearchStatus(
+                      result.message || "No data found for this ticket number",
+                      "warning"
+                    );
+                  }
+                } catch (error) {
+                  console.error("Error searching user data:", error);
+                  showSearchStatus(
+                    "Error occurred while searching. Please try again.",
+                    "error"
+                  );
+                } finally {
+                  searchBtn.disabled = false;
+                  searchBtn.innerHTML = originalText;
+                }
+              }
+              function clearInput() {
+            	  // Get the input element by its ID
+                     const inputuserid = document.getElementById("userId1");
+
+            	  const inputname = document.getElementById("name");
+            	  const  indob = document.getElementById("dob");
+            	  const indor  = document.getElementById("dor");
+            	  const inaccountNum  = document.getElementById("accountNum");
+            	  const inbankName  = document.getElementById("bankName");
+            	  const inbranchName  = document.getElementById("branchName");
+            	  const inpayableAt  = document.getElementById("payableAt");
+            	  const inifscCode = document.getElementById("ifscCode");
+            	 
+            	  // Set the value property to an empty string
+                      inputuserid.value = ""; 
+            	  inputname.value = ""; 
+            	  indob.value = "";
+            	  indor.value = "";
+            	  inaccountNum.value = "";
+            	  inbankName.value = "";
+            	  inbranchName.value = "";
+            	  inpayableAt.value = "";
+            	  inifscCode.value = "";
+      }
+
+              function populateForm(userData) {
+              
+                // Helper function to safely set value
+                const setValue = (id, value) => {
+                  const element = document.getElementById(id);
+                  if (element && value !== null && value !== undefined) {
+                    element.value = value;
+                    // Trigger change event for dependent fields
+                    element.dispatchEvent(new Event("change"));
+                  }
+                };
+
+                // Helper function for select dropdowns
+                const setSelectValue = (id, value) => {
+                  const element = document.getElementById(id);
+                  if (element && value !== null && value !== undefined) {
+                    element.value = value;
+                    // Also update hidden company field if it's the company select
+                    if (id === "companyIds") {
+                      document.getElementById("companyId").value = value;
+                    }
+                    element.dispatchEvent(new Event("change"));
+                  }
+                };
+
+                // Helper function for date fields
+                const setDateValue = (id, dateValue) => {
+                  const element = document.getElementById(id);
+                  if (element && dateValue) {
+                    // Convert date to YYYY-MM-DD format if needed
+                    let formattedDate = dateValue;
+                    if (dateValue instanceof Date) {
+                      formattedDate = dateValue.toISOString().split("T")[0];
+                    } else if (
+                      typeof dateValue === "string" &&
+                      dateValue.includes("/")
+                    ) {
+                      // Convert DD/MM/YYYY or MM/DD/YYYY to YYYY-MM-DD
+                      const parts = dateValue.split("/");
+                      if (parts.length === 3) {
+                        // Assuming DD/MM/YYYY format
+                        formattedDate = `${parts[2]}-${parts[1].padStart(
+                          2,
+                          "0"
+                        )}-${parts[0].padStart(2, "0")}`;
+                      }
+                    }
+                    element.value = formattedDate;
+                    element.dispatchEvent(new Event("change"));
+                  }
+                };
+
+                // Basic Information
+                setSelectValue("companyIds", userData.companyId);
+                setValue("userId1", userData.userId);
+                setValue("name", userData.name);
+                setValue("bcNumber", userData.bcNumber);
+                setSelectValue("gender", userData.gender);
+                setDateValue("dob", userData.dob);
+                setValue("panCard", userData.panCard);
+                setValue("aadharNumber", userData.aadharNumber);
+                setValue("phoneNum", userData.phoneNum);
+                setValue("whatsappNumber", userData.whatsappNumber);
+                setValue("email", userData.email);
+                setValue("fathersName", userData.fathersName);
+                setDateValue("dor", userData.dateOfRetirement);
+
+                // Address Information
+                setValue("permanentAddr", userData.permanentAddr);
+                setValue("permanentCity", userData.permanentCity);
+                setValue("permanentState", userData.permanentState);
+                setValue("permanentPinCode", userData.permanentPinCode);
+                setValue("currentAddr", userData.currentAddr);
+                setValue("currentCity", userData.currentCity);
+                setValue("currentState", userData.currentState);
+                setValue("currentPinCode", userData.currentPinCode);
+
+                // Nominee Information
+                setValue("nomineeName", userData.nomineeName);
+                setValue("relation", userData.relation);
+                setValue("nomineeAddress", userData.nomineeAddress);
+                setValue("aadharNum", userData.aadharNum);
+                setValue("mobileNum", userData.mobileNum);
+
+                // Bank Information
+                setValue("accountNum", userData.accountNum);
+                setValue("bankName", userData.bname);
+                setValue("branchName", userData.branch);
+                setValue("payableAt", userData.payableAt);
+                setValue("ifscCode", userData.ifscode);
+
+                // Clear any existing error messages
+                const errorElements =
+                  document.querySelectorAll(".error-message");
+                errorElements.forEach((error) => {
+                  error.style.display = "none";
+                  error.textContent = "";
+                });
+
+                // Remove invalid class from inputs
+                const invalidInputs = document.querySelectorAll(".is-invalid");
+                invalidInputs.forEach((input) => {
+                  input.classList.remove("is-invalid");
+                });
+              }
+
+              function showSearchStatus(message, type) {
+                const searchStatus = document.getElementById("searchStatus");
+                searchStatus.textContent = message;
+                searchStatus.style.display = "block";
+
+                // Remove existing type classes
+                searchStatus.classList.remove(
+                  "text-green-600",
+                  "text-red-600",
+                  "text-yellow-600"
+                );
+
+                // Add appropriate class based on type
+                if (type === "success") {
+                  searchStatus.classList.add("text-green-600");
+                } else if (type === "error") {
+                  searchStatus.classList.add("text-red-600");
+                } else if (type === "warning") {
+                  searchStatus.classList.add("text-yellow-600");
+                }
+              }
+
+              // Clear search when user starts typing in the ticket number field manually
+              document.addEventListener("DOMContentLoaded", function () {
+                const userIdField = document.getElementById("userId");
+                const searchField = document.getElementById("searchUserId");
+
+                if (userIdField && searchField) {
+                  userIdField.addEventListener("input", function () {
+                    if (this.value !== searchField.value) {
+                      searchField.value = "";
+                      const searchStatus =
+                        document.getElementById("searchStatus");
+                      searchStatus.style.display = "none";
+                    }
+                  });
+                }
+              });
+            </script>
+    
+    
+     <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                // This is the valid code that uses existing 'dob' field
+                document
+                  .getElementById("dob")
+                  .addEventListener("change", calculateSeparationDate);
+              });
+              function calculateSeparationDate() {
+                let dobInput = document.getElementById("dob").value;
+                if (dobInput) {
+                  let dob = new Date(dobInput);
+                  dob.setFullYear(dob.getFullYear() + 60);
+                  let separationDate = dob.toISOString().split("T")[0];
+                  document.getElementById("dor").value = separationDate;
+                }
+              }
+            </script>
+
+</body>
+
+<script>
+    const input = document.getElementById('userId');
+    const link = document.getElementById('searchBtn');
+
+    link.addEventListener('click', function(e) {
+        e.preventDefault(); // prevent default link behavior
+        const userId = input.value.trim();
+        if(userId) {
+            window.location.href = `/tcos/members/loan/cdshare/${encodeURIComponent(userId)}`;
+        } else {
+            alert("Please enter a user ID");
+        }
+    });
+</script>
+<script>
+  $(document).ready(function () {
+      // Handle search button click     
+
+      $('input[type="button"][value="Search"]').click(function () {
+          const uid = $('#userId').val().trim();
+
+          if (!uid) {
+              alert('Please enter a Ticket Number');
+              return;
+          }
+
+          fetchUserData(uid);
+      });
+
+      // Function to fetch user data
+      function fetchUserData(uid) {
+    	  $.ajax({
+    		    url: `/tcos/members/loan/cdshare/${uid}`,
+    		    method: 'GET',
+
+    		    beforeSend: function () {
+    		        $('#content').html('Loading...');
+    		    },
+
+    		    success: function (response) {
+    		        $('#content').html(response);
+    		    },
+
+    		    error: function (xhr, status, error) {
+    		        console.error('Status:', status);
+    		        console.error('Error:', error);
+    		        console.error('Response:', xhr.responseText);
+    		        alert('Error fetching user data. Please try again.');
+    		    }
+    		});
+      }
+
+
+      // Optional: Allow search on Enter key press
+      $('#userId').keypress(function (e) {
+          if (e.which === 13) { // Enter key
+              $('input[type="button"][value="Search"]').click();
+              e.preventDefault();
+          }
+      });
+
+ 
+
+
+  });
+</script>
+</html>

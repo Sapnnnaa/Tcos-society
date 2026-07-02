@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- BEGIN: Head -->
+
+<head>
+    <meta charset="utf-8">
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Approved Vouchers</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css">
+    <script src="/tcos/dist/js/jquery-3.6.0.min.js"></script>
+<!--    <script src="/tcos/dist/js/jquery.dataTables.min.js"></script>-->
+</head>
+
+<body class="overflow-x-auto py-5">
+
+<div class="flex mt-[4.7rem] md:mt-0">
+    <div th:replace="~{fragments/nav}"></div>
+    <div class="content">
+        <!-- BEGIN: Top Bar -->
+        <div th:replace="~{fragments/top}"></div>
+        <!-- END: Top Bar -->
+        <div class="intro-y flex justify-between mt-6">
+            <div class="flex-1">
+                <h2 class="text-2xl font-bold">Approved Voucher</h2>
+            </div>
+            <!-- Div with the button on the right -->
+            <div class="flex items-center justify-end space-x-2 ml-3 mt-2">
+                <div class="text-left">
+                    <div class="flex mr-2 items-center">
+                        <div class="font-medium">Filter Date From:-</div>
+                    </div>
+                </div>
+                <div>
+                    <label for="minDate"></label>
+                    <input type="date" id="minDate" class="border p-2 rounded">
+
+                    <label for="maxDate" class="ml-2">To:</label>
+                    <input type="date" id="maxDate" class="border p-2 rounded">
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-12 gap-6 mt-5">
+            <div class="intro-y col-span-12 lg:col-span-12">
+                <!-- BEGIN: Responsive Table -->
+                <div class="overflow-x-auto box">
+                    <div class="m-5">
+                        <table class="table" id="table">
+                            <thead>
+                            <tr>
+                                <th class="whitespace-nowrap">Voucher ID</th>
+                                <th class="whitespace-nowrap">Category</th>
+                                <th class="whitespace-nowrap">Ticket Number</th>
+                                <th class="whitespace-nowrap">Name</th>
+                                <th class="whitespace-nowrap">Voucher Type</th>
+                                <th class="whitespace-nowrap">Amount</th>
+                                <th class="whitespace-nowrap">Approved Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="mr : ${mvoucher}">
+                                <td th:text="${mr.rId}">ID</td>
+                                <td th:text="${mr.category}">Category</td>
+                                <td th:text="${mr.userId}">Ticket Number</td>
+                                <td th:text="${mr.name}">Name</td>
+                                <td th:text="${mr.vouchertype}">Voucher Type</td>
+                                <td th:text="${mr.Amount}">Amount</td>
+                                <td th:text="${mr.approveDate}">Approved Date</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- END: Responsive Table -->
+            </div>
+        </div>
+    </div>
+    <!-- END: Content -->
+</div>
+<div th:replace="~{./fragments/footer}"></div>
+<script src="/tcos/dist/js/app.js"></script>
+<script src="/tcos/dist/js/jquery-3.7.0.min.js"></script>
+<script src="/tcos/dist/js/jquery.dataTables1.13.5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            columnDefs: [
+                {
+                    targets: 6, // Updated Date column (0-based index)
+                    render: function (data, type, row) {
+                        if (!data) return '';
+                        var date = new Date(data); // raw ISO yyyy-MM-dd
+                        return date.toLocaleDateString('en-GB'); // dd/MM/yyyy
+                    }
+                }
+            ]
+        });
+
+        // Filtering by date range
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = $('#minDate').val();
+                var max = $('#maxDate').val();
+                var minDate = min ? new Date(min) : null;
+                var maxDate = max ? new Date(max) : null;
+
+                // Get raw ISO value from row (still yyyy-MM-dd)
+                var rowData = table.row(dataIndex).data();
+                var rowDateStr = rowData[6];
+                var rowDate = rowDateStr ? new Date(rowDateStr) : null;
+
+                if (!rowDate) return false;
+                if (minDate && rowDate < minDate) return false;
+                if (maxDate && rowDate > maxDate) return false;
+
+                return true;
+            }
+        );
+
+        $('#minDate, #maxDate').on('change', function () {
+            table.draw();
+        });
+    });
+</script>
+</body>
+
+</html>

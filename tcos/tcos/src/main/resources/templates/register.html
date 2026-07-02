@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <link href="/tcos/dist/images/logo.svg" rel="shortcut icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Member Register</title>
+        <!-- BEGIN: CSS Assets-->
+        <link rel="stylesheet" href="/tcos/dist/css/app.css"/>
+        <!-- END: CSS Assets-->
+    </head>
+    <!-- END: Head -->
+    <body class="login">
+        <div class="container sm:px-10">
+            <div class="block xl:grid grid-cols-2 gap-4">
+                <!-- BEGIN: Register Info -->
+                <div class="hidden xl:flex flex-col min-h-screen">
+                    <a href="" class="-intro-x flex items-center pt-5">
+                        <img alt="Midone - HTML Admin Template" class="w-12" src="/tcos/dist/images/logo2.svg">
+                        <span class="text-white text-lg ml-3"> TCOS </span>
+                    </a>
+                    <div class="my-auto">
+                        <img alt="Midone - HTML Admin Template" class="-intro-x w-1/2 -mt-16" src="/tcos/dist/images/illustration.svg">
+                        <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
+                            A few more clicks to
+                            <br>
+                            sign up to your
+                            <br> Members Account.
+                        </div>
+                        <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400"></div>
+                    </div>
+                </div>
+                <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
+                    <div class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
+                        <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left">
+                            Sign Up
+                        </h2>
+                        <form id="updateForm" th:action="@{/register}" th:object="${members}" method="post">
+                        <div class="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account. <br>MEMBER REGISTRATION</div>
+                        <div class="intro-x mt-8">
+                            <input type="text" id="firstName" class="intro-x login__input form-control py-3 px-4 block" placeholder="First Name" th:field="*{firstName}" required>
+                            <input type="text" id="lastName" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Last Name" th:field="*{lastName}">
+                            <input type="text" id="mId" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Member ID"  th:field="*{mid}" required>
+                            <input type="email" id="email" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Email"  th:field="*{email}" required>
+                            <div class="relative mt-4">
+                                <div class="input-group">
+                                <input type="password" id="password"
+                                       class="intro-x login__input form-control py-3 px-4 block w-full pr-12" placeholder="Password" th:field="*{password}" required>
+                                    <div class="input-group-text" style="cursor: pointer;" onclick="togglePassword()"><i id="toggleIcon" data-lucide="shield-off"></i></div>
+                                </div>
+                            </div>
+                            <div class="relative mt-4">
+                                <div class="input-group">
+                                    <input type="password" id="passwordConfirm"
+                                           class="intro-x login__input form-control py-3 px-4 block w-full pr-12" placeholder="Password Confirmation" th:field="*{confirmPassword}" required oninput="validatePasswordMatch()">
+                                    <div class="input-group-text" style="cursor: pointer;" onclick="togglePassword1()"><i id="toggleIcon1" data-lucide="shield-off"></i></div>
+                                </div>
+                                <p id="passwordError" class="text-red-500 text-xs mt-1 hidden">Passwords do not match</p>
+                            </div>
+
+                            <div id="error-message" class="alert alert-outline-warning alert-dismissible show flex items-center bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400 mt-5" role="alert" style="display: none">
+                                <span><i data-lucide="alert-triangle" class="w-6 h-6 mr-3"></i></span>
+                                <span class="text-slate-800 dark:text-slate-500">Please fill in all required fields on this page.</span>
+                                <button type="button" class="btn-close dark:text-white" data-tw-dismiss="alert" aria-label="Close">
+                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+<!--                                <input type="password" class="intro-x login__input form-control py-3 px-4 block mt-4" placeholder="Password Confirmation"  required>-->
+                        </div>
+                    
+                        <div class="intro-x flex items-center text-slate-600 dark:text-slate-500 mt-4 text-xs sm:text-sm">
+                            <input id="remember-me" type="checkbox" class="form-check-input border mr-2">
+                            <label class="cursor-pointer select-none" for="remember-me">I agree to the </label>
+                            <a class="text-primary dark:text-slate-200 ml-1" href="">Privacy Policy</a>. 
+                        </div>
+
+                        <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+                            <button type="button" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" onclick="nextStep()">Register</button>
+                            <a th:href="@{/login}" class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top">Sign in</a>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                <!-- END: Register Form -->
+            </div>
+        </div>
+        <script>
+            function togglePassword() {
+                const input = document.getElementById("password");
+                const icon = document.getElementById("toggleIcon");
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.setAttribute("data-lucide", "shield-off");
+                } else {
+                    input.type = "password";
+                    icon.setAttribute("data-lucide", "shield");
+                }
+            }
+        </script>
+        <script>
+            function togglePassword1() {
+                const input = document.getElementById("passwordConfirm");
+                const icon = document.getElementById("toggleIcon1");
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.setAttribute("data-lucide", "shield-off");
+                } else {
+                    input.type = "password";
+                    icon.setAttribute("data-lucide", "shield");
+                }
+            }
+
+            function validatePasswordMatch() {
+                const pass = document.getElementById("password");
+                const confirm = document.getElementById("passwordConfirm");
+                const error = document.getElementById("passwordError");
+
+                if (confirm.value && pass.value !== confirm.value) {
+                    confirm.classList.add("border", "border-red-500");
+                    error.classList.remove("hidden");
+                } else {
+                    confirm.classList.remove("border", "border-red-500");
+                    error.classList.add("hidden");
+                }
+            }
+
+        </script>
+        <script>
+            function nextStep(){
+                if(validateStep()){
+                  document.getElementById("updateForm").submit();
+                }
+                else{
+                  document.getElementById("error-message").style.display = "block";
+                }
+            }
+        </script>
+        <script>  
+            function validateStep(){
+                const var1 = document.getElementById("firstName").value;
+                const var2 = document.getElementById("lastName").value;
+                const var3 = document.getElementById("mId").value;
+                const var4 = document.getElementById("email").value;
+                const var5 = document.getElementById("password").value;
+                const var6 = document.getElementById("passwordConfirm").value;
+
+              return ( var1 && var2 && var3 && var4 && var5 && var6 );
+            }
+        </script>
+        <!-- BEGIN: JS Assets-->
+        <script src="/tcos/dist/js/app.js"></script>
+        <!-- END: JS Assets-->
+    </body>
+</html>
