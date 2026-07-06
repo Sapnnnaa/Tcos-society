@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 
 import com.telco.members.tcos.dto.DocDataDto;
@@ -73,6 +74,9 @@ public class ReportsUploadController {
     private LoanService loanService;
     @Autowired
     private DueRecoveryService dueRecoveryService;
+
+    @Value("${ghostscript.path}")
+    private String ghostscriptPath;
 
     private static final Logger logger = LoggerFactory.getLogger(ReportsUploadController.class);
 
@@ -153,7 +157,7 @@ public class ReportsUploadController {
 
             // GHOSTSCRIPT
             ProcessBuilder pb = new ProcessBuilder(
-                    "C:/Program Files/gs/gs10.07.1/bin/gswin64c.exe",
+                    ghostscriptPath,
                     "-q",
                     "-dFirstPage=" + i,
                     "-dLastPage=" + i,
