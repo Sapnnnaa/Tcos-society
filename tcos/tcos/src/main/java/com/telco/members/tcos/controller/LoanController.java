@@ -431,18 +431,17 @@ public class LoanController {
 	public ResponseEntity<?> getLoan(
 			@PathVariable String userId) {
 
-		Optional<Loan> personalLoan =
-				loanRepository.findByuserIdAndLoanType(
+		Loan personalLoan =
+				loanRepository.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
 						userId,
 						LoanType.PERSONAL);
 
-		Optional<Loan> commodityLoan =
-				loanRepository.findByuserIdAndLoanType(
+		Loan commodityLoan =
+				loanRepository.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
 						userId,
 						LoanType.COMMODITY);
 
-		if(personalLoan.isEmpty()
-				&& commodityLoan.isEmpty()) {
+		if(personalLoan == null && commodityLoan == null){
 
 			return ResponseEntity
 					.status(HttpStatus.NOT_FOUND)
@@ -453,25 +452,21 @@ public class LoanController {
 
 		dto.setUserId(userId);
 
-		personalLoan.ifPresent(loan -> {
+		if(personalLoan != null){
 
-			dto.setPersonalBalance(
-					loan.getLoanBalance());
+			dto.setPersonalBalance(personalLoan.getLoanBalance());
 
-			dto.setPersonalLoanApproveDate(
-					loan.getLoanApproveDate());
+			dto.setPersonalLoanApproveDate(personalLoan.getLoanApproveDate());
 
-		});
+		}
 
-		commodityLoan.ifPresent(loan -> {
+		if(commodityLoan != null){
 
-			dto.setCommodityBalance(
-					loan.getLoanBalance());
+			dto.setCommodityBalance(commodityLoan.getLoanBalance());
 
-			dto.setCommodityLoanApproveDate(
-					loan.getLoanApproveDate());
+			dto.setCommodityLoanApproveDate(commodityLoan.getLoanApproveDate());
 
-		});
+		}
 
 		return ResponseEntity.ok(dto);
 	}
@@ -480,49 +475,35 @@ public class LoanController {
 	public String updateLoan(
 			@org.springframework.web.bind.annotation.RequestBody LoanUpdateDTO dto){
 
-		System.out.println("updateLoan called");
-
-		System.out.println(dto.getUserId());
-		System.out.println(dto.getPersonalBalance());
-		System.out.println(dto.getCommodityBalance());
-
 		// PERSONAL loan
-		Optional<Loan> personalLoan =
-				loanRepository.findByuserIdAndLoanType(
+		Loan personalLoan =
+				loanRepository.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
 						dto.getUserId(),
 						LoanType.PERSONAL);
 
-		if(personalLoan.isPresent()){
+		if(personalLoan != null){
 
-			Loan loan = personalLoan.get();
+			personalLoan.setLoanBalance(dto.getPersonalBalance());
 
-			loan.setLoanBalance(
-					dto.getPersonalBalance());
+			personalLoan.setLoanApproveDate(dto.getPersonalLoanApproveDate());
 
-			loan.setLoanApproveDate(
-					dto.getPersonalLoanApproveDate());
-
-			loanRepository.save(loan);
+			loanRepository.save(personalLoan);
 		}
 
 
 		// COMMODITY loan
-		Optional<Loan> commodityLoan =
-				loanRepository.findByuserIdAndLoanType(
+		Loan commodityLoan =
+				loanRepository.findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(
 						dto.getUserId(),
 						LoanType.COMMODITY);
 
-		if(commodityLoan.isPresent()){
+		if(commodityLoan != null){
 
-			Loan loan = commodityLoan.get();
+			commodityLoan.setLoanBalance(dto.getCommodityBalance());
 
-			loan.setLoanBalance(
-					dto.getCommodityBalance());
+			commodityLoan.setLoanApproveDate(dto.getCommodityLoanApproveDate());
 
-			loan.setLoanApproveDate(
-					dto.getCommodityLoanApproveDate());
-
-			loanRepository.save(loan);
+			loanRepository.save(commodityLoan);
 		}
 
 		return "Updated Successfully";
