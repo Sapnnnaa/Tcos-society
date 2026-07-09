@@ -8,7 +8,6 @@ import com.telco.members.tcos.repository.AccessCtrlRepo;
 import com.telco.members.tcos.service.GuarantorService;
 import com.telco.members.tcos.service.LoanService;
 import com.telco.members.tcos.service.UserService;
-import com.telco.members.tcos.dto.CDShareDeductionsDTO;
 
 import com.telco.members.tcos.service.PdfService;
 import com.telco.members.tcos.service.CompanyService;
@@ -42,16 +41,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
-
-import java.time.Period;
-import java.time.LocalDate;
-import java.time.ZoneId;
-// import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import java.util.Locale;
 
@@ -85,7 +77,7 @@ public class LoanController {
 	@Autowired
 	private PdfService pdfService;
 
-    private final ConcurrentHashMap<String, List<Guarantor>> userGuarantorMap = new ConcurrentHashMap<>();
+    //private final ConcurrentHashMap<String, List<Guarantor>> userGuarantorMap = new ConcurrentHashMap<>();
 
     @Value("${my.api.key}")
     private String apiKey;
@@ -124,9 +116,9 @@ public class LoanController {
  	    return user;
  	}
 	// Helper method to check account status
-	private boolean checkAccountStatus(AccountStatus status) {
-		return status == AccountStatus.ACTIVE;
-	}
+	//private boolean checkAccountStatus(AccountStatus status) {
+	//	return status == AccountStatus.ACTIVE;
+	//}
 
 	// Helper method to update session user data
 	private void updateSessionUser(HttpSession session, User user) {
@@ -1668,7 +1660,7 @@ public class LoanController {
 		context.setVariable("branch", banks != null ? safeStr(banks.getBranchName()) : "");
 		context.setVariable("ifsc", banks != null ? safeStr(banks.getIfscCode()) : "				");
 		RuleBasedNumberFormat formatter = 
-			    new RuleBasedNumberFormat(new Locale("en", "IN"), RuleBasedNumberFormat.SPELLOUT);
+			    new RuleBasedNumberFormat(Locale.of("en", "IN"), RuleBasedNumberFormat.SPELLOUT);
 		if (user.getUserType().equals("New Member"))
 		{
 			context.setVariable("eligible", loanInfo != null ? df.format(safeDouble(loanInfo.getMaxCommodityLoan())) : "0");
