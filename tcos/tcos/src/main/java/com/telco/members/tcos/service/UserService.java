@@ -104,6 +104,14 @@ public class UserService {
         this.userRepository.deleteByEmpId(empId);
     }
 
+
+    private String normalizeEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return null;
+        }
+        return email.trim();
+    }
+
     public void updateUser(UserregisterDTO userregisterDTO) {
         User user = userRepository.findByEmpId(userregisterDTO.getEmpId());
         String UserId = user.getUserId();
@@ -122,7 +130,7 @@ public class UserService {
         bank.setAccountNum(userregisterDTO.getAccountNum());
         bank.setIfscCode(userregisterDTO.getIfscode());
         bank.setPayableAt(userregisterDTO.getPayableAt());
-        user.setEmail(userregisterDTO.getEmail());
+        user.setEmail(normalizeEmail(userregisterDTO.getEmail()));
         user.setName(userregisterDTO.getName());
         user.setPhoneNum(userregisterDTO.getPhoneNum());
         user.setAccountStatus(userregisterDTO.getAccountStatus());
@@ -215,7 +223,7 @@ public class UserService {
             bank.setAccountNum(userregisterDTO.getAccountNum());
             bank.setIfscCode(userregisterDTO.getIfscode());
             bank.setPayableAt(userregisterDTO.getPayableAt());
-            user.setEmail(userregisterDTO.getEmail());
+            user.setEmail(normalizeEmail(userregisterDTO.getEmail()));
             user.setDob(userregisterDTO.getDob());
             user.setName(userregisterDTO.getName());
             user.setPhoneNum(userregisterDTO.getPhoneNum());
@@ -263,7 +271,7 @@ public class UserService {
             bank.setIfscCode(userregisterDTO.getIfscode());
             bank.setPayableAt(userregisterDTO.getPayableAt());
             user.setUserId(userregisterDTO.getUserId());
-            user.setEmail(userregisterDTO.getEmail());
+            user.setEmail(normalizeEmail(userregisterDTO.getEmail()));
             user.setName(userregisterDTO.getName());
             user.setDob(userregisterDTO.getDob());
             user.setPhoneNum(userregisterDTO.getPhoneNum());

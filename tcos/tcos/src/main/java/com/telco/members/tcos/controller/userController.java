@@ -196,6 +196,7 @@ public class userController {
 	@GetMapping("/updateUser/{empId}")
 	public String updateUser(@PathVariable String empId, Model model) {
 		User users = userService.getUser(empId);
+
 		if (users != null) {
 			UserregisterDTO userDTO = userService.convertToDTOs(users);
 			model.addAttribute("user", userDTO);

@@ -38,7 +38,7 @@ public class User {
     private String aadharNumber;
     @Column(unique = true)
     private String panCard;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = true)
     private String email;
     private long phoneNum;
     private long whatsappNumber;
