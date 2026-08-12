@@ -147,6 +147,8 @@
 <div id="header-footer-modal-preview-view" class="modal fade" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <form id="updateForm" th:action="@{/members/account_closure}" method="post" th:object="${accountClosureDto}" class="content content--top-nav">
+      <input type="hidden" id="userIdHidden"
+             th:field="*{userId}">
       <div class="modal-header rounded-2xl mt-2 bg-primary">
         <h3 class="text-white font-medium text-2xl px-4 py-2">
           Settlement Process
@@ -260,7 +262,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" data-tw-dismiss="modal">Close</button>
-        <button type="button" id="submitBondUpdate" class="btn btn-primary mr-4" disabled>Submit</button>
+        <button type="submit" id="submitBondUpdate" class="btn btn-primary mr-4" disabled>Submit</button>
       </div>
       <div id="errorBox" class="text-red-500 text-sm mt-2 ml-auto mr-auto hidden">Unauthorized Access</div>
     </form>
@@ -347,6 +349,8 @@
               success: function (response) {
                   if (response.user) {
                       initiateButton.disabled = false;
+
+                      $("#userIdHidden").val($("#userId").val());
                       populateUserData(response.user);
 
                       // Populate loans if they exist

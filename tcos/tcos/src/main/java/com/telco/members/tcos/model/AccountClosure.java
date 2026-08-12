@@ -6,14 +6,34 @@ import lombok.*;
 @Entity
 @Table(name = "account_closure")
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountClosure {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private Integer id;
+
     private String userId;
 
+    private Double deposit;
+
+    private Double dueAmount;
+
+    private Double payout;
+
+    private Integer surety;
+
+    private Double others;
+
+    private String preparedBy;
+
+    @Enumerated(EnumType.STRING)
+    private Paymenttype settlement;
+
+    @Enumerated(EnumType.STRING)
+    private ApplicationType closureType;
+
+    @Enumerated(EnumType.STRING)
+    private AccountSettlement accountSettlement;
 }

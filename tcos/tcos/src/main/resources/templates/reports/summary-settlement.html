@@ -195,73 +195,192 @@
         </table>
 
         <!-- Section Title -->
-        <div class="namedesc"> Name  :  <span th:text="${auditsummary.varname}"></span></div>
-        <div class="namedesc">Ticket No - <span th:text="${ticketNo}"></span> &nbsp;&nbsp;&nbsp;  Company : <span th:text="${auditsummary1.varcompany}"></span></div>
-        <!-- Loan Interest Report Table -->  
-  
+		<!-- Member Details -->
+
+		<table style="width:100%; border:none; margin-top:10px; margin-bottom:15px;">
+			<tr>
+				<td style="border:none; font-size:13px; font-weight:bold; width:45%;">
+					Name :
+					<span th:text="${memberName}"></span>
+				</td>
+
+				<td style="border:none; font-size:13px; font-weight:bold; width:25%;">
+					Ticket No :
+					<span th:text="${memberId}"></span>
+				</td>
+
+				<td style="border:none; font-size:13px; font-weight:bold; width:30%;">
+					Company :
+					<span th:text="${company}"></span>
+				</td>
+			</tr>
+		</table>
+
+		<br/><br/>
 
 		<div class="row">
-			  <div class="column">
-			    <table>
-			      <tr>
-			        <th colspan="2" style="text-align: center; vertical-align: middle;font-weight: bold;font-size: 13px;">CREDIT A/cs.</th>
-			       			        
-			      </tr>
-			      <tr>
-			        <td class="tddesc">ShareAcnt.</td>
-                    <td th:text="${auditsummary.shareclosing_bal}" class="tddesc"></td>
-			      </tr>
-			      <tr>
-			        <td class="tddesc">Comp.Dep.</td>
-			        <td th:text="${auditsummary.cdacclosingtotal}" class="tddesc"></td>
-			        
-			      </tr>
-			      <tr>
-			        <td class="tddesc">Int.on C.D</td>
-			       <td th:text="${auditsummary.cdduction_totalint}" class="tddesc"></td>
-			        
-			      </tr>
-			      <tr><td></td><td></td></tr>
-			      <tr><td></td><td></td></tr>
-			      <tr><td class="tddesc">Tot.Deposit</td>
-			        <td th:text="${auditsummary1.totalcrdeposit}" class="tddesc"></td>
-			        </tr>
-			    </table>
-			  </div>
-			  <div class="column">
-			    <table>
-			      <tr>
-			        <th colspan="2" style="text-align: center; vertical-align: middle;font-weight: bold;font-size: 13px;">DEBIT A/cs.</th>
-			        			       
-			      </tr>
-			      <tr>
-			        <td class="tddesc">AOLoan</td>
-			        <td th:text="${auditsummary1.AOLoantotalbal}" class="tddesc"></td>
-			       
-			      </tr>
-			      <tr>
-			        <td class="tddesc">Int on Loan </td>
-			        <td th:text="${auditsummary1.AOLoanintamt}" class="tddesc"></td>
-			      
-			      </tr>
-			      <tr>
-			        <td class="tddesc">Comd.Loan</td>
-			        <td th:text="${auditsummary1.AVLoantotalbal}" class="tddesc"></td>
-			        			        
-			      </tr>
-			      <tr><td class="tddesc">Comd.Ln.Int.</td>
-			         <td th:text="${auditsummary1.AVLoanintamt}" class="tddesc"></td>
-			        </tr>
-			      <tr><td class="tddesc">Surety</td>
-			        <td th:text="${auditsummary1.suretyamt}" class="tddesc"></td>
-			        </tr>			        
-			        <tr><td class="tddesc">ToLiability</td>
-			        <td th:text="${auditsummary1.Totliabilityamt}" class="tddesc"></td>
-			        </tr>
-			    </table>
-			  </div>
+
+			<!-- CREDIT ACCOUNT -->
+
+			<div class="column">
+
+				<table>
+
+					<tr>
+						<th colspan="2"
+							style="text-align:center;font-size:14px;">
+							CREDIT A/cs.
+						</th>
+					</tr>
+
+					<tr>
+						<td>Share A/c</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.share.closingBalance,1,2)}">
+						</td>
+					</tr>
+
+					<tr>
+						<td>Comp. Deposit</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.cd.closingBalance,1,2)}">
+						</td>
+					</tr>
+
+					<tr>
+						<td>Interest on C.D.</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.cd.interest,1,2)}">
+						</td>
+					</tr>
+
+					<tr style="font-weight:bold;background:#efefef">
+
+						<td>Total Deposit</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.totalDeposit,1,2)}">
+						</td>
+
+					</tr>
+
+				</table>
+
+			</div>
+
+
+			<!-- DEBIT ACCOUNT -->
+
+			<div class="column">
+
+				<table>
+
+					<tr>
+
+						<th colspan="2"
+							style="text-align:center;font-size:14px;">
+							DEBIT A/cs.
+						</th>
+
+					</tr>
+
+					<tr>
+
+						<td>Personal Loan</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.personal.closingBalance,1,2)}">
+						</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Personal Loan Interest</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.totalPersonalInterest,1,2)}">
+						</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Commodity Loan</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.commodity.closingBalance,1,2)}">
+						</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Commodity Loan Interest</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.totalCommodityInterest,1,2)}">
+						</td>
+
+					</tr>
+
+					<tr>
+
+						<td>Surety</td>
+
+						<td style="text-align:right;">
+							0.00
+						</td>
+
+					</tr>
+
+					<tr style="font-weight:bold;background:#efefef">
+
+						<td>Total Liability</td>
+
+						<td style="text-align:right;"
+							th:text="${#numbers.formatDecimal(settlement.totalLiability,1,2)}">
+						</td>
+
+					</tr>
+
+				</table>
+
+			</div>
+
 		</div>
-		<div class="namedesc">Amount Rallsable / Payble - <span th:text="${company}"></span></div>
+
+		<br/>
+		<br/>
+
+		<table style="width:60%;margin:auto;border-collapse:collapse;">
+
+			<tr style="background:#efefef;font-weight:bold;">
+
+				<td style="text-align:center;font-size:14px;">
+					Amount Ralisable / Payable
+				</td>
+
+				<td style="text-align:center;font-size:14px;">
+
+            <span th:if="${settlement.amountReceivable >= 0}">
+                Receivable :
+                <span th:text="${#numbers.formatDecimal(settlement.amountReceivable,1,2)}"></span>
+            </span>
+
+					<span th:if="${settlement.amountReceivable < 0}">
+                Payable :
+                <span th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(settlement.amountReceivable),1,2)}"></span>
+            </span>
+
+				</td>
+
+			</tr>
+
+		</table>
 </div>
 
     

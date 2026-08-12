@@ -4,6 +4,8 @@ import com.telco.members.tcos.model.CDShareDeductions;
 import com.telco.members.tcos.repository.CDShareDeductionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +43,16 @@ public class CDShareDeductionService {
     }
     public void insertcddeducat(String userId,String txtcddeduct,String txtsharededuct,String Paymentdt) {
         cdShareDeductionRepository.insertcddeducat(userId,txtcddeduct,txtsharededuct,Paymentdt);
+    }
+
+    public List<CDShareDeductions> getSettlementData(
+            String userId,
+            LocalDate fromDate,
+            LocalDate toDate) {
+
+        return cdShareDeductionRepository.findSettlementData(
+                userId,
+                fromDate,
+                toDate);
     }
 }

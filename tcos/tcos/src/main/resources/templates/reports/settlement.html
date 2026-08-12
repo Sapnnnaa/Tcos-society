@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" class="light" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/tcos/dist/images/logo2.svg" rel="shortcut icon" />    
+    <title>Audit Details Settlement</title>
+    <link rel="stylesheet" href="/tcos/dist/css/app.css" />
+    <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+
+        @page{
+            size:A4 landscape;
+            margin:5mm;
+        }
+
+        body{
+            font-family:Arial, Helvetica, sans-serif;
+            font-size:9px;
+            color:#000;
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width:100%;
+        }
+
+        .title{
+            text-align:center;
+            font-size:18px;
+            font-weight:700;
+            line-height:20px;
+        }
+
+        .subtitle{
+                text-align:center;
+                font-size:11px;
+                font-weight:bold;
+                margin-bottom:10px;
+        }
+
+        .print-date{
+            text-align:right;
+            font-size:8px;
+            margin-bottom:8px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th,td{
+            border:1px solid #000;
+            padding:2px;
+            font-size:7px;
+            text-align:center;
+            vertical-align:middle;
+        }
+
+        th{
+            background:#d9d9d9;
+            font-weight:bold;
+        }
+
+        .headerTable td{
+            border:none;
+            text-align:left;
+            padding:2px;
+            font-size:9px;
+        }
+
+        .opening{
+            font-weight:bold;
+            background:#f4f4f4;
+        }
+
+        .closing{
+            font-weight:bold;
+            background:#eeeeee;
+        }
+
+        .footerBox{
+               position:fixed;
+               bottom:10mm;
+               left:50%;
+               transform:translateX(-50%);
+               width:260px;
+        }
+
+        .footerTable{
+               width:100%;
+               border-collapse:collapse;
+        }
+
+       .footerTable th,
+       .footerTable td{
+               border:1px solid #000;
+               padding:5px;
+               font-size:8px;
+      }
+
+      .footerTitle{
+               text-align:center;
+               font-weight:bold;
+                background:#e5e5e5;
+      }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Print Date -->
+    <div class="print-date">
+        Printed on :
+        <span th:text="${#dates.format(printDate,'dd-MM-yyyy')}"></span>
+    </div>
+
+    <div class="title">
+        TELCO CO-OPERATIVE SOCIETY LTD., JAMSHEDPUR - 831004
+    </div>
+
+    <div class="subtitle">
+        MEMBER'S FULL AND FINAL SETTLEMENT FOR FINANCIAL YEAR
+        <span th:text="${financialYear}"></span>
+    </div>
+
+    <table class="headerTable">
+
+        <tr>
+
+            <td>
+                <b>Ticket No :</b>
+                <span th:text="${memberId}"></span>
+            </td>
+
+            <td>
+                <b>Name :</b>
+                <span th:text="${memberName}"></span>
+            </td>
+
+            <td>
+                <b>Company :</b>
+                <span th:text="${company}"></span>
+            </td>
+
+        </tr>
+
+    </table>
+
+    <div style="height:8px;"></div>
+
+    <!-- ==================== Settlement Table ==================== -->
+
+    <table border="1" cellspacing="0" cellpadding="5" width="100%">
+
+        <tr style="background:#d9d9d9;font-weight:bold;text-align:center;">
+            <th rowspan="2" style="width:8%;">Month</th>
+
+            <th colspan="1">SHARE</th>
+
+            <th colspan="2">COMPULSORY DEPOSIT</th>
+
+            <th colspan="3">PERSONAL LOAN</th>
+
+            <th colspan="3">COMMODITY LOAN</th>
+        </tr>
+
+        <tr style="background:#efefef;text-align:center;">
+            <th>Share</th>
+
+            <th>CD Deduction</th>
+            <th>CD Balance</th>
+
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+        </tr>
+
+        <!-- Opening Balance -->
+
+        <tr class="opening">
+            <td>Opening</td>
+
+            <td th:text="${settlement.share.openingBalance}"></td>
+
+            <td></td>
+
+            <td th:text="${settlement.cd.openingBalance}"></td>
+
+            <td></td>
+            <td></td>
+
+            <td th:text="${settlement.personal.openingBalance}"></td>
+
+            <td></td>
+            <td></td>
+
+            <td th:text="${settlement.commodity.openingBalance}"></td>
+        </tr>
+
+        <!-- Month Data -->
+
+        <tr th:each="m : ${settlement.monthData}">
+
+            <td th:text="${m.month}"></td>
+
+            <td th:text="${m.share}"></td>
+
+            <td th:text="${m.cd}"></td>
+
+            <td th:text="${m.cdBalance}"></td>
+
+            <td th:text="${m.personalPrincipal}"></td>
+
+            <td th:text="${m.personalInterest}"></td>
+
+            <td th:text="${m.personalBalance}"></td>
+
+            <td th:text="${m.commodityPrincipal}"></td>
+
+            <td th:text="${m.commodityInterest}"></td>
+
+            <td th:text="${m.commodityBalance}"></td>
+
+        </tr>
+
+        <!-- Total -->
+
+        <tr class="closing">
+
+            <td>Total</td>
+
+            <td th:text="${settlement.totalShare}"></td>
+
+            <td th:text="${settlement.totalCd}"></td>
+
+            <td th:text="${settlement.cd.closingBalance}"></td>
+
+            <td th:text="${settlement.totalPersonalPrincipal}"></td>
+
+            <td th:text="${settlement.totalPersonalInterest}"></td>
+
+            <td th:text="${settlement.personal.closingBalance}"></td>
+
+            <td th:text="${settlement.totalCommodityPrincipal}"></td>
+
+            <td th:text="${settlement.totalCommodityInterest}"></td>
+
+            <td th:text="${settlement.commodity.closingBalance}"></td>
+
+        </tr>
+
+        <!-- CD Interest -->
+
+        <tr style="font-weight:bold;">
+            <td colspan="3" align="right">
+                CD Interest
+            </td>
+
+            <td th:text="${settlement.cd.interest}"></td>
+
+            <td colspan="6"></td>
+        </tr>
+
+        <!-- Closing -->
+
+        <tr class="closing">
+
+            <td>Closing</td>
+
+            <td th:text="${settlement.share.closingBalance}"></td>
+
+            <td></td>
+
+            <td th:text="${settlement.cd.closingBalance}"></td>
+
+            <td></td>
+            <td></td>
+
+            <td th:text="${settlement.personal.closingBalance}"></td>
+
+            <td></td>
+            <td></td>
+
+            <td th:text="${settlement.commodity.closingBalance}"></td>
+
+        </tr>
+
+    </table>
+
+
+    <!-- Keep your existing footer -->
+
+    <div class="footerBox">
+
+        <table class="footerTable">
+
+            <tr>
+                <th colspan="2" class="footerTitle">
+                    ACCOUNT CLOSED
+                </th>
+            </tr>
+
+            <tr>
+                <td>Vide JE No.</td>
+                <td style="width:180px;"></td>
+            </tr>
+
+            <tr>
+                <td>Dated</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>Prepared By</td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td>Checked By</td>
+                <td></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+</body>
+</html>

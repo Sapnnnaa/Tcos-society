@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.telco.members.tcos.model.AccountClosure;
+import com.telco.members.tcos.model.AccountSettlement;
 
 import java.util.Date;
 import java.util.List;
@@ -41,10 +46,66 @@ public class Account_closure {
     @Autowired
     private LoanService loanService;
 
+    @Autowired
+    private SettlementService settlementService;
+
+    @Autowired
+    private AccountClosureService accountClosureService;
+
     @GetMapping("/account_closure")
     public String stage1(Model model){
         model.addAttribute("accountClosureDto", new closureDTO());
         return "closure/Stage1";
+    }
+
+    @PostMapping("/account_closure")
+    public String saveAccountClosure(
+            @ModelAttribute("accountClosureDto") closureDTO accountClosureDto,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+
+            // Print received values (for testing)
+            System.out.println("User ID : " + accountClosureDto.getUserId());
+            System.out.println("Deposit : " + accountClosureDto.getDeposit());
+            System.out.println("Due Amount : " + accountClosureDto.getDueAmount());
+            System.out.println("Surety : " + accountClosureDto.getSurety());
+            System.out.println("Others : " + accountClosureDto.getOthers());
+            System.out.println("Payout : " + accountClosureDto.getPayout());
+            System.out.println("Settlement : " + accountClosureDto.getSettlement());
+            System.out.println("Closure Type : " + accountClosureDto.getClosureType());
+            System.out.println("Prepared By : " + accountClosureDto.getPreparedBy());
+
+            AccountClosure accountClosure = new AccountClosure();
+
+            accountClosure.setUserId(accountClosureDto.getUserId());
+            accountClosure.setDeposit(accountClosureDto.getDeposit());
+            accountClosure.setDueAmount(accountClosureDto.getDueAmount());
+            accountClosure.setPayout(accountClosureDto.getPayout());
+            accountClosure.setSurety(accountClosureDto.getSurety());
+            accountClosure.setOthers(accountClosureDto.getOthers());
+            accountClosure.setPreparedBy(accountClosureDto.getPreparedBy());
+
+            accountClosure.setSettlement(accountClosureDto.getSettlement());
+            accountClosure.setClosureType(accountClosureDto.getClosureType());
+
+            accountClosure.setAccountSettlement(AccountSettlement.PENDING);
+
+            accountClosureService.save(accountClosure);
+
+            redirectAttributes.addFlashAttribute("success",
+                    "Account Closure saved successfully.");
+
+            return "redirect:/members/settlement";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            redirectAttributes.addFlashAttribute("error",
+                    "Unable to save Account Closure.");
+
+            return "redirect:/members/settlement";
+        }
     }
 
     @GetMapping("/account_closure/security/{key}")
@@ -86,6 +147,30 @@ public class Account_closure {
         List<UserregisterDTO> userss = userService.getAllUserclosure();
         model.addAttribute("users", userss);
         return "closure/account_closure"; // Return the Thymeleaf template view
+    }
+
+
+    @GetMapping("/member/{userId}")
+    public ResponseEntity<User> getMember(@PathVariable String userId) {
+
+        User user = userService.findByUserId(userId);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/settlement/data/{userId}")
+    public ResponseEntity<SettlementDTO> getSettlementData(
+            @PathVariable String userId,
+            @RequestParam String financialYear) {
+
+        SettlementDTO settlement =
+                settlementService.getSettlement(userId, financialYear);
+
+        return ResponseEntity.ok(settlement);
     }
 
     @GetMapping("/closed")

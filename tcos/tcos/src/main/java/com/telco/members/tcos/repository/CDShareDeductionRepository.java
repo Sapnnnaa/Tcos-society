@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 public interface CDShareDeductionRepository extends JpaRepository<CDShareDeductions, Integer> {
 
@@ -25,9 +26,25 @@ public interface CDShareDeductionRepository extends JpaRepository<CDShareDeducti
 	
 	 @Query(value = "SELECT * FROM cd_share_deductions WHERE user_id = :userId ORDER BY payment_date DESC LIMIT 1", nativeQuery = true)
 	CDShareDeductions findLatestRecordByUserId(String userId);
+
+
+	@Query(value="""
+SELECT *
+FROM cd_share_deductions
+WHERE user_id=:userId
+AND payment_date BETWEEN :fromDate AND :toDate
+ORDER BY payment_date ASC
+""",nativeQuery=true)
+	List<CDShareDeductions> findSettlementData(
+			@Param("userId") String userId,
+			@Param("fromDate") LocalDate fromDate,
+			@Param("toDate") LocalDate toDate);
 	 
 	   @Modifying
 	    @Transactional
 	    @Query(value = "insert into cd_share_deductions (user_id,cd_deduction,share_deduction,payment_date,cd_deduction_generated,share_deduction_generated,cd_interest,cd_interest_total) values  (:userId, :txtcddeduct,:txtsharededuct,:Paymentdt,0,0,0,0)", nativeQuery = true)
 	    void insertcddeducat(@Param("userId") String userId,@Param("txtcddeduct") String txtcddeduct, @Param("txtsharededuct") String txtsharededuct,@Param("Paymentdt") String Paymentdt);
+
+
+
 }

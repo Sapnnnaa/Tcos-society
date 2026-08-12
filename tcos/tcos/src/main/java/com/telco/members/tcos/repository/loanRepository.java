@@ -57,19 +57,32 @@ public interface loanRepository extends JpaRepository<Loan, Integer> {
     @Transactional
     @Query(value = "CALL loan_end();", nativeQuery = true)
     void loanEnd();
-    
-    List<Loan> findByUserIdAndLoanTypeAndLoanBalanceGreaterThanOrderByLoanApproveDateDesc(String userId,LoanType loanType,double amt);
 
-    Loan findTop1ByUserIdAndLoanTypeAndLoanStatusOrderByLoanApproveDateDesc(String userId,LoanType loanType,LoanStatus loanStatus);
-	Loan findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(String userId, LoanType loanType);
-	
-	@Query(value = "SELECT COUNT(*) FROM loans l WHERE l.user_id = :userId AND l.loan_type = :loanType AND "
-			+ "(l.loan_status = 0 OR l.loan_status=1 OR l.loan_status=2)", nativeQuery = true)
-	int countPendingLoans(@Param("userId") String userId, @Param("loanType") int loanType);
-    
+    List<Loan> findByUserIdAndLoanTypeAndLoanBalanceGreaterThanOrderByLoanApproveDateDesc(String userId, LoanType loanType, double amt);
+
+    Loan findTop1ByUserIdAndLoanTypeAndLoanStatusOrderByLoanApproveDateDesc(String userId, LoanType loanType, LoanStatus loanStatus);
+
+    Loan findTop1ByUserIdAndLoanTypeOrderByLoanApproveDateDesc(String userId, LoanType loanType);
+
+    @Query(value = "SELECT COUNT(*) FROM loans l WHERE l.user_id = :userId AND l.loan_type = :loanType AND "
+            + "(l.loan_status = 0 OR l.loan_status=1 OR l.loan_status=2)", nativeQuery = true)
+    int countPendingLoans(@Param("userId") String userId, @Param("loanType") int loanType);
+
 //    @Modifying
 //    @Transactional // Required for modifying queries
 //    @Query("DELETE FROM users u WHERE u.userId = :userId")
 //    void deleteByuserId(@Param("userId") String userId);
 
+    @Query("""
+                SELECT l
+                FROM Loan l
+                WHERE l.userId = :userId
+                  AND l.loanType = :loanType
+                  AND l.loanApproveDate <= :toDate
+                ORDER BY l.loanApproveDate ASC
+            """)
+    List<Loan> getLoansTillDate(
+            @Param("userId") String userId,
+            @Param("loanType") LoanType loanType,
+            @Param("toDate") Date toDate);
 }
