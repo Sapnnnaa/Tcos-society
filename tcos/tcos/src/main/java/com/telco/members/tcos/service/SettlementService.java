@@ -977,7 +977,6 @@ public class SettlementService {
         }
 
 
-
         //====================================================
 // COMMODITY LOAN SETTLEMENT
 //====================================================
@@ -1884,12 +1883,12 @@ public class SettlementService {
                 totalCommodityInterest);
 
 
-        //====================================================
-        // CREDIT SIDE
-        //====================================================
+
+       // CREDIT SIDE
 
         double totalDeposit = 0;
 
+      // SHARE
 
         if (settlementDTO.getShare() != null) {
 
@@ -1899,14 +1898,17 @@ public class SettlementService {
                             .getClosingBalance();
         }
 
+        // CD ACCOUNT
 
         if (settlementDTO.getCd() != null) {
 
+            // CD Closing Balance
             totalDeposit +=
                     settlementDTO
                             .getCd()
                             .getClosingBalance();
 
+            // CD Interest
             totalDeposit +=
                     settlementDTO
                             .getCd()
@@ -1914,59 +1916,181 @@ public class SettlementService {
         }
 
 
+       // SET TOTAL DEPOSIT
+
         settlementDTO.setTotalDeposit(
-                totalDeposit);
+                totalDeposit
+        );
 
-
-        //====================================================
         // DEBIT / LIABILITY SIDE
-        //====================================================
 
         double totalLiability = 0;
 
+        // PERSONAL LOAN
 
         if (settlementDTO.getPersonal() != null) {
+
+            // PERSONAL LOAN CLOSING BALANCE
 
             totalLiability +=
                     settlementDTO
                             .getPersonal()
                             .getClosingBalance();
 
-            totalLiability +=
+
+            //================================================
+            // PERSONAL LOAN INTEREST
+            //
+            // Actual Interest
+            //        -
+            // Interest Already Deducted
+            //
+            // = Interest Payable
+            //================================================
+
+            double personalActualInterest =
+                    settlementDTO
+                            .getPersonal()
+                            .getTotalActualInterest();
+
+            double personalInterestDeducted =
                     settlementDTO
                             .getTotalPersonalInterest();
+
+            double personalInterestPayable =
+                    personalActualInterest
+                            - personalInterestDeducted;
+
+
+            // PREVENT NEGATIVE INTEREST
+
+            if (personalInterestPayable < 0) {
+
+                personalInterestPayable = 0;
+            }
+
+
+            // SAVE PERSONAL PAYABLE INTEREST IN DTO
+
+            settlementDTO.setPersonalInterestPayable(
+                    personalInterestPayable
+            );
+
+
+            // ADD PERSONAL INTEREST TO LIABILITY
+
+            totalLiability +=
+                    personalInterestPayable;
+
+        } else {
+
+            // No personal loan
+            settlementDTO.setPersonalInterestPayable(
+                    0
+            );
         }
+
+        // COMMODITY LOAN
 
 
         if (settlementDTO.getCommodity() != null) {
+
+            // COMMODITY LOAN CLOSING BALANCE
 
             totalLiability +=
                     settlementDTO
                             .getCommodity()
                             .getClosingBalance();
 
-            totalLiability +=
+
+            //================================================
+            // COMMODITY LOAN INTEREST
+            //
+            // Actual Interest
+            //        -
+            // Interest Already Deducted
+            //
+            // = Interest Payable
+            //================================================
+
+            double commodityActualInterest =
+                    settlementDTO
+                            .getCommodity()
+                            .getTotalActualInterest();
+
+            double commodityInterestDeducted =
                     settlementDTO
                             .getTotalCommodityInterest();
+
+            double commodityInterestPayable =
+                    commodityActualInterest
+                            - commodityInterestDeducted;
+
+
+            // PREVENT NEGATIVE INTEREST
+
+            if (commodityInterestPayable < 0) {
+
+                commodityInterestPayable = 0;
+            }
+
+
+            // SAVE COMMODITY PAYABLE INTEREST IN DTO
+
+            settlementDTO.setCommodityInterestPayable(
+                    commodityInterestPayable
+            );
+
+
+            // ADD COMMODITY INTEREST TO LIABILITY
+
+            totalLiability +=
+                    commodityInterestPayable;
+
+        } else {
+
+            // No commodity loan
+            settlementDTO.setCommodityInterestPayable(
+                    0
+            );
         }
 
 
+        // SET TOTAL LIABILITY
+
+
         settlementDTO.setTotalLiability(
-                totalLiability);
+                totalLiability
+        );
 
 
-        //====================================================
-        // RECEIVABLE / PAYABLE
-        //====================================================
+         // AMOUNT REALISABLE / PAYABLE
+        // TOTAL LIABILITY - TOTAL DEPOSIT
+
 
         settlementDTO.setAmountReceivable(
-                totalDeposit
-                        - totalLiability);
-
+                totalLiability
+                        - totalDeposit
+        );
 
         //====================================================
-        // RETURN
-        //====================================================
+// CALCULATED UPTO
+// Last month for which calculation/deduction exists
+//====================================================
+
+        String calculatedUpto = "";
+
+        if (settlementDTO.getMonthData() != null
+                && !settlementDTO.getMonthData().isEmpty()) {
+
+            SettlementMonthDTO lastMonth =
+                    settlementDTO.getMonthData()
+                            .get(settlementDTO.getMonthData().size() - 1);
+
+            calculatedUpto = lastMonth.getMonth();
+        }
+
+        settlementDTO.setCalculatedUpto(calculatedUpto);
 
         return settlementDTO;
     }

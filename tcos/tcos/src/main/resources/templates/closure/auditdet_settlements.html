@@ -8,24 +8,11 @@
     <link rel="stylesheet" href="/tcos/dist/css/app.css" />
     <link rel="stylesheet" href="/tcos/dist/css/jquery.dataTables1.13.5.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-	<!-- ========================================================= -->
-	<!-- COMPACT RESPONSIVE CSS -->
-	<!-- ========================================================= -->
-
 	<style>
-
-    /* ========================================= */
-    /* SETTLEMENT MODAL */
-    /* ========================================= */
 
     #settlementPreviewModal table {
         border-collapse: collapse !important;
     }
-
-
-    /* ========================================= */
-    /* TABLE CELLS */
-    /* ========================================= */
 
     #settlementPreviewModal table th,
     #settlementPreviewModal table td {
@@ -40,22 +27,12 @@
 
     }
 
-
-    /* ========================================= */
-    /* MAIN SETTLEMENT TABLE */
-    /* ========================================= */
-
     #settlementMainTable th,
     #settlementMainTable td {
 
         font-size: 10px !important;
 
     }
-
-
-    /* ========================================= */
-    /* SMALL LAPTOP */
-    /* ========================================= */
 
     @media (max-height: 800px) {
 
@@ -106,11 +83,6 @@
         }
 
     }
-
-
-    /* ========================================= */
-    /* VERY SMALL LAPTOP */
-    /* ========================================= */
 
     @media (max-height: 700px) {
 
@@ -753,10 +725,7 @@
 
 				</div>
 
-				<!-- ========================================================= -->
 				<!-- FULL & FINAL SETTLEMENT PREVIEW MODAL -->
-				<!-- ========================================================= -->
-
 
 				<div id="settlementPreviewModal"
 					 class="fixed inset-0 bg-black bg-opacity-60 hidden z-50
@@ -875,14 +844,14 @@
 
 								<table id="settlementMainTable"
 									   class="table table-bordered
-                              w-full
-                              min-w-[900px]
-                              text-[9px] sm:text-[10px]
-                              leading-tight">
+                  w-full
+                  min-w-[900px]
+                  text-[9px] sm:text-[10px]
+                  leading-tight">
 
-									<!-- ========================================= -->
+									<!-- ================================================= -->
 									<!-- TABLE HEADER -->
-									<!-- ========================================= -->
+									<!-- ================================================= -->
 
 									<thead>
 
@@ -933,7 +902,9 @@
 									</tr>
 
 
+									<!-- ================================================= -->
 									<!-- SECOND HEADER ROW -->
+									<!-- ================================================= -->
 
 									<tr class="bg-gray-100">
 
@@ -951,7 +922,7 @@
 										<!-- PERSONAL -->
 
 										<th class="px-1 py-1 text-center">
-											Principal
+											Principal Amount
 										</th>
 
 										<th class="px-1 py-1 text-center">
@@ -970,7 +941,7 @@
 										<!-- COMMODITY -->
 
 										<th class="px-1 py-1 text-center">
-											Principal
+											Principal Amount
 										</th>
 
 										<th class="px-1 py-1 text-center">
@@ -990,18 +961,28 @@
 									</thead>
 
 
-									<!-- ========================================= -->
-									<!-- MONTH DATA -->
-									<!-- ========================================= -->
+									<!-- ================================================= -->
+									<!-- OPENING + MONTH DATA -->
+									<!-- ================================================= -->
 
 									<tbody id="previewSettlementTable">
+
+									<!--
+                                        JavaScript will insert:
+
+                                        OPENING
+                                        APRIL
+                                        MAY
+                                        JUNE
+                                        ...
+                                    -->
 
 									</tbody>
 
 
-									<!-- ========================================= -->
+									<!-- ================================================= -->
 									<!-- CLOSING -->
-									<!-- ========================================= -->
+									<!-- ================================================= -->
 
 									<tfoot>
 
@@ -1264,7 +1245,7 @@
 
 											<th class="px-1 py-1">
 												Personal<br>
-												Principal
+												Principal Amount
 											</th>
 
 											<th class="px-1 py-1">
@@ -1279,7 +1260,7 @@
 
 											<th class="px-1 py-1">
 												Commodity<br>
-												Principal
+												Principal Amount
 											</th>
 
 											<th class="px-1 py-1">
@@ -2072,6 +2053,10 @@ function money(value) {
 }
 
 
+// ==================================================
+// OPEN SETTLEMENT PREVIEW
+// ==================================================
+
 function openSettlementPreview() {
 
     // ==========================================
@@ -2123,6 +2108,114 @@ function openSettlementPreview() {
 
     // Clear old rows
     tbody.innerHTML = "";
+
+
+    // ==========================================
+    // OPENING BALANCE ROW
+    // ==========================================
+
+    const openingTr =
+        document.createElement("tr");
+
+    openingTr.className =
+        "bg-gray-100 font-semibold";
+
+
+    openingTr.innerHTML = `
+
+        <!-- ====================================== -->
+        <!-- OPENING -->
+        <!-- ====================================== -->
+
+        <td class="text-center font-semibold">
+            OPENING BALANCE
+        </td>
+
+
+        <!-- ====================================== -->
+        <!-- SHARE OPENING -->
+        <!-- ====================================== -->
+
+        <td class="text-center">
+            ${money(
+                data.share
+                    ? data.share.openingBalance
+                    : 0
+            )}
+        </td>
+
+
+        <!-- ====================================== -->
+        <!-- CD -->
+        <!-- No deduction for opening row -->
+        <!-- ====================================== -->
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center">
+            ${money(
+                data.cd
+                    ? data.cd.openingBalance
+                    : 0
+            )}
+        </td>
+
+
+        <!-- ====================================== -->
+        <!-- PERSONAL LOAN -->
+        <!-- ====================================== -->
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center font-semibold">
+            ${money(
+                data.personal
+                    ? data.personal.openingBalance
+                    : 0
+            )}
+        </td>
+
+
+        <!-- ====================================== -->
+        <!-- COMMODITY LOAN -->
+        <!-- ====================================== -->
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center">
+            -
+        </td>
+
+        <td class="text-center font-semibold">
+            ${money(
+                data.commodity
+                    ? data.commodity.openingBalance
+                    : 0
+            )}
+        </td>
+
+    `;
+
+
+    tbody.appendChild(openingTr);
 
 
     // ==========================================
@@ -2234,7 +2327,11 @@ function openSettlementPreview() {
     // CLOSING BALANCES
     // ==========================================
 
-    // SHARE
+
+    // ==========================================
+    // SHARE CLOSING
+    // ==========================================
+
     const shareClosing =
         document.getElementById(
             "previewShareClosing"
@@ -2249,7 +2346,10 @@ function openSettlementPreview() {
     }
 
 
-    // CD
+    // ==========================================
+    // CD CLOSING
+    // ==========================================
+
     const cdClosing =
         document.getElementById(
             "previewCdClosing"
@@ -2264,7 +2364,10 @@ function openSettlementPreview() {
     }
 
 
-    // PERSONAL
+    // ==========================================
+    // PERSONAL CLOSING
+    // ==========================================
+
     const personalClosing =
         document.getElementById(
             "previewPersonalClosing"
@@ -2279,7 +2382,10 @@ function openSettlementPreview() {
     }
 
 
-    // COMMODITY
+    // ==========================================
+    // COMMODITY CLOSING
+    // ==========================================
+
     const commodityClosing =
         document.getElementById(
             "previewCommodityClosing"
@@ -2321,10 +2427,9 @@ function openSettlementPreview() {
 
     if (data.personal) {
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN MONTH
-        // Example: August
-        // ------------------------------
+        // ------------------------------------------
 
         if (personalLnMonth) {
 
@@ -2333,10 +2438,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN DATE
-        // Example: 23-08-2024
-        // ------------------------------
+        // ------------------------------------------
 
         if (personalLnDate) {
 
@@ -2345,9 +2449,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN AMOUNT
-        // ------------------------------
+        // ------------------------------------------
 
         if (personalLnAmount) {
 
@@ -2358,9 +2462,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN CONTRA
-        // ------------------------------
+        // ------------------------------------------
 
         if (personalLnContra) {
 
@@ -2373,19 +2477,27 @@ function openSettlementPreview() {
     } else {
 
         if (personalLnMonth) {
-            personalLnMonth.textContent = "-";
+
+            personalLnMonth.textContent =
+                "-";
         }
 
         if (personalLnDate) {
-            personalLnDate.textContent = "-";
+
+            personalLnDate.textContent =
+                "-";
         }
 
         if (personalLnAmount) {
-            personalLnAmount.textContent = money(0);
+
+            personalLnAmount.textContent =
+                money(0);
         }
 
         if (personalLnContra) {
-            personalLnContra.textContent = money(0);
+
+            personalLnContra.textContent =
+                money(0);
         }
 
     }
@@ -2418,10 +2530,9 @@ function openSettlementPreview() {
 
     if (data.commodity) {
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN MONTH
-        // Example: November
-        // ------------------------------
+        // ------------------------------------------
 
         if (commodityLnMonth) {
 
@@ -2430,9 +2541,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN DATE
-        // ------------------------------
+        // ------------------------------------------
 
         if (commodityLnDate) {
 
@@ -2441,9 +2552,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN AMOUNT
-        // ------------------------------
+        // ------------------------------------------
 
         if (commodityLnAmount) {
 
@@ -2454,9 +2565,9 @@ function openSettlementPreview() {
         }
 
 
-        // ------------------------------
+        // ------------------------------------------
         // LAST LOAN CONTRA
-        // ------------------------------
+        // ------------------------------------------
 
         if (commodityLnContra) {
 
@@ -2469,19 +2580,27 @@ function openSettlementPreview() {
     } else {
 
         if (commodityLnMonth) {
-            commodityLnMonth.textContent = "-";
+
+            commodityLnMonth.textContent =
+                "-";
         }
 
         if (commodityLnDate) {
-            commodityLnDate.textContent = "-";
+
+            commodityLnDate.textContent =
+                "-";
         }
 
         if (commodityLnAmount) {
-            commodityLnAmount.textContent = money(0);
+
+            commodityLnAmount.textContent =
+                money(0);
         }
 
         if (commodityLnContra) {
-            commodityLnContra.textContent = money(0);
+
+            commodityLnContra.textContent =
+                money(0);
         }
 
     }
@@ -2532,6 +2651,10 @@ function openSettlementPreview() {
             );
 
 
+        // ------------------------------------------
+        // PERSONAL PRINCIPAL
+        // ------------------------------------------
+
         if (personalPrincipal) {
 
             personalPrincipal.textContent =
@@ -2540,6 +2663,10 @@ function openSettlementPreview() {
                 );
         }
 
+
+        // ------------------------------------------
+        // PERSONAL INTEREST
+        // ------------------------------------------
 
         if (personalInterest) {
 
@@ -2550,6 +2677,10 @@ function openSettlementPreview() {
         }
 
 
+        // ------------------------------------------
+        // PERSONAL ACTUAL INTEREST
+        // ------------------------------------------
+
         if (personalActualInterest) {
 
             personalActualInterest.textContent =
@@ -2558,6 +2689,10 @@ function openSettlementPreview() {
                 );
         }
 
+
+        // ------------------------------------------
+        // PERSONAL CLOSING
+        // ------------------------------------------
 
         if (personalClosingTotal) {
 
@@ -2597,6 +2732,10 @@ function openSettlementPreview() {
             );
 
 
+        // ------------------------------------------
+        // COMMODITY PRINCIPAL
+        // ------------------------------------------
+
         if (commodityPrincipal) {
 
             commodityPrincipal.textContent =
@@ -2605,6 +2744,10 @@ function openSettlementPreview() {
                 );
         }
 
+
+        // ------------------------------------------
+        // COMMODITY INTEREST
+        // ------------------------------------------
 
         if (commodityInterest) {
 
@@ -2615,6 +2758,10 @@ function openSettlementPreview() {
         }
 
 
+        // ------------------------------------------
+        // COMMODITY ACTUAL INTEREST
+        // ------------------------------------------
+
         if (commodityActualInterest) {
 
             commodityActualInterest.textContent =
@@ -2623,6 +2770,10 @@ function openSettlementPreview() {
                 );
         }
 
+
+        // ------------------------------------------
+        // COMMODITY CLOSING
+        // ------------------------------------------
 
         if (commodityClosingTotal) {
 
@@ -2646,14 +2797,15 @@ function openSettlementPreview() {
 
     if (!modal) {
 
-        alert("Settlement preview modal is missing.");
+        alert(
+            "Settlement preview modal is missing."
+        );
 
         return;
     }
 
 
     modal.classList.remove("hidden");
-
 }
 
 
@@ -2673,7 +2825,6 @@ function closeSettlementPreview() {
         modal.classList.add("hidden");
 
     }
-
 }
 
 
